@@ -1,0 +1,13 @@
+development: &dev
+  adapter: sqlite3
+  database: db/development.sqlite3
+  pool: 5
+  timeout: 5000
+
+test:
+  <<: *dev
+  database: db/test.sqlite3
+
+production:
+  <<: *dev
+  database: db/production.sqlite3
