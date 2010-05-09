@@ -52,3 +52,6 @@ Spec::Runner.configure do |config|
   #
   # For more information take a look at Spec::Runner::Configuration and Spec::Runner
 end
+
+# Include all EmulationSystem
+Dir[File.expand_path(File.join(File.dirname(__FILE__),'..','lib','emulation_system','**','*.rb'))].each {|f| require f}
