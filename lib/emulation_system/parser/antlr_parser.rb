@@ -6,7 +6,15 @@ module EmulationSystem::Parser
     # Lisp нотация:
     #     (root child child (root child))
     def self.call(code)
-      <<RESULT
+      
+      return <<-SIMPLE
+(block
+  (def some (other))
+  (foo blah)
+      SIMPLE
+
+      <<-RESULT
+(block
   (def some
     (params x y)
     (block
@@ -41,7 +49,8 @@ module EmulationSystem::Parser
       )
     )
   )
-RESULT
+)
+      RESULT
     end
   end
 end
