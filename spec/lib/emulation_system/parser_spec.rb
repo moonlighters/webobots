@@ -1,7 +1,7 @@
 require 'emulation_system_helper'
 
-describe EmulationSystem::Parser::Parser do
+describe EmulationSystem::Parsing::Parser do
   it "should be creatable" do
-    EmulationSystem::Parser::Parser.new
+    EmulationSystem::Parsing::Parser.new ""
   end
 end

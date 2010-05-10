@@ -1,4 +1,4 @@
-module EmulationSystem::Parser
+module EmulationSystem::Parsing
   # Обертка для вызова внешнего парсера ANTLR
   class ANTLRParser
     # Возвращает дерево разбора исходного кода в нотации Lisp
@@ -6,12 +6,6 @@ module EmulationSystem::Parser
     # Lisp нотация:
     #     (root child child (root child))
     def self.call(code)
-      
-      return <<-SIMPLE
-(block
-  (def some (other))
-  (foo blah)
-      SIMPLE
 
       <<-RESULT
 (block

@@ -1,15 +1,20 @@
 module EmulationSystem
-  module Parser
+  # Парсинг исходного кода
+  module Parsing
     # Делегирует функцию парсинга исходного кода внешнему парсеру и
     # полученое дерево преобразует в IR
     class Parser
       LP,RP = '(', ')'
+      
+      # +code+ - исходный код прошивки
+      def initialize(code)
+        @code = code
+      end
 
-      # Принимает исходный код прошивки и
-      # возвращает экземляр IR
+      # Парсит и возвращает экземляр IR
       # ( TODO а что делать с ошибками? )
-      def parse(code)
-        res = ANTLRParser.call(code)
+      def parse
+        res = ANTLRParser.call @code
         transform_to_ir res
       end
 
