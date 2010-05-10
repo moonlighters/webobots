@@ -1,5 +1,5 @@
 module EmulationSystem::Parsing
-  # Обертка для вызова внешнего парсера ANTLR
+  # === Обертка для вызова внешнего парсера ANTLR
   class ANTLRParser
     # Возвращает дерево разбора исходного кода в нотации Lisp
     #

@@ -1,13 +1,14 @@
 module EmulationSystem
-  # Промежуточное представление (Intermediate Representation)
-  # кода прошивки, используемое виртуальной машиной
+  # === Промежуточное представление
+  # Представление кода прошивки, используемое виртуальной машиной
+  # (Intermediate Representation)
   class IR
     attr_reader :root
 
-    # Структура для хранения узла дерева IR
+    # === Узел дерева IR
     # * +data+ - строка или число
     # * +children+ - список поддеревьев
-    Node = Struct.new :data, :children do
+    class Node < Struct.new :data, :children
       # Наглядный вывод дерева в строку для отладки
       def to_s(shift = 0)
         buf = '| '*shift + self.data + "\n"
