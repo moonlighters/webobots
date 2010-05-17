@@ -8,6 +8,7 @@ class UsersController < ApplicationController
   
   def create
     @user = User.new(params[:user])
+    @user.login = params[:user][:login]
     if @user.save
       flash[:notice] = "Пользователь успешно зарегистрирован!"
       redirect_back_or_default account_url
@@ -26,6 +27,7 @@ class UsersController < ApplicationController
   
   def update
     @user = @current_user # makes our views "cleaner" and more consistent
+    params[:user].delete :login
     if @user.update_attributes(params[:user])
       flash[:notice] = "Аккаунт обновлен!"
       redirect_to account_url
