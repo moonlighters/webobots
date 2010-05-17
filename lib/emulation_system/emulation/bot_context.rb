@@ -18,7 +18,7 @@ module EmulationSystem
       attr_reader :state, :ir, :time, :variables, :cur_node
 
       def initialize(ir, x, y, angle)
-        @state = State.new Point[x,y], angle, 0, 0, MAX_HEALTH
+        @state = State.new Point[x,y], angle, 0, 0, World::MAX_HEALTH
 
         @ir = ir
         @time = 0
