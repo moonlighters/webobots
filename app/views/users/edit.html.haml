@@ -1,0 +1,6 @@
+%h1 Редактировать аккаунт
+
+- semantic_form_for @user, :url => account_path do |f|
+  = render :partial => "form", :object => f
+
+= link_to "Мой аккаунт", account_path

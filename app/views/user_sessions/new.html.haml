@@ -1,0 +1,9 @@
+%h1 Вход
+
+- semantic_form_for @user_session, :url => login_path do |f|
+  = f.semantic_errors
+  - f.inputs do
+    = f.input :login
+    = f.input :password
+    = f.input :remember_me, :as => :boolean
+  = f.buttons

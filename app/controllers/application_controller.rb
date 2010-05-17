@@ -29,6 +29,7 @@ class ApplicationController < ActionController::Base
     if current_user
       store_location
       flash[:notice] = "Вы должны выйти из системы, чтобы получить доступ к этой странице"
+      # TODO redirect_to root ?
       redirect_to account_url
       return false
     end

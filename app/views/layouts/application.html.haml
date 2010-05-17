@@ -1,0 +1,17 @@
+!!! 5
+%html
+  %head
+    %meta{'http-equiv' => 'content-type', :content => 'text/html; charset=utf-8'}
+    %title= "Webobots"
+    = stylesheet_link_tag *%w{}
+    = formtastic_stylesheet_link_tag
+    = javascript_include_tag *%w{}
+    %link{:rel => 'icon', :href => '/favicon.ico', :type => 'image/x-icon'}
+    %link{:rel => 'shortcut icon', :href => '/favicon.ico', :type => 'image/x-icon'}
+
+  %body
+    %header
+      %h1 Webobots Site
+    %nav
+    %section
+      = yield

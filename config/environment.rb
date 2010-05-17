@@ -4,6 +4,8 @@ require File.join(File.dirname(__FILE__), 'boot')
 
 Rails::Initializer.run do |config|
   config.gem 'authlogic'
+  config.gem 'formtastic'
+  config.gem 'haml'
 
   config.time_zone = 'Novosibirsk'
 end

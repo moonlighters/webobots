@@ -4,7 +4,8 @@ ActionController::Routing::Routes.draw do |map|
   map.logout  'logout', :controller => 'user_sessions', :action => 'destroy'
 
   map.resource :account, :controller => 'users'
-  map.signup 'signup', :controller => 'users', :action => 'new'
+  map.signup 'signup', :controller => 'users', :action => 'new', :conditions => {:method => :get}
+  map.connect 'signup', :controller => 'users', :action => 'create', :conditions => {:method => :post}
 
   map.root :controller => 'user_sessions', :action => 'new'
 end
