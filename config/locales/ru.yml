@@ -7,17 +7,29 @@ ru:
         login: "Логин"
         password: "Пароль"
         password_confirmation: "Повтор пароля"
-        remember_me: "Запомнить меня"
   authlogic:
     error_messages:
       login_blank: "не должен быть пустым"
       login_not_found: "не существует"
-      login_invalid: "должен содержать только буквы, цифры, пробелы и .-_@."
-      email_invalid: "имеет недопустимый формат"
+      login_invalid: "должен содержать только буквы, цифры, пробелы и .-_@"
+      email_invalid: "должен выглядеть как email адрес"
       password_blank: "не должен быть пустым"
       password_invalid: "неверный"
       not_active: "Ваш аккаунт не активирован"
       not_confirmed: "Ваш аккаунт не подтвержден"
       not_approved: "Ваш аккаунт не утвержден"
-      blank_record: "Нельзя войти с пустой записью"
-      new_record: "Нельзя войти с новой записью"
+      consecutive_failed_logins_limit_exceeded: "Превышено максимальное число попыток входа, аккаунт заблокирован"
+      no_authentication_details: "Вы не предоставили данных для аутентификации"
+    attributes:
+      user_session:
+        login: "Логин"
+        email: "Email"
+        password: "Пароль"
+        remember_me: "Запомнить меня"
+  formtastic:
+    actions:
+      create: "Создать"
+      update: "Обновить"
+      login: "Войти"
+      register: "Зарегистрироваться"
+      

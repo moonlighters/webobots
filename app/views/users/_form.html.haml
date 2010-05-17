@@ -1,7 +1,10 @@
+- new = form.object.new_record?
+
 = form.semantic_errors
 - form.inputs do
-  = form.input :login if form.object.new_record?
+  = form.input :login if new
   = form.input :email
-  = form.input :password, :label => form.object.new_record? ? nil : "Сменить пароль"
+  = form.input :password, :label => new ? "Пароль" : "Новый пароль", :hint => ("Введите, только если хотите сменить пароль" unless new)
   = form.input :password_confirmation
-= form.buttons
+- form.buttons do
+  = form.commit_button new ? :register : :update
