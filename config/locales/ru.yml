@@ -5,6 +5,7 @@ ru:
     attributes:
       user:
         login: "Логин"
+        email: "Email"
         password: "Пароль"
         password_confirmation: "Повтор пароля"
   authlogic:
@@ -23,7 +24,6 @@ ru:
     attributes:
       user_session:
         login: "Логин"
-        email: "Email"
         password: "Пароль"
         remember_me: "Запомнить меня"
   formtastic:
