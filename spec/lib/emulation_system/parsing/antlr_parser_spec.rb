@@ -16,6 +16,11 @@ describe EmulationSystem::Parsing::ANTLRParser do
   it "should parse if clauses with else" do
     call("if(a-3)\n  b=4\nelse\n  b=0\nend").should == "(block (if (- a 3) (block (= b 4)) (block (= b 0))))"
   end
+
+  it "should raise errors" do
+    lambda{ call("if(a-3 \nend") }.should raise_error
+    lambda{ call("a + 2") }.should raise_error
+  end
   
   private
   def call(code)

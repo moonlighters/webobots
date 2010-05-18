@@ -12,7 +12,16 @@ tokens = antlr3.CommonTokenStream(lexer)
 parser = waffleParser(tokens)
 r = parser.prog()
 
-root = r.tree
+errc = parser.getNumberOfSyntaxErrors()
+if errc:
+    #sys.stderr.write("There were %i error(s)!\n" % errc);
+    for msg in parser.errors_list:
+        print msg
+    sys.exit(1)
 
-nodes = antlr3.tree.CommonTreeNodeStream(root)
-nodes.setTokenStream(tokens)
+root = r.tree
+print root.toStringTree();
+
+#nodes = antlr3.tree.CommonTreeNodeStream(root)
+#nodes.setTokenStream(tokens)
+
