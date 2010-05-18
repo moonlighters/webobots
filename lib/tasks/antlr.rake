@@ -3,7 +3,7 @@ namespace :antlr do
   gname = 'waffle'
 
   desc "Generate ANTLR3 parser for Waffle grammar"
-  task :generate => :clear do
+  task :generate => :clean do
     grammar = File.join(dir, gname + '.g')
     sh "antlr3 #{grammar} -o #{dir}"
   end
