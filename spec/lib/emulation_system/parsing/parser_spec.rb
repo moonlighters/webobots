@@ -27,14 +27,13 @@ describe EmulationSystem::Parsing::Parser do
     parse( "(some 3 2)" ).root.should == n( 'some', [ n('3'), n('2')] )
   end
 
-  it "should parse tree with data of random digits" do
+  it "should parse tree with data of random chars" do
     parse( "(= ! ?)" ).root.should == n( '=', [ n('!'), n('?')] )
   end
 
   private
   def parse(tree)
-    parser = Object.new
-    mock(parser).call("some code") { tree }
+    mock(parser = Object.new).call("some code") { tree }
     EmulationSystem::Parsing::Parser.new("some code", parser).parse
   end
 
