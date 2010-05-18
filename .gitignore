@@ -13,3 +13,6 @@ config/initializers/paperclip.rb
 config/database.yml
 config/deploy.rb
 *.pyc
+*.tokens
+*Lexer.py
+*Parser.py
