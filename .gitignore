@@ -12,3 +12,4 @@ vendor/gems
 config/initializers/paperclip.rb
 config/database.yml
 config/deploy.rb
+*.pyc
