@@ -10,9 +10,14 @@ tokens {
         BLOCK;
 }
 
-prog    : block {print $block.tree.toStringTree();};
-        /*catch[Exception as e] { print "ERROR! ", e; sys.exit(1); }*/
+@members{
+def emitErrorMessage(self, msg):
+    self.errors_list.append(msg)
+}
 
+prog    @init { self.errors_list = []; }
+        : block;
+        
 block   : stat*                 -> ^(BLOCK["block"] stat*) ;
 
 stat    : assig^                

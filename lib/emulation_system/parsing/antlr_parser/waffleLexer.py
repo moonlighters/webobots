@@ -1,4 +1,4 @@
-# $ANTLR 3.1.2 /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g 2010-05-19 00:39:49
+# $ANTLR 3.1.2 /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g 2010-05-19 02:55:30
 
 import sys
 from antlr3 import *
@@ -313,11 +313,11 @@ class waffleLexer(Lexer):
             _type = ID
             _channel = DEFAULT_CHANNEL
 
-            # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:43:9: ( LETTER ( DIGIT | LETTER )* )
-            # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:43:11: LETTER ( DIGIT | LETTER )*
+            # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:48:9: ( LETTER ( DIGIT | LETTER )* )
+            # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:48:11: LETTER ( DIGIT | LETTER )*
             pass 
             self.mLETTER()
-            # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:43:18: ( DIGIT | LETTER )*
+            # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:48:18: ( DIGIT | LETTER )*
             while True: #loop1
                 alt1 = 2
                 LA1_0 = self.input.LA(1)
@@ -360,8 +360,8 @@ class waffleLexer(Lexer):
     def mLETTER(self, ):
 
         try:
-            # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:46:9: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) )
-            # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:46:11: ( 'a' .. 'z' | 'A' .. 'Z' | '_' )
+            # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:51:9: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) )
+            # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:51:11: ( 'a' .. 'z' | 'A' .. 'Z' | '_' )
             pass 
             if (65 <= self.input.LA(1) <= 90) or self.input.LA(1) == 95 or (97 <= self.input.LA(1) <= 122):
                 self.input.consume()
@@ -389,10 +389,10 @@ class waffleLexer(Lexer):
             _type = NUMBER
             _channel = DEFAULT_CHANNEL
 
-            # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:48:9: ( ( DIGIT )+ ( '.' ( DIGIT )+ )? )
-            # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:48:11: ( DIGIT )+ ( '.' ( DIGIT )+ )?
+            # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:53:9: ( ( DIGIT )+ ( '.' ( DIGIT )+ )? )
+            # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:53:11: ( DIGIT )+ ( '.' ( DIGIT )+ )?
             pass 
-            # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:48:11: ( DIGIT )+
+            # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:53:11: ( DIGIT )+
             cnt2 = 0
             while True: #loop2
                 alt2 = 2
@@ -403,7 +403,7 @@ class waffleLexer(Lexer):
 
 
                 if alt2 == 1:
-                    # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:48:11: DIGIT
+                    # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:53:11: DIGIT
                     pass 
                     self.mDIGIT()
 
@@ -418,17 +418,17 @@ class waffleLexer(Lexer):
                 cnt2 += 1
 
 
-            # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:48:18: ( '.' ( DIGIT )+ )?
+            # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:53:18: ( '.' ( DIGIT )+ )?
             alt4 = 2
             LA4_0 = self.input.LA(1)
 
             if (LA4_0 == 46) :
                 alt4 = 1
             if alt4 == 1:
-                # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:48:20: '.' ( DIGIT )+
+                # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:53:20: '.' ( DIGIT )+
                 pass 
                 self.match(46)
-                # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:48:24: ( DIGIT )+
+                # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:53:24: ( DIGIT )+
                 cnt3 = 0
                 while True: #loop3
                     alt3 = 2
@@ -439,7 +439,7 @@ class waffleLexer(Lexer):
 
 
                     if alt3 == 1:
-                        # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:48:24: DIGIT
+                        # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:53:24: DIGIT
                         pass 
                         self.mDIGIT()
 
@@ -475,8 +475,8 @@ class waffleLexer(Lexer):
     def mDIGIT(self, ):
 
         try:
-            # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:51:9: ( '0' .. '9' )
-            # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:51:11: '0' .. '9'
+            # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:56:9: ( '0' .. '9' )
+            # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:56:11: '0' .. '9'
             pass 
             self.matchRange(48, 57)
 
@@ -498,17 +498,17 @@ class waffleLexer(Lexer):
             _type = NEWLINE
             _channel = DEFAULT_CHANNEL
 
-            # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:53:9: ( ( '\\r' )? '\\n' )
-            # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:53:11: ( '\\r' )? '\\n'
+            # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:58:9: ( ( '\\r' )? '\\n' )
+            # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:58:11: ( '\\r' )? '\\n'
             pass 
-            # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:53:11: ( '\\r' )?
+            # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:58:11: ( '\\r' )?
             alt5 = 2
             LA5_0 = self.input.LA(1)
 
             if (LA5_0 == 13) :
                 alt5 = 1
             if alt5 == 1:
-                # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:53:11: '\\r'
+                # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:58:11: '\\r'
                 pass 
                 self.match(13)
 
@@ -536,8 +536,8 @@ class waffleLexer(Lexer):
             _type = WS
             _channel = DEFAULT_CHANNEL
 
-            # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:55:9: ( ( ' ' | '\\t' | '\\n' | '\\r' ) )
-            # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:55:11: ( ' ' | '\\t' | '\\n' | '\\r' )
+            # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:60:9: ( ( ' ' | '\\t' | '\\n' | '\\r' ) )
+            # /home/nia/coding/ruby/rails/webobots_application/lib/emulation_system/parsing/antlr_parser/waffle.g:60:11: ( ' ' | '\\t' | '\\n' | '\\r' )
             pass 
             if (9 <= self.input.LA(1) <= 10) or self.input.LA(1) == 13 or self.input.LA(1) == 32:
                 self.input.consume()
