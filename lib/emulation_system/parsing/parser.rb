@@ -8,14 +8,16 @@ module EmulationSystem
       LP,RP = '(', ')' # :nodoc:
       
       # +code+ - исходный код прошивки
-      def initialize(code)
+      # +parser+ - класс, реализующий вызов внешнего парсера
+      def initialize(code, parser = ANTLRParser)
         @code = code
+        @external_parser = parser
       end
 
       # Парсит и возвращает экземляр IR
       # ( TODO а что делать с ошибками? )
       def parse
-        res = ANTLRParser.call @code
+        res = @external_parser.call @code
         transform_to_ir res
       end
 
@@ -46,7 +48,7 @@ module EmulationSystem
       # Рекурсивная функция поиска узла дерева в +@tokens+,
       # начиная с позиции +@cur+
       def detect_node
-        node = IR::Node.new( "", [] )
+        node = IR::Node[ "", [] ]
         if get != LP
           # единичный узел
           node.data = get
