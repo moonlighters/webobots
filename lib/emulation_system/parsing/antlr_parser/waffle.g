@@ -7,7 +7,7 @@ options {
 }
 
 tokens {
-        BLOCK;
+        NODE;
 }
 
 @members{
@@ -18,20 +18,39 @@ def emitErrorMessage(self, msg):
 prog    @init { self.errors_list = []; }
         : block;
         
-block   : stat*                 -> ^(BLOCK["block"] stat*) ;
+block   : stat*                 -> ^(NODE["block"] stat*) ;
 
-stat    : assig^                
+stat    : expr^
+        | assig^                
         | ifelse^
+        | loop^
+        | funcdef^
         | NEWLINE               ->
         ;
 
 assig   : ID '=' expr NEWLINE   -> ^('=' ID expr) ;
 
-ifelse  : 'if' '(' expr ')' NEWLINE
+ifelse  : 'if' expr NEWLINE
           ifblock = block
           ('else'
           elseblock = block)?
-          'end' NEWLINE         -> ^('if' expr $ifblock $elseblock?) ;
+          'end' NEWLINE         -> ^('if' expr $ifblock $elseblock?)
+        ;
+
+loop    : 'while' expr NEWLINE
+          block
+          'end' NEWLINE         -> ^('while' expr block)
+        ;
+
+funcdef : 'def' name=ID
+          '(' ( p+=ID (',' p+=ID)* )? ')' NEWLINE
+          block
+          'end'                 -> ^(NODE["funcdef'"] ^(NODE["params"] $p*) block)
+        ;
+
+funccall: ID '(' ( arg+=expr (',' arg+=expr)* )? ')'
+                                -> ^(NODE["funccall"] $arg*)
+        ;
 
 expr    : multExpr (('+'^|'-'^) multExpr)*
         ;
@@ -41,6 +60,7 @@ multExpr
         ;
 
 atom    : NUMBER
+        | (ID '(') => funccall
         | ID
         | '('! expr ')'!
         ;
