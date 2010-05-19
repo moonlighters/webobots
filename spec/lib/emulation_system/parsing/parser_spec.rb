@@ -23,18 +23,33 @@ describe EmulationSystem::Parsing::Parser do
     parse( "root" ).root.should == n( 'root')
   end
 
-  it "should parse tree with data of digits" do
-    parse( "(some 3 2)" ).root.should == n( 'some', [ n('3'), n('2')] )
+  it "should parse tree with integers" do
+    parse( "(some 3 2)" ).root.should == n( 'some', [ n(3), n(2)] )
   end
 
-  it "should parse tree with data of random digits" do
+  it "should parse tree with floats" do
+    parse( "(some 3.2 2.0)" ).root.should == n( 'some', [ n(3.2), n(2.0)] )
+  end
+
+  it "should parse tree with data of random chars" do
     parse( "(= ! ?)" ).root.should == n( '=', [ n('!'), n('?')] )
+  end
+
+  it "should raise error on unexpected end of source" do
+    ['(root', '(root (child )', '((((('].each do |s|
+      lambda { parse s }.should raise_error
+    end
+  end
+
+  it "should raise error on odd symbols at the end" do
+    ['root)', 'root (child)', '(root) child'].each do |s|
+      lambda { parse s }.should raise_error
+    end
   end
 
   private
   def parse(tree)
-    parser = Object.new
-    mock(parser).call("some code") { tree }
+    mock(parser = Object.new).call("some code") { tree }
     EmulationSystem::Parsing::Parser.new("some code", parser).parse
   end
 
