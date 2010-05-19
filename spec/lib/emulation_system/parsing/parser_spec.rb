@@ -31,6 +31,18 @@ describe EmulationSystem::Parsing::Parser do
     parse( "(= ! ?)" ).root.should == n( '=', [ n('!'), n('?')] )
   end
 
+  it "should raise error on unexpected end of source" do
+    ['(root', '(root (child )', '((((('].each do |s|
+      lambda { parse s }.should raise_error
+    end
+  end
+
+  it "should raise error on odd symbols at the end" do
+    ['root)', 'root (child)', '(root) child'].each do |s|
+      lambda { parse s }.should raise_error
+    end
+  end
+
   private
   def parse(tree)
     mock(parser = Object.new).call("some code") { tree }
