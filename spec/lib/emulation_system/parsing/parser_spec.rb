@@ -23,8 +23,12 @@ describe EmulationSystem::Parsing::Parser do
     parse( "root" ).root.should == n( 'root')
   end
 
-  it "should parse tree with data of digits" do
-    parse( "(some 3 2)" ).root.should == n( 'some', [ n('3'), n('2')] )
+  it "should parse tree with integers" do
+    parse( "(some 3 2)" ).root.should == n( 'some', [ n(3), n(2)] )
+  end
+
+  it "should parse tree with floats" do
+    parse( "(some 3.2 2.0)" ).root.should == n( 'some', [ n(3.2), n(2.0)] )
   end
 
   it "should parse tree with data of random chars" do

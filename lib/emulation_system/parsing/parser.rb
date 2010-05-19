@@ -40,7 +40,14 @@ module EmulationSystem
       # Текущий токен
       def get
         raise "Unexpected end of source" if @cur >= @tokens.count
-        @tokens[@cur]
+        res = @tokens[@cur]
+        if res =~ /^\d+$/
+          res.to_i
+        elsif res =~ /^\d+\.\d+$/
+          res.to_f
+        else
+          res
+        end
       end
       # Следующий токен
       def inc; @cur += 1; end
