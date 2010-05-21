@@ -20,11 +20,11 @@ prog    @init { self.errors_list = []; }
         
 block   : stat*                 -> ^(NODE["block"] stat*) ;
 
-stat    : expr^
-        | assig^                
+stat    :  assig^                
         | ifelse^
         | loop^
         | funcdef^
+        | funccall NEWLINE      -> funccall
         | NEWLINE               ->
         ;
 
@@ -45,11 +45,11 @@ loop    : 'while' expr NEWLINE
 funcdef : 'def' name=ID
           '(' ( p+=ID (',' p+=ID)* )? ')' NEWLINE
           block
-          'end'                 -> ^(NODE["funcdef'"] ^(NODE["params"] $p*) block)
+          'end'                 -> ^(NODE["funcdef'"] $name ^(NODE["params"] $p*) block)
         ;
 
 funccall: ID '(' ( arg+=expr (',' arg+=expr)* )? ')'
-                                -> ^(NODE["funccall"] $arg*)
+                                -> ^(NODE["funccall"] ID ^(NODE["params"] $arg*))
         ;
 
 expr    : multExpr (('+'^|'-'^) multExpr)*
