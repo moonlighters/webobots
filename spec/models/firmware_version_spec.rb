@@ -11,6 +11,19 @@ describe FirmwareVersion do
     end
   end
 
+  it "should not create a new instance with not unique version number" do
+    fw = Factory :firmware
+    Factory :firmware_version, :firmware => fw, :number => 7
+    Factory.build(:firmware_version, :firmware => fw, :number => 7).should_not be_valid
+  end
+
+  it "should be able to create a new instance with not unique version number when previous was deleted" do
+    fw = Factory :firmware
+    fwv = Factory :firmware_version, :firmware => fw, :number => 7
+    fwv.destroy
+    Factory.build(:firmware_version, :firmware => fw, :number => 7).should be_valid
+  end
+
   it "should choose version numbers correctly" do
     fw = Factory :firmware
     

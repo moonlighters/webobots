@@ -2,6 +2,7 @@ class FirmwareVersion < ActiveRecord::Base
   belongs_to :firmware, :touch => true
 
   validates_presence_of :firmware_id, :number, :code
+  validates_uniqueness_of :number, :scope => :firmware_id
   
   # NB! Номера могут быть не уникальны в течении времени
   before_validation :generate_number
