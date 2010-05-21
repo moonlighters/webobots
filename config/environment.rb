@@ -7,6 +7,7 @@ Rails::Initializer.run do |config|
   config.gem 'formtastic'
   config.gem 'haml'
   config.gem 'russian'
+  config.gem 'factory_girl' 
 
   config.time_zone = 'Novosibirsk'
 end
