@@ -49,14 +49,23 @@ funcdef : 'def' name=ID
           'end'                 -> ^(NODE["funcdef"] $name ^(NODE["params"] $p*) block)
         ;
 
-ret     : 'return'^ expr;
+ret     : 'return'^ expr ;
 
 funccall: ID '(' ( arg+=expr (',' arg+=expr)* )? ')'
                                 -> ^(NODE["funccall"] ID ^(NODE["params"] $arg*))
         ;
 
-expr    : multExpr (('+'^|'-'^) multExpr)*
+expr    : andExpr ('or'^  andExpr)* ;
+
+andExpr : notExpr ('and'^ notExpr)* ;
+
+notExpr : cmpExpr^
+        | 'not'^ cmpExpr
         ;
+
+cmpExpr : addExpr (CMP_OP^ addExpr)? ;
+
+addExpr : multExpr (('+'^|'-'^) multExpr)* ;
 
 multExpr
         : atom (('*'^|'/'^) atom)*
@@ -66,17 +75,21 @@ atom    : NUMBER
         | (ID '(') => funccall
         | ID
         | '('! expr ')'!
+        | '-' atom              -> ^(NODE['u-'] atom) /* unary minus */
         ;
 
+NUMBER  : DIGIT+ ( '.' DIGIT+ )? ; /* integer or float */
+
 ID      : LETTER (DIGIT | LETTER)* ;
+
+CMP_OP  : ('>'|'<'|'=='|'!='|'<='|'>=') ;
+
+fragment
+DIGIT   : '0'..'9' ;
 
 fragment 
 LETTER  : ('a'..'z'|'A'..'Z'|'_') ;
 
-NUMBER  : DIGIT+ ( '.' DIGIT+ )? /* integer or float */ ;
-
-fragment
-DIGIT   : '0'..'9' ;
 
 NEWLINE : '\r'? '\n' ;
 
