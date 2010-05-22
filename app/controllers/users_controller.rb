@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  before_filter :find_user, :only => [:edit, :update]
+
   before_filter :require_no_user, :only => [:new, :create]
   before_filter :require_user, :only => [:show, :edit, :update]
   
@@ -7,7 +9,7 @@ class UsersController < ApplicationController
   end
   
   def create
-    @user = User.new(params[:user])
+    @user = User.new params[:user]
     @user.login = params[:user][:login]
     if @user.save
       flash[:notice] = "Пользователь успешно зарегистрирован!"
@@ -18,21 +20,28 @@ class UsersController < ApplicationController
   end
   
   def show
-    @user = @current_user
+    @user = if params[:id]
+              User.find params[:id]
+            else
+              current_user
+            end
   end
 
   def edit
-    @user = @current_user
   end
   
   def update
-    @user = @current_user # makes our views "cleaner" and more consistent
     params[:user].delete :login
-    if @user.update_attributes(params[:user])
+    if @user.update_attributes params[:user]
       flash[:notice] = "Аккаунт обновлен!"
       redirect_to account_url
     else
       render :action => :edit
     end
+  end
+
+  private
+  def find_user
+    @user = current_user
   end
 end

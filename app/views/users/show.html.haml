@@ -2,11 +2,12 @@
   %b Логин:
   =h @user.login
 
-%p
-  %b Email:
-  =h @user.email
+- if @user == current_user
+  %p
+    %b Email:
+    =h @user.email
 
-- if @user.last_login_at
-  %p= "Последний раз заходил #{time_ago_in_words @user.last_login_at} назад"
+  - if @user.last_login_at
+    %p= "Последний раз заходил #{time_ago_in_words @user.last_login_at} назад"
 
-= link_to 'Редактировать', edit_account_path
+  = link_to 'Редактировать', edit_account_path

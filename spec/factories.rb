@@ -1,5 +1,5 @@
 Factory.sequence :user_name do |n|
-  "User #{n}"
+  "User_#{n}"
 end
 
 Factory.sequence :email do |n|

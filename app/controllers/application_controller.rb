@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
       store_location
       flash[:notice] = "Вы должны войти, чтобы получить доступ к этой странице"
       redirect_to login_url
-      return false
+      false
     end
   end
 
@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
       flash[:notice] = "Вы должны выйти из системы, чтобы получить доступ к этой странице"
       # TODO redirect_to root ?
       redirect_to account_url
-      return false
+      false
     end
   end
   
