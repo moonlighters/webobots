@@ -25,6 +25,7 @@ stat    :  assig^
         | loop^
         | funcdef^
         | funccall NEWLINE      -> funccall
+        | ret^
         | NEWLINE               ->
         ;
 
@@ -45,8 +46,10 @@ loop    : 'while' expr NEWLINE
 funcdef : 'def' name=ID
           '(' ( p+=ID (',' p+=ID)* )? ')' NEWLINE
           block
-          'end'                 -> ^(NODE["funcdef'"] $name ^(NODE["params"] $p*) block)
+          'end'                 -> ^(NODE["funcdef"] $name ^(NODE["params"] $p*) block)
         ;
+
+ret     : 'return'^ expr;
 
 funccall: ID '(' ( arg+=expr (',' arg+=expr)* )? ')'
                                 -> ^(NODE["funccall"] ID ^(NODE["params"] $arg*))

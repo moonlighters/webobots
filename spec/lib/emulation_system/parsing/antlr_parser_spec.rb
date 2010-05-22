@@ -29,9 +29,13 @@ describe EmulationSystem::Parsing::ANTLRParser do
     lambda{ call("a + 2") }.should raise_error
   end
 
-  it "should parse loops"
+  it "should parse loops" do
+    call("while(a+b)\n  b = b +3.2\nend").should == "(block (while (+ a b) (block (= b (+ b 3.2)))))"
+  end
 
-  it "should parse function defs "
+  it "should parse function defs " do
+    call("def foo()\na = foo()\nreturn a\nend\n").should == "(block (funcdef foo params (block (= a (funccall foo params)) (return a))))"
+  end
   
   describe ", fuctions" do
     it "should distinguish function calls from identifiers" do
