@@ -5,6 +5,11 @@ describe EmulationSystem::Parsing::ANTLRParser do
     call("").should == "block"
   end
 
+  it "should parse unary operations" do
+    call("r = -r").should == "(block (= r (uminus r)))"
+    call("r = +r").should == "(block (= r (uplus r)))"
+  end
+
   it "should parse assignments" do
     call("a = 3\nb=4").should == "(block (= a 3) (= b 4))"
   end
@@ -20,7 +25,6 @@ describe EmulationSystem::Parsing::ANTLRParser do
 
     it "should parse nested if-else" do
       call("if A\n  a=4\nelse if B\n  b=4\nelse\n  c=4\nend\nend").should == "(block (if A (block (= a 4)) (block (if B (block (= b 4)) (block (= c 4))))))"
-      # TODO: this double end needed ------------------------^
     end
   end
 
@@ -33,11 +37,11 @@ describe EmulationSystem::Parsing::ANTLRParser do
     call("while(b < 100500)\n  b = b +3.2\nend").should == "(block (while (< b 100500) (block (= b (+ b 3.2)))))"
   end
 
-  it "should parse function defs " do
-    call("def foo()\na = foo()\nreturn a\nend\n").should == "(block (funcdef foo params (block (= a (funccall foo params)) (return a))))"
-  end
-  
   describe "(with functions)" do
+    it "should parse function defs " do
+      call("def foo()\na = foo()\nreturn a\nend\n").should == "(block (funcdef foo params (block (= a (funccall foo params)) (return a))))"
+    end
+
     it "should distinguish function calls from identifiers" do
       call("x = a + b * (c)").should == "(block (= x (+ a (* b c))))"
       call("x = a + b(c)").should == "(block (= x (+ a (funccall b (params c)))))"
@@ -55,7 +59,7 @@ describe EmulationSystem::Parsing::ANTLRParser do
 
   describe "(with expressions)" do
     it "should allow negative numbers, but in an unusual way" do
-      call("r=-2").should == "(block (= r (u- 2)))"
+      call("r=-2").should == "(block (= r (uminus 2)))"
     end
     it "should parse simple multiplications" do
       call("r=a*2.2").should == "(block (= r (* a 2.2)))"

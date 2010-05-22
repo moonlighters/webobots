@@ -26,6 +26,7 @@ stat    :  assig^
         | funcdef^
         | funccall NEWLINE      -> funccall
         | ret^
+        | log^
         | NEWLINE               ->
         ;
 
@@ -49,7 +50,15 @@ funcdef : 'def' name=ID
           'end'                 -> ^(NODE["funcdef"] $name ^(NODE["params"] $p*) block)
         ;
 
-ret     : 'return'^ expr ;
+ret     : 'return'^ expr NEWLINE! ;
+
+log     : '@log' i+=log_item (',' i+=log_item)* NEWLINE
+                                -> ^(NODE["log"] $i*)
+        ;
+
+log_item: expr^
+        | STRING^
+        ;
 
 funccall: ID '(' ( arg+=expr (',' arg+=expr)* )? ')'
                                 -> ^(NODE["funccall"] ID ^(NODE["params"] $arg*))
@@ -75,7 +84,11 @@ atom    : NUMBER
         | (ID '(') => funccall
         | ID
         | '('! expr ')'!
-        | '-' atom              -> ^(NODE['u-'] atom) /* unary minus */
+        | '-' atom              -> ^(NODE['uminus'] atom) /* unary minus */
+        | '+' atom              -> ^(NODE['uplus'] atom) /* unary plus */
+        ;
+
+STRING  : '"' (LETTER | DIGIT)* '"'/*(' '|'!'|'#'|'$'|'%'|'&'|'('|')'|'*'|'+'|','|'-'|'.'|'/'|'0'..'9'|':'|';'|'<'|'='|'>'|'?'|'@'|'A'..'Z'|'['|'\\'|']'|'^'|'_'|'`'|'a'..'z'|'{'|'|'|'}'|'~')*/
         ;
 
 NUMBER  : DIGIT+ ( '.' DIGIT+ )? ; /* integer or float */
