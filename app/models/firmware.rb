@@ -5,9 +5,11 @@ class Firmware < ActiveRecord::Base
       last.number unless empty?
     end
   end
-  accepts_nested_attributes_for :versions
 
   belongs_to :user
 
   validates_presence_of :name, :user_id
+
+  # TODO: может быть стоит занести это в модель?
+  # validates :presence_of_at_least_one_version 
 end

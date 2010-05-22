@@ -8,5 +8,7 @@ ActionController::Routing::Routes.draw do |map|
   map.signup 'signup', :controller => 'users', :action => 'new', :conditions => {:method => :get}
   map.connect 'signup', :controller => 'users', :action => 'create', :conditions => {:method => :post}
 
+  map.resources :firmwares, :controller => 'firmwares', :except => :destroy
+
   map.root :controller => 'user_sessions', :action => 'new'
 end

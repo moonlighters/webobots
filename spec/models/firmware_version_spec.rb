@@ -5,7 +5,7 @@ describe FirmwareVersion do
     Factory.create :firmware_version
   end
 
-  [:code, :firmware_id].each do |field|
+  [:firmware_id].each do |field|
     it "should not create a new instance without '#{field}'" do
       Factory.build(:firmware_version, field => nil).should_not be_valid
     end

@@ -1,0 +1,14 @@
+%h1= "Прошивка #{h @fw.name}"
+
+%p
+  %b Автор
+  = link_to_user @fw.user
+  
+%p
+  %b= "Последняя версия прошивки ##{@fw.versions.last_number}"
+%p
+  %hr
+  %pre= format_code( @fw.versions.last.code )
+  %hr
+
+= link_to( 'Редактировать', edit_firmware_path(@fw) ) if current_user and current_user.owns? @fw

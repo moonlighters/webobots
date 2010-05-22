@@ -2,12 +2,18 @@ ru:
   activerecord:
     models:
       user: "Пользователь"
+      firmware: "Прошивка"
+      firmware_version: "Версия прошивки"
     attributes:
       user:
         login: "Логин"
         email: "Email"
         password: "Пароль"
         password_confirmation: "Повтор пароля"
+      firmware:
+        name: "Название"
+      firmware_version:
+        code: "Исходный код"
   authlogic:
     error_messages:
       login_blank: "не должен быть пустым"

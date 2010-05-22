@@ -6,7 +6,7 @@ describe EmulationSystem::Parsing::Parser do
   end
 
   it "should parse to ir" do
-    parse( "(block stat1 stat2)" ).should be_a EmulationSystem::IR
+    parse( "(block stat1 stat2)" ).should be_an EmulationSystem::IR
   end
 
   it "should parse simple tree returned by external parser" do

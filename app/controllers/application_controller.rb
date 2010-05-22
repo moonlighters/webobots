@@ -43,4 +43,12 @@ class ApplicationController < ActionController::Base
     redirect_to(session[:return_to] || default)
     session[:return_to] = nil
   end
+
+  def generalized_require_owner(resource)
+    unless current_user and current_user.owns? resource
+      flash[:notice] = "У вас нет доступа к этой странице"
+      redirect_back_or_default root_path
+      false
+    end
+  end
 end

@@ -16,9 +16,13 @@
       - if current_user
         = link_to "Аккаунт", account_path
         |
+        = link_to "Прошивки", firmwares_path
+        |
         = link_to "Выйти", logout_path
       - else
         = link_to "Регистрация", signup_path
+        |
+        = link_to "Прошивки", firmwares_path
         |
         = link_to "Войти", login_path
     %section
