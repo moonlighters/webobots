@@ -31,7 +31,7 @@ describe EmulationSystem::Parsing::ANTLRParser do
   it "should raise errors" do
     lambda{ call("if(a-3 \nend") }.should raise_error(EmulationSystem::Errors::WFLSyntaxError)
     lambda{ call("a + 2") }.should raise_error(EmulationSystem::Errors::WFLSyntaxError)
-    pending { lambda{ call("b = a + 2;") }.should raise_error(EmulationSystem::Errors::WFLSyntaxError) }
+    lambda{ call("b = a + 2;") }.should raise_error(EmulationSystem::Errors::WFLSyntaxError)
   end
 
   it "should parse loops" do

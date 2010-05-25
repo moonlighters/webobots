@@ -10,13 +10,46 @@ tokens {
         NODE;
 }
 
-@members{
+@parser::header{
+import antlr_parser_helper
+}
+@lexer::header{
+import antlr_parser_helper
+}
+@parser::init {
+self.errors_list = [];
+}
+@lexer::init {
+self.errors_list = [];
+}
+@parser::members{
 def emitErrorMessage(self, msg):
     self.errors_list.append(msg)
+
+def getTokenErrorDisplay(self, t):
+    return antlr_parser_helper.getTokenErrorDisplay(t)
+
+def getErrorHeader(self, e):
+    return antlr_parser_helper.getErrorHeader(e)
+
+def getCharErrorDisplay(self, c):
+    return antlr_parser_helper.getCharErrorDisplay(c)
+}
+@lexer::members{
+def emitErrorMessage(self, msg):
+    self.errors_list.append(msg)
+
+def getTokenErrorDisplay(self, t):
+    return antlr_parser_helper.getTokenErrorDisplay(t)
+
+def getErrorHeader(self, e):
+    return antlr_parser_helper.getErrorHeader(e)
+
+def getCharErrorDisplay(self, c):
+    return antlr_parser_helper.getCharErrorDisplay(c)
 }
 
-prog    @init { self.errors_list = []; }
-        : block;
+prog    : block;
         
 block   : stat*                 -> ^(NODE["block"] stat*) ;
 

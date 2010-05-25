@@ -12,10 +12,11 @@ tokens = antlr3.CommonTokenStream(lexer)
 parser = waffleParser(tokens)
 r = parser.prog()
 
-errc = parser.getNumberOfSyntaxErrors()
-if errc:
+errors = lexer.errors_list + parser.errors_list
+errors.sort
+if len(errors) > 0:
     #sys.stderr.write("There were %i error(s)!\n" % errc);
-    for msg in parser.errors_list:
+    for msg in errors:
         print msg
     sys.exit(1)
 
