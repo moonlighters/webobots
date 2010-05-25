@@ -19,9 +19,9 @@ module EmulationSystem
         @logger = logger
 
         @bots = [
-          BotContext.new(ir1,
+          Bot.new(ir1,
             params[:first][:x],  params[:first][:y],  params[:first][:angle]),
-          BotContext.new(ir2,
+          Bot.new(ir2,
             params[:second][:x], params[:second][:y], params[:second][:angle])
         ]
       end
@@ -33,6 +33,13 @@ module EmulationSystem
       # * <tt>:second</tt>
       # * <tt>:draw</tt>
       def emulate
+        run = true
+        while run
+          @bots.each do |bot|
+            run &&= bot.step
+          end
+        end
+
       end
     end
   end
