@@ -85,6 +85,18 @@ describe EmulationSystem::Parsing::ANTLRParser do
         "(block (= r (or (!= (* (+ a b) (> (- a b) 2)) (* b c)) (and aa (not (>= bb (- cc (/ dd 2))))))))"
     end
   end
+
+  it "should parse @log directive" do
+    call(%Q{ a=2\n@log "a", a\na=3 }).should == %Q{(block (= a 2) (log "a" a) (= a 3))}
+  end
+
+  it "should ignore comments" do
+    call("a = 2 # comment\r\n# anoter\na=3").should == "(block (= a 2) (= a 3))"
+  end
+
+  it "should not ignore garbage at the end of file" do
+    lambda{ call("a=3\n2") }.should raise_error(EmulationSystem::Errors::WFLSyntaxError)
+  end
   
   private
   def call(code)

@@ -49,7 +49,7 @@ def getCharErrorDisplay(self, c):
     return antlr_parser_helper.getCharErrorDisplay(c)
 }
 
-prog    : block;
+prog    : block EOF!;
         
 block   : stat*                 -> ^(NODE["block"] stat*) ;
 
@@ -121,7 +121,7 @@ atom    : NUMBER
         | '+' atom              -> ^(NODE['uplus'] atom) /* unary plus */
         ;
 
-STRING  : '"' (LETTER | DIGIT)* '"'/*(' '|'!'|'#'|'$'|'%'|'&'|'('|')'|'*'|'+'|','|'-'|'.'|'/'|'0'..'9'|':'|';'|'<'|'='|'>'|'?'|'@'|'A'..'Z'|'['|'\\'|']'|'^'|'_'|'`'|'a'..'z'|'{'|'|'|'}'|'~')*/
+STRING  : '"' (LETTER | DIGIT)* '"'
         ;
 
 NUMBER  : DIGIT+ ( '.' DIGIT+ )? ; /* integer or float */
@@ -136,7 +136,8 @@ DIGIT   : '0'..'9' ;
 fragment 
 LETTER  : ('a'..'z'|'A'..'Z'|'_') ;
 
+COMMENT : '#' (~ NEWLINE)* NEWLINE {self.skip()} ;
 
-NEWLINE : '\r'? '\n' ;
+NEWLINE :  '\r' | '\n';
 
 WS      : (' '|'\t'|'\n'|'\r') {self.skip()} ;
