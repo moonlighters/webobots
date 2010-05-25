@@ -13,7 +13,6 @@ parser = waffleParser(tokens)
 r = parser.prog()
 
 errors = lexer.errors_list + parser.errors_list
-errors.sort
 if len(errors) > 0:
     #sys.stderr.write("There were %i error(s)!\n" % errc);
     for msg in errors:

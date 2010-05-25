@@ -34,6 +34,9 @@ def getErrorHeader(self, e):
 
 def getCharErrorDisplay(self, c):
     return antlr_parser_helper.getCharErrorDisplay(c)
+
+def getErrorMessage(self, e, tokenNames):
+    return antlr_parser_helper.getParserErrorMessage(self, e, tokenNames)
 }
 @lexer::members{
 def emitErrorMessage(self, msg):
@@ -47,6 +50,9 @@ def getErrorHeader(self, e):
 
 def getCharErrorDisplay(self, c):
     return antlr_parser_helper.getCharErrorDisplay(c)
+
+def getErrorMessage(self, e, tokenNames):
+    return antlr_parser_helper.getLexerErrorMessage(self, e, tokenNames)
 }
 
 prog    : block EOF!;
