@@ -11,8 +11,14 @@ class Firmware < ActiveRecord::Base
   validates_presence_of :name, :user_id
 
   # TODO: может быть стоит занести это в модель?
-  # validates :presence_of_at_least_one_version 
+  # validates :presence_of_at_least_one_version
+
+  def syntax_errors
+    @syntax_errors ||= check_syntax_errors
+  end
   
+  private
+
   def check_syntax_errors
     EmulationSystem.check_syntax_errors(versions.last.code)
   end

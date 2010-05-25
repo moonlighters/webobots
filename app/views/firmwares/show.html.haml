@@ -7,8 +7,12 @@
 %p
   %b= "Последняя версия прошивки ##{@fw.versions.last_number}"
 %p
+  %b= "Синтаксис: #{@fw.syntax_errors.empty? ? '✔' : '✘'}"
+  %ul= syntax_errors_list_for @fw
+
+%p
   %hr
   %pre= format_code( @fw.versions.last.code )
   %hr
 
-= link_to( 'Редактировать', edit_firmware_path(@fw) ) if current_user and current_user.owns? @fw
+= link_to( 'Редактировать', edit_firmware_path(@fw) ) if current_user.owns? @fw

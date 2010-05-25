@@ -8,4 +8,10 @@ module FirmwaresHelper
                %w{if else end while},
                :highlighter => '<strong>\1</strong>' )
   end
+
+  def syntax_errors_list_for(fw)
+    if current_user.owns? fw and not fw.syntax_errors.empty?
+      render :partial => 'syntax_error', :collection => fw.syntax_errors
+    end
+  end
 end
