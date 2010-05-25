@@ -136,7 +136,7 @@ DIGIT   : '0'..'9' ;
 fragment 
 LETTER  : ('a'..'z'|'A'..'Z'|'_') ;
 
-COMMENT : '#' (~ NEWLINE)* NEWLINE {self.skip()} ;
+COMMENT : '#' (~ NEWLINE)* {self.skip()} ;
 
 NEWLINE :  '\r' | '\n';
 

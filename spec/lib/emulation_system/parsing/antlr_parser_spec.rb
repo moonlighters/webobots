@@ -97,7 +97,7 @@ describe EmulationSystem::Parsing::ANTLRParser do
   end
 
   it "should ignore comments" do
-    call("a = 2 # comment\r\n# anoter\na=3").should == "(block (= a 2) (= a 3))"
+    call("a = 2 # comment\na=0# + another\n#only=comment\na=3").should == "(block (= a 2) (= a 0) (= a 3))"
   end
 
   it "should not ignore garbage at the end of file" do
