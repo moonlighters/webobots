@@ -25,6 +25,8 @@ stat    :  assig^
         | loop^
         | funcdef^
         | funccall NEWLINE      -> funccall
+        | ret^
+        | log^
         | NEWLINE               ->
         ;
 
@@ -45,15 +47,34 @@ loop    : 'while' expr NEWLINE
 funcdef : 'def' name=ID
           '(' ( p+=ID (',' p+=ID)* )? ')' NEWLINE
           block
-          'end'                 -> ^(NODE["funcdef'"] $name ^(NODE["params"] $p*) block)
+          'end'                 -> ^(NODE["funcdef"] $name ^(NODE["params"] $p*) block)
+        ;
+
+ret     : 'return'^ expr NEWLINE! ;
+
+log     : '@log' i+=log_item (',' i+=log_item)* NEWLINE
+                                -> ^(NODE["log"] $i*)
+        ;
+
+log_item: expr^
+        | STRING^
         ;
 
 funccall: ID '(' ( arg+=expr (',' arg+=expr)* )? ')'
                                 -> ^(NODE["funccall"] ID ^(NODE["params"] $arg*))
         ;
 
-expr    : multExpr (('+'^|'-'^) multExpr)*
+expr    : andExpr ('or'^  andExpr)* ;
+
+andExpr : notExpr ('and'^ notExpr)* ;
+
+notExpr : cmpExpr^
+        | 'not'^ cmpExpr
         ;
+
+cmpExpr : addExpr (CMP_OP^ addExpr)? ;
+
+addExpr : multExpr (('+'^|'-'^) multExpr)* ;
 
 multExpr
         : atom (('*'^|'/'^) atom)*
@@ -63,17 +84,25 @@ atom    : NUMBER
         | (ID '(') => funccall
         | ID
         | '('! expr ')'!
+        | '-' atom              -> ^(NODE['uminus'] atom) /* unary minus */
+        | '+' atom              -> ^(NODE['uplus'] atom) /* unary plus */
         ;
 
+STRING  : '"' (LETTER | DIGIT)* '"'/*(' '|'!'|'#'|'$'|'%'|'&'|'('|')'|'*'|'+'|','|'-'|'.'|'/'|'0'..'9'|':'|';'|'<'|'='|'>'|'?'|'@'|'A'..'Z'|'['|'\\'|']'|'^'|'_'|'`'|'a'..'z'|'{'|'|'|'}'|'~')*/
+        ;
+
+NUMBER  : DIGIT+ ( '.' DIGIT+ )? ; /* integer or float */
+
 ID      : LETTER (DIGIT | LETTER)* ;
+
+CMP_OP  : ('>'|'<'|'=='|'!='|'<='|'>=') ;
+
+fragment
+DIGIT   : '0'..'9' ;
 
 fragment 
 LETTER  : ('a'..'z'|'A'..'Z'|'_') ;
 
-NUMBER  : DIGIT+ ( '.' DIGIT+ )? /* integer or float */ ;
-
-fragment
-DIGIT   : '0'..'9' ;
 
 NEWLINE : '\r'? '\n' ;
 
