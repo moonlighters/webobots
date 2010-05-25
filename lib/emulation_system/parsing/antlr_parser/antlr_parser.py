@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import sys
 import antlr3
@@ -16,7 +17,7 @@ errors = lexer.errors_list + parser.errors_list
 if len(errors) > 0:
     #sys.stderr.write("There were %i error(s)!\n" % errc);
     for msg in errors:
-        print msg
+        print msg.encode('utf8')
     sys.exit(1)
 
 root = r.tree

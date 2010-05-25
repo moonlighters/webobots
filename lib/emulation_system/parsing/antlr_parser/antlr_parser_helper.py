@@ -36,7 +36,7 @@ def getParserErrorMessage(parser, e, tokenNames):
     if isinstance(e, UnwantedTokenException):
         tokenName = "<unknown>"
         if e.expecting == EOF:
-            tokenName = "EOF"
+            tokenName = u'конец файла'
 
         else:
             tokenName = parser.tokenNames[e.expecting]
@@ -73,7 +73,7 @@ def getParserErrorMessage(parser, e, tokenNames):
     elif isinstance(e, MismatchedTreeNodeException):
         tokenName = "<unknown>"
         if e.expecting == EOF:
-            tokenName = "EOF"
+            tokenName = u'конец файла'
         else:
             tokenName = parser.tokenNames[e.expecting]
 
