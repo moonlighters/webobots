@@ -8,7 +8,11 @@ module EmulationSystem
     Parsing::Parser.new(code).parse
     []
   rescue Errors::WFLSyntaxError => e
-    e.errors
+    if e.errors.empty?
+      ["неизвестная внутренняя ошибка"]
+    else
+      e.errors
+    end
   end
   module_function :check_syntax_errors
 end

@@ -31,7 +31,7 @@ describe EmulationSystem::Parsing::ANTLRParser do
   it "should raise errors" do
     lambda{ call("if(a-3 \nend") }.should raise_error(EmulationSystem::Errors::WFLSyntaxError)
     lambda{ call("a + 2") }.should raise_error(EmulationSystem::Errors::WFLSyntaxError)
-    pending { lambda{ call("b = a + 2;") }.should raise_error(EmulationSystem::Errors::WFLSyntaxError) }
+    lambda{ call("b = a + 2;") }.should raise_error(EmulationSystem::Errors::WFLSyntaxError)
   end
 
   it "should parse loops" do
@@ -84,6 +84,24 @@ describe EmulationSystem::Parsing::ANTLRParser do
       call("r = (a + b)*(a - b > 2) != b*c or aa and not bb >= cc - dd/2").should ==
         "(block (= r (or (!= (* (+ a b) (> (- a b) 2)) (* b c)) (and aa (not (>= bb (- cc (/ dd 2))))))))"
     end
+    it "should parse any amount of unary operators" do
+      call("r=---a").should == "(block (= r (uminus (uminus (uminus a)))))"
+      call("r=+++a").should == "(block (= r (uplus (uplus (uplus a)))))"
+      call("r=+-+a").should == "(block (= r (uplus (uminus (uplus a)))))"
+      call("r=not not not a").should == "(block (= r (not (not (not a)))))"
+    end
+  end
+
+  it "should parse @log directive" do
+    call(%Q{ a=2\n@log "a", a\na=3 }).should == %Q{(block (= a 2) (log "a" a) (= a 3))}
+  end
+
+  it "should ignore comments" do
+    call("a = 2 # comment\na=0# + another\n#only=comment\na=3").should == "(block (= a 2) (= a 0) (= a 3))"
+  end
+
+  it "should not ignore garbage at the end of file" do
+    lambda{ call("a=3\n2") }.should raise_error(EmulationSystem::Errors::WFLSyntaxError)
   end
   
   private

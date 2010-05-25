@@ -8,6 +8,7 @@ module EmulationSystem
       attr :errors
 
       def initialize(errors)
+        super "Syntax errors: " + errors * ";"
         @errors = errors
       end
     end
