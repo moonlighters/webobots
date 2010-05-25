@@ -25,8 +25,9 @@ describe EmulationSystem::Parsing::ANTLRParser do
   end
 
   it "should raise errors" do
-    lambda{ call("if(a-3 \nend") }.should raise_error
-    lambda{ call("a + 2") }.should raise_error
+    lambda{ call("if(a-3 \nend") }.should raise_error(EmulationSystem::Errors::WFLSyntaxError)
+    lambda{ call("a + 2") }.should raise_error(EmulationSystem::Errors::WFLSyntaxError)
+    pending { lambda{ call("b = a + 2;") }.should raise_error(EmulationSystem::Errors::WFLSyntaxError) }
   end
 
   it "should parse loops"
@@ -45,7 +46,7 @@ describe EmulationSystem::Parsing::ANTLRParser do
 
     it "should not treat a funtion call without newline as a statement" do
       call("f(b)").should == "(block (funccall f (params b)))"
-      lambda{ call("f(b) f(c)") }.should raise_error
+      lambda{ call("f(b) f(c)") }.should raise_error(EmulationSystem::Errors::WFLSyntaxError)
     end
   end
   

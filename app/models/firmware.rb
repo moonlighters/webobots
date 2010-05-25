@@ -12,4 +12,8 @@ class Firmware < ActiveRecord::Base
 
   # TODO: может быть стоит занести это в модель?
   # validates :presence_of_at_least_one_version 
+  
+  def check_syntax_errors
+    EmulationSystem.check_syntax_errors(versions.last.code)
+  end
 end
