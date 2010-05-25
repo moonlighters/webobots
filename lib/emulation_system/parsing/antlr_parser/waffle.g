@@ -102,7 +102,7 @@ expr    : andExpr ('or'^  andExpr)* ;
 andExpr : notExpr ('and'^ notExpr)* ;
 
 notExpr : cmpExpr^
-        | 'not'^ cmpExpr
+        | 'not'^ notExpr
         ;
 
 cmpExpr : addExpr (CMP_OP^ addExpr)? ;

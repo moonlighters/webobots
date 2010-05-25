@@ -84,6 +84,12 @@ describe EmulationSystem::Parsing::ANTLRParser do
       call("r = (a + b)*(a - b > 2) != b*c or aa and not bb >= cc - dd/2").should ==
         "(block (= r (or (!= (* (+ a b) (> (- a b) 2)) (* b c)) (and aa (not (>= bb (- cc (/ dd 2))))))))"
     end
+    it "should parse any amount of unary operators" do
+      call("r=---a").should == "(block (= r (uminus (uminus (uminus a)))))"
+      call("r=+++a").should == "(block (= r (uplus (uplus (uplus a)))))"
+      call("r=+-+a").should == "(block (= r (uplus (uminus (uplus a)))))"
+      call("r=not not not a").should == "(block (= r (not (not (not a)))))"
+    end
   end
 
   it "should parse @log directive" do
