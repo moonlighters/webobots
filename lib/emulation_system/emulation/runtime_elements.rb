@@ -19,6 +19,8 @@ module EmulationSystem::Emulation
     # === Класс для элемента block
     # <tt>^(NODE["block"] stat*)</tt>
     class Block
+      attr_accessor :variables
+
       def initialize(bot, node)
         @bot = bot
 
@@ -41,10 +43,6 @@ module EmulationSystem::Emulation
           Timing.for self, :finish
         end
       end
-
-      def set_variable(id, var)
-        @variables[id] = var
-      end
     end
 
     # === Класс для элемента =
@@ -64,7 +62,7 @@ module EmulationSystem::Emulation
           @expr_evaluated = true
           Timing.for self, :evaluation
         else
-          @bot.upper_block_from(self).set_variable @id, @bot.pop_var
+          @bot.upper_block_from(self).variables[@id] = @bot.pop_var
           @bot.pop_element
           Timing.for self, :assignment
         end
