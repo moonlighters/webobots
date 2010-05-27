@@ -19,6 +19,9 @@ module EmulationSystem
       
       attr_reader :state, :time
 
+      # Прямой доступ к стеку не рекомендован, исключительно для тестов
+      attr_accessor :stack
+
       def initialize(ir, x, y, angle)
         @state = State.new Point[x,y], angle, 0, 0, World::MAX_HEALTH
 

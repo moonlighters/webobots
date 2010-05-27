@@ -3,8 +3,6 @@ require 'emulation_system_helper'
 describe EmulationSystem::Emulation::Bot do
   before do
     @bot = build :bot
-    def @bot.stack; instance_variable_get '@stack'; end
-    def @bot.stack=(value); instance_variable_set '@stack', value; end
   end
 
   it "should be creatable" do
@@ -29,7 +27,8 @@ describe EmulationSystem::Emulation::Bot do
     end
 
     it "should return time spent on last step" do
-      pending
+      mock(elem = Object.new).run { 37 }
+      @bot.stack << elem
       @bot.step.should == 37
     end
   end
