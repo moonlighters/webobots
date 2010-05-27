@@ -33,12 +33,19 @@ module EmulationSystem
         @stack_var = nil
       end
 
+      # Закончено ли выполение?
+      def halted?
+        @stack.empty?
+      end
+
       # Выполняет одно атомарное действиею
-      # Возвращает +true+, если еще есть действия для выполнения;
-      # +false+, если выполнение окончено
+      # Возвращает количество тактов потраченное на выполнение
       def step
-        @stack.last.run
-        not @stack.empty?
+        if @stack.empty?
+          0
+        else
+          @stack.last.run
+        end
       end
 
       # Добавляет в стек класс элемента,
@@ -75,10 +82,8 @@ module EmulationSystem
       # Находит ближайший Block,
       # лежащий над +elem+
       def upper_block_from(elem)
-        elem_index = @stack.find_index(elem)
-        return nil unless elem_index
-
-        # теперь нужно найти последний Block, среди @run_stack[0,elem_index]
+        elem_index = @stack.find_index(elem) or return nil
+        # нужно найти последний Block, среди @run_stack[0,elem_index]
         @stack[0,elem_index].reverse.find {|e| e.is_a? Block }
       end
 
