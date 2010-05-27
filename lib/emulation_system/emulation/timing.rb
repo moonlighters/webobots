@@ -21,6 +21,10 @@ module EmulationSystem::Emulation
       Number => {
         :default => 0
       },
+      If => {
+        :evaluation => 0,
+        :finish => 0
+      },
     }
   end
 end

@@ -35,8 +35,8 @@ describe EmulationSystem::Emulation::Bot do
 
   describe "#upper_block_from" do
     before do
-      stub(@block1 = Object.new).is_a?(EmulationSystem::Emulation::RuntimeElements::Block) { true }
-      stub(@block2 = Object.new).is_a?(EmulationSystem::Emulation::RuntimeElements::Block) { true }
+      stub(@block1 = Object.new).is_a?(RuntimeElements::Block) { true }
+      stub(@block2 = Object.new).is_a?(RuntimeElements::Block) { true }
       @bot.stack = [:foo, @block1, @block2, :other]
     end
 
@@ -59,14 +59,15 @@ describe EmulationSystem::Emulation::Bot do
 
   describe "#push_element" do
     {
-      'block' => EmulationSystem::Emulation::RuntimeElements::Block,
-      '3' => EmulationSystem::Emulation::RuntimeElements::Number,
-      '3.7' => EmulationSystem::Emulation::RuntimeElements::Number,
-      '=' => EmulationSystem::Emulation::RuntimeElements::Assignment,
+      'block' => RuntimeElements::Block,
+      '3' => RuntimeElements::Number,
+      '3.7' => RuntimeElements::Number,
+      '=' => RuntimeElements::Assignment,
+      'if' => RuntimeElements::If,
     }.each_pair do |data, klass|
       it "should push to stack element #{klass.name.split('::').last}" do
         # несколько детей, чтобы конструкторы элементов не падали
-        @bot.push_element build(:node, data, [build(:node), build(:node)])
+        @bot.push_element build(:node, data, [])
         @bot.stack.last.should be_a klass
       end
     end

@@ -55,12 +55,10 @@ module EmulationSystem
       # соответствующего данному +node+
       def push_element(node)
         type = case node.data
-        when /^\d+$/, /^\d+\.\d+$/
-          Number
-        when 'block'
-          Block
-        when '='
-          Assignment
+        when /^\d+$/, /^\d+\.\d+$/; Number
+        when 'block'; Block
+        when '=';     Assignment
+        when 'if';    If
         end
         @stack.push type.new(self, node)
       end

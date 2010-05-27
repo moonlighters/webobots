@@ -13,3 +13,7 @@ def build(what, *args)
     EmulationSystem::Emulation::Bot.new(args[0] || build(:ir), 1, 2, 3)
   end
 end
+
+def Object.const_missing(c)
+  EmulationSystem::Emulation.const_get(c)
+end
