@@ -64,6 +64,7 @@ describe EmulationSystem::Emulation::Bot do
       '3.7' => RuntimeElements::Number,
       '=' => RuntimeElements::Assignment,
       'if' => RuntimeElements::If,
+      'id' => RuntimeElements::Identifier,
     }.each_pair do |data, klass|
       it "should push to stack element #{klass.name.split('::').last}" do
         # несколько детей, чтобы конструкторы элементов не падали

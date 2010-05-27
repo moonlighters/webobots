@@ -1,4 +1,5 @@
-module EmulationSystem::Emulation
+module EmulationSystem
+ module Emulation
   # == Модуль, содержащий классы элементов языка
   #
   # В нем объявлены классы, реализующие семантику языка WaFfLe.
@@ -22,8 +23,6 @@ module EmulationSystem::Emulation
     # === Класс для элемента block
     # <tt>^(NODE["block"] stat*)</tt>
     class Block
-      attr_accessor :variables
-
       def initialize(bot, node)
         @bot = bot
 
@@ -47,6 +46,18 @@ module EmulationSystem::Emulation
           Timing.for self, :finish
         end
       end
+
+      def set_variable(id, value)
+        @variables[id] = value
+      end
+
+      def get_variable(id)
+        if @upper_block
+          @variables[id] || @upper_block.get_variable(id)
+        else
+          @variables[id] or raise Errors::WFLRuntimeError, "неизвестный идентификатор '#{id}'"
+        end
+      end
     end
 
     # === Класс для элемента =
@@ -65,7 +76,7 @@ module EmulationSystem::Emulation
           @expr_evaluated = true
           Timing.for self, :evaluation
         else
-          @bot.upper_block_from(self).variables[@id.data] = @bot.pop_var
+          @bot.upper_block_from(self).set_variable @id.data, @bot.pop_var
           @bot.pop_element
           Timing.for self, :assignment
         end
@@ -119,5 +130,22 @@ module EmulationSystem::Emulation
         end
       end
     end
+
+    # === Класс для элемента id
+    # <tt>^(NODE["id"] ID)</tt>
+    class Identifier
+      def initialize(bot, node)
+        @bot = bot
+        @id = node.children.first
+      end
+    
+      def run
+        var = @bot.upper_block_from(self).get_variable @id.data
+        @bot.pop_element
+        @bot.push_var var
+        Timing.for self
+      end
+    end
   end
+ end
 end

@@ -37,6 +37,28 @@ describe EmulationSystem::Emulation::RuntimeElements do
         end.should_not change { @bot.stack.size }
       end
     end
+
+    describe "#get_variable" do
+      before do
+        @block = RuntimeElements::Block.new @bot, build(:node, 'block')
+      end
+
+      it "should return value of known identifier" do
+        @block.instance_variable_set '@variables', {'foo' => 37}
+        @block.get_variable('foo').should == 37
+      end
+
+      it "should ask upper block if could not find identifier" do
+        mock(upper = Object.new).get_variable('blah') { 42 }
+        @block.instance_variable_set '@upper_block', upper
+        @block.get_variable('blah').should == 42
+      end
+
+      it "should raise runtime error if could not find identifier and there are no upper blocks" do
+        @block.instance_variable_set '@upper_block', nil
+        lambda { @block.get_variable 'unknown' }.should raise_error EmulationSystem::Errors::WFLRuntimeError
+      end
+    end
   end
 
   describe EmulationSystem::Emulation::RuntimeElements::Assignment do
@@ -54,7 +76,7 @@ describe EmulationSystem::Emulation::RuntimeElements do
           @bot.step.should be_a Fixnum
 
           mock(@bot).pop_var { 37 }
-          mock(@bot).upper_block_from(anything) { mock!.variables { mock!.[]=('foo',37) } }
+          mock(@bot).upper_block_from(anything) { mock!.set_variable('foo',37) }
           @bot.step.should be_a Fixnum
         end.should_not change { @bot.stack.size }
       end
@@ -76,6 +98,7 @@ describe EmulationSystem::Emulation::RuntimeElements do
         end.should_not change { @bot.stack.size }
       end
     end
+  end
 
   describe EmulationSystem::Emulation::RuntimeElements::If do
     it "should be creatable" do
@@ -126,5 +149,23 @@ describe EmulationSystem::Emulation::RuntimeElements do
         end.should_not change { @bot.stack.size }
       end
     end
-  end end
+  end
+
+  describe EmulationSystem::Emulation::RuntimeElements::Identifier do
+    it "should be creatable" do
+      RuntimeElements::Identifier.new @bot, build(:node, 'id', [build(:node,'foo')])
+    end
+
+    describe "#run" do
+      it "should push identifiers value and pop" do
+        lambda do
+          @bot.push_element build(:node, 'id', [build(:node, 'foo')])
+
+          mock(@bot).upper_block_from(anything) { mock!.get_variable('foo') { 37 } }
+          mock(@bot).push_var(37)
+          @bot.step.should be_a Fixnum
+        end.should_not change { @bot.stack.size }
+      end
+    end
+  end
 end

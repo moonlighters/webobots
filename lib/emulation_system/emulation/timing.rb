@@ -25,6 +25,9 @@ module EmulationSystem::Emulation
         :evaluation => 0,
         :finish => 0
       },
+      Identifier => {
+        :default => 0
+      }
     }
   end
 end

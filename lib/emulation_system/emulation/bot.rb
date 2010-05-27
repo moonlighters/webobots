@@ -59,6 +59,7 @@ module EmulationSystem
         when 'block'; Block
         when '=';     Assignment
         when 'if';    If
+        when 'id';    Identifier
         end
         @stack.push type.new(self, node)
       end
