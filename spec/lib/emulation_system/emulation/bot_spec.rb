@@ -33,6 +33,14 @@ describe EmulationSystem::Emulation::Bot do
     end
   end
 
+  describe "#log" do
+    it "should call given log_func" do
+      mock(func = Object.new).call "foo blah"
+      bot = EmulationSystem::Emulation::Bot.new build(:ir), 1,2,3, func
+      bot.log "foo blah"
+    end
+  end
+
   describe "#upper_block_from" do
     before do
       stub(@block1 = Object.new).function? { false }
@@ -101,7 +109,8 @@ describe EmulationSystem::Emulation::Bot do
       'not' => RuntimeElements::UnaryOp,
       'funcdef' => RuntimeElements::FuncDef,
       'funccall' => RuntimeElements::FuncCall,
-      'return' => RuntimeElements::Return
+      'return' => RuntimeElements::Return,
+      'log' => RuntimeElements::Log,
     }.each_pair do |data, klass|
       it "should push to stack element #{klass.name.split('::').last}" do
         # несколько детей, чтобы конструкторы элементов не падали

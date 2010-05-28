@@ -50,7 +50,11 @@ module EmulationSystem::Emulation
       Return => {
         :evaluation => 0,
         :cleaning => 3
-      }
+      },
+      Log => {
+        :evaluation => 0,
+        :logging => 5
+      },
     }
   end
 end

@@ -22,8 +22,9 @@ module EmulationSystem
       # Прямой доступ к стеку не рекомендован, исключительно для тестов
       attr_accessor :stack
 
-      def initialize(ir, x, y, angle)
+      def initialize(ir, x, y, angle, log_func)
         @state = State.new Point[x,y], angle, 0, 0, World::MAX_HEALTH
+        @log_func = log_func
 
         @time = 0
 
@@ -71,6 +72,8 @@ module EmulationSystem
           FuncCall
         when 'return'
           Return
+        when 'log'
+          Log
         end
         @stack.push type.new(self, node, *args)
       end
@@ -98,6 +101,11 @@ module EmulationSystem
         elem_index = @stack.find_index(elem) or return nil
         # нужно найти последний Block, среди @run_stack[0,elem_index]
         @stack[0,elem_index].reverse.find {|e| e.is_a?(Block) and (not only_function or e.function?)}
+      end
+
+      # Записывает в лог строку +str+
+      def log(str)
+        @log_func.call str
       end
     end
   end

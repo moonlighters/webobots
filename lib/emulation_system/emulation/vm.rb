@@ -12,17 +12,20 @@ module EmulationSystem
       #         :second => { :x => x2, :y => y2, :angle => angle2},
       #         :seed => some_seed
       #       }
-      # * +logger+ - сохраняет информацию, получаемую через
-      #   <tt>add_frame(bot1, bot2, env)</tt>, для создания повтора
+      # * +logger+ - сохраняет информацию, для создания повтора.
+      #   Реализует метод <tt>add_frame(bot1, bot2, env)</tt> и
+      #   <tt>add_log_record(bot, str)</tt>
       def initialize(ir1, ir2, params, logger)
         @seed = params[:seed]
         @logger = logger
 
         @bots = [
           Bot.new(ir1,
-            params[:first][:x],  params[:first][:y],  params[:first][:angle]),
+            params[:first][:x],  params[:first][:y],  params[:first][:angle],
+            lambda {|str| @logger.add_log_record(:first, str) }),
           Bot.new(ir2,
-            params[:second][:x], params[:second][:y], params[:second][:angle])
+            params[:second][:x], params[:second][:y], params[:second][:angle],
+            lambda {|str| @logger.add_log_record(:second, str) })
         ]
       end
     

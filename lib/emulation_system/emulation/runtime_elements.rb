@@ -388,6 +388,32 @@ module EmulationSystem
           end
         end
       end
+
+      # === Класс для элемента @log
+      # <tt>^(NODE["log"] $i*)</tt>
+      class Log
+        def initialize(bot, node)
+          @bot = bot
+          @items = node.children
+          @next_item = 0
+          @evaluated_items = []
+        end
+
+        def run
+          @evaluated_items << @bot.pop_var if @next_item > 0
+
+          if @next_item < @items.count 
+            @bot.push_element @items[@next_item]
+            @next_item += 1
+            Timing.for self, :evaluation
+          else
+            @bot.pop_element
+            @bot.log( @evaluated_items.map(&:to_s) * ' ' )
+            Timing.for self, :logging
+          end
+        end
+      end
+ 
     end
   end
 end

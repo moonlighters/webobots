@@ -10,7 +10,7 @@ def build(what, *args)
   when :ir
     EmulationSystem::IR.new( args[0] || build(:node) )
   when :bot
-    EmulationSystem::Emulation::Bot.new(args[0] || build(:ir), 1, 2, 3)
+    EmulationSystem::Emulation::Bot.new(args[0] || build(:ir), 1, 2, 3, :log_func)
   end
 end
 
