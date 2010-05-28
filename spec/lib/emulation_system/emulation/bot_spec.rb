@@ -91,7 +91,7 @@ describe EmulationSystem::Emulation::Bot do
       '3.7' => RuntimeElements::Number,
       '=' => RuntimeElements::Assignment,
       'if' => RuntimeElements::If,
-      'id' => RuntimeElements::Identifier,
+      'var' => RuntimeElements::Variable,
       '+' => RuntimeElements::BinaryOp,
       '-' => RuntimeElements::BinaryOp,
       '*' => RuntimeElements::BinaryOp,

@@ -36,7 +36,7 @@ module EmulationSystem
       # * <tt>:second</tt>
       # * <tt>:draw</tt>
       def emulate
-        while not @bots.any?(&:halted)
+        while not @bots.any?(&:halted?)
           @bots.each do |bot|
             bot.step
           end

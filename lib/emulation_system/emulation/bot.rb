@@ -60,8 +60,8 @@ module EmulationSystem
           Assignment
         when 'if'
           If
-        when 'id'
-          Identifier
+        when 'var'
+          Variable
         when /^(?:[-+*\/]|[<>]=?|[!=]=|and|or)$/
           BinaryOp
         when /^(?:uminus|uplus|not)$/

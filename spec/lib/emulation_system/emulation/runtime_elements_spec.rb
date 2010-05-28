@@ -217,15 +217,15 @@ describe EmulationSystem::Emulation::RuntimeElements do
     end
   end
 
-  describe EmulationSystem::Emulation::RuntimeElements::Identifier do
+  describe EmulationSystem::Emulation::RuntimeElements::Variable do
     it "should be creatable" do
-      RuntimeElements::Identifier.new @bot, build(:node, 'id', [build(:node,'foo')])
+      RuntimeElements::Variable.new @bot, build(:node, 'var', [build(:node,'foo')])
     end
 
     describe "#run" do
       it "should push identifiers value and pop" do
         lambda do
-          @bot.push_element build(:node, 'id', [build(:node, 'foo')])
+          @bot.push_element build(:node, 'var', [build(:node, 'foo')])
 
           mock(@bot).upper_block_from(anything) { mock!.get_variable('foo') { 37 } }
           mock(@bot).push_var(37)

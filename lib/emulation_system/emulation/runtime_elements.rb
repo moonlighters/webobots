@@ -182,7 +182,7 @@ module EmulationSystem
 
       # === Класс для элемента id
       # <tt>^(NODE["var"] ID)</tt>
-      class Identifier
+      class Variable
         def initialize(bot, node)
           @bot = bot
           @id = node.children.first
