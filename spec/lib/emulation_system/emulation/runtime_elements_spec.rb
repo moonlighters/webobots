@@ -8,8 +8,16 @@ describe EmulationSystem::Emulation::RuntimeElements do
   end
 
   describe EmulationSystem::Emulation::RuntimeElements::Block do
-    it "should be creatable" do
-      RuntimeElements::Block.new @bot, build(:node, 'block')
+    it "should be creatable as anonymous block" do
+      block = RuntimeElements::Block.new @bot, build(:node, 'block')
+      block.should_not be_function
+    end
+
+    it "should be creatable as function body" do
+      block = RuntimeElements::Block.new @bot, build(:node, 'block'),
+        :function => true, :params => {'foo' => 37, :blah => '42'}
+      block.should be_function
+      block.get_variable('foo').should == 37
     end
 
     describe "#run" do
@@ -53,10 +61,70 @@ describe EmulationSystem::Emulation::RuntimeElements do
         block.get_variable('blah').should == 42
       end
 
-      it "should raise runtime error if could not find identifier and there are no upper blocks" do
+      it "should raise runtime error if could not find identifier and it is global block" do
         mock(@bot).upper_block_from(anything) { nil }
         block = RuntimeElements::Block.new @bot, build(:node, 'block')
         lambda { block.get_variable 'unknown' }.should raise_error EmulationSystem::Errors::WFLRuntimeError
+      end
+    end
+
+    describe "#(set|get)_function" do
+      it "should not get unknown function" do
+        mock(@bot).upper_block_from(anything) { nil }
+        block = RuntimeElements::Block.new @bot, build(:node, 'block')
+        block.set_function 'foo', ['a','b'], build(:node)
+        lambda do
+          block.get_function('blah')
+        end.should raise_error EmulationSystem::Errors::WFLRuntimeError
+      end
+
+      it "should set function for global block" do
+        mock(@bot).upper_block_from(anything) { nil }
+        block = RuntimeElements::Block.new @bot, build(:node, 'block')
+        block.set_function 'foo', ['a','b'], build(:node)
+        block.get_function('foo').should be_a RuntimeElements::Block::Func
+      end
+
+      it "should get functions from lower blocks" do
+        mock(@bot).upper_block_from(anything) { mock!.get_function('foo') { :func } }
+        block = RuntimeElements::Block.new @bot, build(:node, 'block')
+        block.get_function('foo').should == :func
+      end
+
+      it "should not set function for not global block" do
+        mock(@bot).upper_block_from(anything) { :upper_block }
+        block = RuntimeElements::Block.new @bot, build(:node, 'block')
+        lambda do
+          block.set_function 'foo', ['a','b'], build(:node)
+        end.should raise_error EmulationSystem::Errors::WFLRuntimeError
+      end
+
+      it "should not set function if function with same name already defined" do
+        mock(@bot).upper_block_from(anything) { nil }
+        block = RuntimeElements::Block.new @bot, build(:node, 'block')
+        block.set_function 'foo', ['a','b'], build(:node)
+        lambda do
+          block.set_function 'foo', ['c'], build(:node)
+        end.should raise_error EmulationSystem::Errors::WFLRuntimeError
+      end
+    end
+
+    describe EmulationSystem::Emulation::RuntimeElements::Block::Func do
+      describe "#variables_hash_for" do
+        before do
+          @f = RuntimeElements::Block::Func.new 'foo', ['a','b'], build(:node)
+        end
+
+        it "should return right hash" do
+          @f.variables_hash_for([1,2]).should == {
+            'a' => 1,
+            'b' => 2
+          }
+        end
+
+        it "should raise error if wrong parameters number given" do
+          lambda { @f.variables_hash_for [3] }.should raise_error EmulationSystem::Errors::WFLRuntimeError
+        end
       end
     end
   end
@@ -314,4 +382,54 @@ describe EmulationSystem::Emulation::RuntimeElements do
     end
   end
 
+  describe EmulationSystem::Emulation::RuntimeElements::FuncDef do
+    it "should be creatable" do
+      RuntimeElements::FuncDef.new @bot, build(:node, 'funcdef', [])
+    end
+
+    describe "#run" do
+      it "should call set_function from upper block and pop" do
+        lambda do
+          block = build(:node, 'block')
+          @bot.push_element build(:node, 'funcdef',
+            [ build(:node, 'foo'), build(:node, 'params', [build(:node,'a'),build(:node,'b')]), block ])
+          
+          mock(@bot).upper_block_from(anything) { mock!.set_function('foo', ['a','b'], block) }
+          @bot.step.should be_a Fixnum
+        end.should_not change { @bot.stack.size }
+      end
+    end
+  end
+
+  describe EmulationSystem::Emulation::RuntimeElements::FuncCall do
+    it "should be creatable" do
+      RuntimeElements::FuncCall.new @bot, build(:node, 'funccall', [])
+    end
+
+    describe "#run" do
+      it "should eval all params, get function from upper block, pop and push block with params" do
+        lambda do
+          p1 = build(:node, 'block')
+          p2 = build(:node, 'block')
+          func = Object.new
+          mock(func).variables_hash_for([37,42]) { :func_vars_hash }
+          mock(func).block { :func_block }
+          mock(@bot).upper_block_from(anything) { mock!.get_function('foo') { func } }
+          @bot.push_element build(:node, 'funccall',
+            [ build(:node, 'foo'), build(:node, 'params', [p1,p2]) ])
+          
+          mock(@bot).push_element p1 
+          @bot.step.should be_a Fixnum
+
+          mock(@bot).pop_var { 37 }
+          mock(@bot).push_element p2
+          @bot.step.should be_a Fixnum
+
+          mock(@bot).pop_var { 42 }
+          mock(@bot).push_element( :func_block, :function => true, :params => :func_vars_hash )
+          @bot.step.should be_a Fixnum
+        end.should_not change { @bot.stack.size }
+      end
+    end
+  end
 end

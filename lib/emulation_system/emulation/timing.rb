@@ -16,7 +16,7 @@ module EmulationSystem::Emulation
       },
       Assignment => {
         :evaluation => 0,
-        :assignment => 5
+        :assignment => 0
       },
       Number => {
         :default => 0
@@ -39,6 +39,13 @@ module EmulationSystem::Emulation
         :evaluation => 0,
         :calculation_umath => 1,
         :calculation_logical => 1
+      },
+      FuncDef => {
+        :default => 0
+      },
+      FuncCall => {
+        :evaluation => 0,
+        :calling => 5
       }
     }
   end

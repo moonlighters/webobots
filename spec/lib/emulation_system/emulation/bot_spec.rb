@@ -23,7 +23,7 @@ describe EmulationSystem::Emulation::Bot do
   describe "#step" do
     it "should return 0 if nothing to run" do
       @bot.stack = []
-      @bot.step.should == 0
+      @bot.step.should be_nil
     end
 
     it "should return time spent on last step" do
@@ -57,6 +57,16 @@ describe EmulationSystem::Emulation::Bot do
     end
   end
 
+  describe "#(push|pop)_var" do
+    it "should push variable to bot's special stack and then pop it" do
+      bot = build :bot
+      bot.pop_var.should be_nil
+      bot.push_var 37
+      bot.pop_var.should == 37
+      bot.pop_var.should be_nil
+    end
+  end
+
   describe "#push_element" do
     {
       'block' => RuntimeElements::Block,
@@ -80,12 +90,20 @@ describe EmulationSystem::Emulation::Bot do
       'uplus' => RuntimeElements::UnaryOp,
       'uminus' => RuntimeElements::UnaryOp,
       'not' => RuntimeElements::UnaryOp,
+      'funcdef' => RuntimeElements::FuncDef,
+      'funccall' => RuntimeElements::FuncCall,
     }.each_pair do |data, klass|
       it "should push to stack element #{klass.name.split('::').last}" do
         # несколько детей, чтобы конструкторы элементов не падали
         @bot.push_element build(:node, data, [])
         @bot.stack.last.should be_a klass
       end
+    end
+
+    it "should push to stack element with extra arguments" do
+      node = build(:node, 'block')
+      mock(RuntimeElements::Block).new(is_a(Bot), node, :arg1, :arg2)
+      @bot.push_element node, :arg1, :arg2
     end
   end
 end

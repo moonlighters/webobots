@@ -44,16 +44,12 @@ module EmulationSystem
       # Выполняет одно атомарное действиею
       # Возвращает количество тактов потраченное на выполнение
       def step
-        if @stack.empty?
-          0
-        else
-          @stack.last.run
-        end
+        @stack.last.run unless @stack.empty?
       end
 
       # Добавляет в стек класс элемента,
       # соответствующего данному +node+
-      def push_element(node)
+      def push_element(node, *args)
         type = case node.data
         when /^\d+$/, /^\d+\.\d+$/
           Number
@@ -69,8 +65,12 @@ module EmulationSystem
           BinaryOp
         when /^(?:uminus|uplus|not)$/
           UnaryOp
+        when 'funcdef'
+          FuncDef
+        when 'funccall'
+          FuncCall
         end
-        @stack.push type.new(self, node)
+        @stack.push type.new(self, node, *args)
       end
 
       # Убирает класс элемента со стека
@@ -97,7 +97,6 @@ module EmulationSystem
         # нужно найти последний Block, среди @run_stack[0,elem_index]
         @stack[0,elem_index].reverse.find {|e| e.is_a? Block }
       end
-
     end
   end
 end
