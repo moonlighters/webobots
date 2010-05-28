@@ -89,7 +89,7 @@ funcdef : 'def' name=ID
           'end'                 -> ^(NODE["funcdef"] $name ^(NODE["params"] $p*) block)
         ;
 
-ret     : 'return'^ expr NEWLINE! ;
+ret     : 'return'^ expr? NEWLINE! ;
 
 log     : '@log' i+=log_item (',' i+=log_item)* NEWLINE
                                 -> ^(NODE["log"] $i*)
@@ -121,10 +121,13 @@ multExpr
 
 atom    : NUMBER
         | (ID '(') => funccall
-        | ID
+        | variable^
         | '('! expr ')'!
-        | '-' atom              -> ^(NODE['uminus'] atom) /* unary minus */
-        | '+' atom              -> ^(NODE['uplus'] atom) /* unary plus */
+        | '-' atom              -> ^(NODE["uminus"] atom) /* unary minus */
+        | '+' atom              -> ^(NODE["uplus"] atom) /* unary plus */
+        ;
+
+variable: ID                    -> ^(NODE["var"] ID)
         ;
 
 STRING  : '"' (LETTER | DIGIT)* '"'
