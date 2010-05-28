@@ -35,25 +35,34 @@ describe EmulationSystem::Emulation::Bot do
 
   describe "#upper_block_from" do
     before do
-      stub(@block1 = Object.new).is_a?(RuntimeElements::Block) { true }
-      stub(@block2 = Object.new).is_a?(RuntimeElements::Block) { true }
-      @bot.stack = [:foo, @block1, @block2, :other]
+      stub(@block1 = Object.new).function? { false }
+      stub(@block2 = Object.new).function? { false }
+      stub(@blockF = Object.new).function? { true }
+      stub(@block1).is_a?(RuntimeElements::Block) { true }
+      stub(@block2).is_a?(RuntimeElements::Block) { true }
+      stub(@blockF).is_a?(RuntimeElements::Block) { true }
+
+      @bot.stack = [@block1, @blockF, @block2, :foo]
     end
 
     it "should return nil if we got the block not in the stack" do
-      @bot.upper_block_from( :another ).should be_nil
+      @bot.upper_block_from( :blah ).should be_nil
     end
 
     it "should return nil if we got the uppest block" do
-      @bot.upper_block_from( :foo ).should be_nil
+      @bot.upper_block_from( @block1 ).should be_nil
     end
 
     it "should return upper block from element" do
-      @bot.upper_block_from( :other ).should == @block2
+      @bot.upper_block_from( :foo ).should == @block2
+    end
+
+    it "should return upper function block from element" do
+      @bot.upper_block_from( :foo, true ).should == @blockF
     end
 
     it "should return upper block from other block" do
-      @bot.upper_block_from( @block2 ).should == @block1
+      @bot.upper_block_from( @blockF ).should == @block1
     end
   end
 
@@ -92,6 +101,7 @@ describe EmulationSystem::Emulation::Bot do
       'not' => RuntimeElements::UnaryOp,
       'funcdef' => RuntimeElements::FuncDef,
       'funccall' => RuntimeElements::FuncCall,
+      'return' => RuntimeElements::Return
     }.each_pair do |data, klass|
       it "should push to stack element #{klass.name.split('::').last}" do
         # несколько детей, чтобы конструкторы элементов не падали

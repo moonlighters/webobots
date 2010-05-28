@@ -41,8 +41,8 @@ module EmulationSystem
         @stack.empty?
       end
 
-      # Выполняет одно атомарное действиею
-      # Возвращает количество тактов потраченное на выполнение
+      # Выполняет одно атомарное действие,
+      # возвращает количество тактов потраченное на выполнение
       def step
         @stack.last.run unless @stack.empty?
       end
@@ -69,6 +69,8 @@ module EmulationSystem
           FuncDef
         when 'funccall'
           FuncCall
+        when 'return'
+          Return
         end
         @stack.push type.new(self, node, *args)
       end
@@ -78,24 +80,24 @@ module EmulationSystem
         @stack.pop
       end
 
-      # Установить стековую переменную
+      # Устанавливает стековую переменную
       def push_var(var)
         @stack_var = var
       end
 
-      # Вытащить стековую переменную
+      # Вытаскивает стековую переменную
       def pop_var
         res = @stack_var
         @stack_var = nil
         res
       end
 
-      # Находит ближайший Block,
-      # лежащий над +elem+
-      def upper_block_from(elem)
+      # Находит ближайший +Block+, лежащий над +elem+.
+      # +only_function+ указывает на поиск только функциональных блоков
+      def upper_block_from(elem, only_function = false)
         elem_index = @stack.find_index(elem) or return nil
         # нужно найти последний Block, среди @run_stack[0,elem_index]
-        @stack[0,elem_index].reverse.find {|e| e.is_a? Block }
+        @stack[0,elem_index].reverse.find {|e| e.is_a?(Block) and (not only_function or e.function?)}
       end
     end
   end

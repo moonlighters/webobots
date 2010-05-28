@@ -3,8 +3,6 @@ require 'emulation_system_helper'
 describe EmulationSystem::Emulation::RuntimeElements do
   before do
     @bot = build :bot
-    # для изоляции стека
-    @bot.stack << stub!
   end
 
   describe EmulationSystem::Emulation::RuntimeElements::Block do
@@ -429,6 +427,51 @@ describe EmulationSystem::Emulation::RuntimeElements do
           mock(@bot).push_element( :func_block, :function => true, :params => :func_vars_hash )
           @bot.step.should be_a Fixnum
         end.should_not change { @bot.stack.size }
+      end
+    end
+  end
+
+  describe EmulationSystem::Emulation::RuntimeElements::Return do
+    it "should be creatable" do
+      RuntimeElements::Return.new @bot, build(:node, 'return', [])
+    end
+
+    describe "#run" do
+      it "should clean stack including last function block if no expr given" do
+        lambda do
+          @bot.push_element build(:node, 'block'), :function => true
+          @bot.push_element build(:node, 'if')
+          @bot.push_element build(:node, 'block')
+          @bot.push_element build(:node, 'return')
+
+          @bot.step.should be_a Fixnum
+        end.should_not change { @bot.stack.size }
+      end
+      
+      it "should clean stack including last function block and push expr if expr given" do
+        lambda do
+          @bot.push_element build(:node, 'block'), :function => true
+          @bot.push_element build(:node, 'if')
+          @bot.push_element build(:node, 'block')
+          expr = build(:node)
+          @bot.push_element build(:node, 'return', [expr])
+
+          mock(@bot).push_element expr
+          @bot.step.should be_a Fixnum
+
+          @bot.step.should be_a Fixnum
+        end.should_not change { @bot.stack.size }
+      end
+      
+      it "should raise error if there are no upper function block" do
+        lambda do
+          @bot.push_element build(:node, 'block')
+          @bot.push_element build(:node, 'if')
+          @bot.push_element build(:node, 'block')
+          @bot.push_element build(:node, 'return')
+
+          @bot.step.should be_a Fixnum
+        end.should raise_error EmulationSystem::Errors::WFLRuntimeError
       end
     end
   end

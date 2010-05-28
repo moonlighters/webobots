@@ -362,6 +362,32 @@ module EmulationSystem
           end
         end
       end
+ 
+      # === Класс для элемента return
+      # <tt>'return'^ expr?</tt>
+      class Return
+        def initialize(bot, node)
+          @bot = bot
+          @expr = node.children.first
+          @expr_evaluated = false
+        end
+
+        def run
+          if @expr != nil and not @expr_evaluated
+            @bot.push_element @expr
+            @expr_evaluated = true
+            Timing.for self, :evaluation
+          else
+            # нужное возращаемое значение уже на стеке
+            func_block = @bot.upper_block_from( self, true ) or raise Errors::WFLRuntimeError,
+              "недопустимо использование 'return' вне функции"
+
+            loop { break if @bot.pop_element == func_block }
+
+            Timing.for self, :cleaning
+          end
+        end
+      end
     end
   end
 end

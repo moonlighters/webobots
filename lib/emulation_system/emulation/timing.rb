@@ -46,6 +46,10 @@ module EmulationSystem::Emulation
       FuncCall => {
         :evaluation => 0,
         :calling => 5
+      },
+      Return => {
+        :evaluation => 0,
+        :cleaning => 3
       }
     }
   end
