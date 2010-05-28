@@ -4,8 +4,8 @@ module FirmwaresHelper
   end
 
   def format_code(code)
-    highlight( code.gsub( /\n/, "<br/>\n" ),
-               %w{if else end while},
+    highlight( code.gsub(/(#.+)$/, '<i>\1</i>'),
+               %w{if else end while @log} + ['def '],
                :highlighter => '<strong>\1</strong>' )
   end
 
