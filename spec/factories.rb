@@ -22,3 +22,8 @@ Factory.define :firmware_version do |fwv|
   fwv.code "a = 2"
   fwv.association :firmware
 end
+
+Factory.define :match do |m|
+  m.association :first, :factory => :firmware_version
+  m.association :second, :factory => :firmware_version
+end

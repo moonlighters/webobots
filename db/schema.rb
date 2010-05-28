@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100519170115) do
+ActiveRecord::Schema.define(:version => 20100528142140) do
 
   create_table "firmware_versions", :force => true do |t|
     t.integer  "firmware_id"
@@ -24,6 +24,14 @@ ActiveRecord::Schema.define(:version => 20100519170115) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "matches", :force => true do |t|
+    t.text     "parameters"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "fwv_id1"
+    t.integer  "fwv_id2"
   end
 
   create_table "users", :force => true do |t|
