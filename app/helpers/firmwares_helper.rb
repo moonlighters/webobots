@@ -7,7 +7,7 @@ module FirmwaresHelper
     code.gsub(
       /(#.+)$/,
       '<i>\1</i>').gsub(
-        /\b(if|else|end|while|def|return|@log)\b/,
+        /(?:^|\b)(if|else|end|while|def|return|@log)\b/,
         '<strong>\1</strong>')
   end
 
