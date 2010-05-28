@@ -38,25 +38,25 @@ describe EmulationSystem::Emulation::RuntimeElements do
       end
     end
 
-    describe "#get_variable" do
-      before do
-        @block = RuntimeElements::Block.new @bot, build(:node, 'block')
-      end
-
+    describe "#(set|get)_variable" do
       it "should return value of known identifier" do
-        @block.instance_variable_set '@variables', {'foo' => 37}
-        @block.get_variable('foo').should == 37
+        block = RuntimeElements::Block.new @bot, build(:node, 'block')
+        block.set_variable 'foo', 37
+        block.get_variable('foo').should == 37
       end
 
       it "should ask upper block if could not find identifier" do
         mock(upper = Object.new).get_variable('blah') { 42 }
-        @block.instance_variable_set '@upper_block', upper
-        @block.get_variable('blah').should == 42
+        mock(@bot).upper_block_from(anything) { upper }
+
+        block = RuntimeElements::Block.new @bot, build(:node, 'block')
+        block.get_variable('blah').should == 42
       end
 
       it "should raise runtime error if could not find identifier and there are no upper blocks" do
-        @block.instance_variable_set '@upper_block', nil
-        lambda { @block.get_variable 'unknown' }.should raise_error EmulationSystem::Errors::WFLRuntimeError
+        mock(@bot).upper_block_from(anything) { nil }
+        block = RuntimeElements::Block.new @bot, build(:node, 'block')
+        lambda { block.get_variable 'unknown' }.should raise_error EmulationSystem::Errors::WFLRuntimeError
       end
     end
   end
