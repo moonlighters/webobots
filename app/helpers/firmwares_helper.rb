@@ -1,11 +1,11 @@
 module FirmwaresHelper
   def link_to_firmware(fw)
-    link_to "#{h fw.name} ##{fw.versions.last_number}", firmware_path(fw)
+    link_to "#{h fw.name} (версия ##{fw.versions.last_number})", firmware_path(fw)
   end
 
   def format_code(code)
-    highlight( code.gsub( /\n/, "<br/>\n" ),
-               %w{if else end while},
+    highlight( code.gsub(/(#.+)$/, '<i>\1</i>'),
+               %w{if else end while @log} + ['def '],
                :highlighter => '<strong>\1</strong>' )
   end
 

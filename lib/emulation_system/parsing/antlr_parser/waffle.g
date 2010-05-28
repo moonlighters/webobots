@@ -10,13 +10,52 @@ tokens {
         NODE;
 }
 
-@members{
+@parser::header{
+import antlr_parser_helper
+}
+@lexer::header{
+import antlr_parser_helper
+}
+@parser::init {
+self.errors_list = [];
+}
+@lexer::init {
+self.errors_list = [];
+}
+@parser::members{
 def emitErrorMessage(self, msg):
     self.errors_list.append(msg)
+
+def getTokenErrorDisplay(self, t):
+    return antlr_parser_helper.getTokenErrorDisplay(t)
+
+def getErrorHeader(self, e):
+    return antlr_parser_helper.getErrorHeader(e)
+
+def getCharErrorDisplay(self, c):
+    return antlr_parser_helper.getCharErrorDisplay(c)
+
+def getErrorMessage(self, e, tokenNames):
+    return antlr_parser_helper.getParserErrorMessage(self, e, tokenNames)
+}
+@lexer::members{
+def emitErrorMessage(self, msg):
+    self.errors_list.append(msg)
+
+def getTokenErrorDisplay(self, t):
+    return antlr_parser_helper.getTokenErrorDisplay(t)
+
+def getErrorHeader(self, e):
+    return antlr_parser_helper.getErrorHeader(e)
+
+def getCharErrorDisplay(self, c):
+    return antlr_parser_helper.getCharErrorDisplay(c)
+
+def getErrorMessage(self, e, tokenNames):
+    return antlr_parser_helper.getLexerErrorMessage(self, e, tokenNames)
 }
 
-prog    @init { self.errors_list = []; }
-        : block;
+prog    : block EOF!;
         
 block   : stat*                 -> ^(NODE["block"] stat*) ;
 
@@ -50,7 +89,7 @@ funcdef : 'def' name=ID
           'end'                 -> ^(NODE["funcdef"] $name ^(NODE["params"] $p*) block)
         ;
 
-ret     : 'return'^ expr NEWLINE! ;
+ret     : 'return'^ expr? NEWLINE! ;
 
 log     : '@log' i+=log_item (',' i+=log_item)* NEWLINE
                                 -> ^(NODE["log"] $i*)
@@ -69,7 +108,7 @@ expr    : andExpr ('or'^  andExpr)* ;
 andExpr : notExpr ('and'^ notExpr)* ;
 
 notExpr : cmpExpr^
-        | 'not'^ cmpExpr
+        | 'not'^ notExpr
         ;
 
 cmpExpr : addExpr (CMP_OP^ addExpr)? ;
@@ -82,13 +121,16 @@ multExpr
 
 atom    : NUMBER
         | (ID '(') => funccall
-        | ID
+        | variable^
         | '('! expr ')'!
-        | '-' atom              -> ^(NODE['uminus'] atom) /* unary minus */
-        | '+' atom              -> ^(NODE['uplus'] atom) /* unary plus */
+        | '-' atom              -> ^(NODE["uminus"] atom) /* unary minus */
+        | '+' atom              -> ^(NODE["uplus"] atom) /* unary plus */
         ;
 
-STRING  : '"' (LETTER | DIGIT)* '"'/*(' '|'!'|'#'|'$'|'%'|'&'|'('|')'|'*'|'+'|','|'-'|'.'|'/'|'0'..'9'|':'|';'|'<'|'='|'>'|'?'|'@'|'A'..'Z'|'['|'\\'|']'|'^'|'_'|'`'|'a'..'z'|'{'|'|'|'}'|'~')*/
+variable: ID                    -> ^(NODE["var"] ID)
+        ;
+
+STRING  : '"' (LETTER | DIGIT)* '"'
         ;
 
 NUMBER  : DIGIT+ ( '.' DIGIT+ )? ; /* integer or float */
@@ -103,7 +145,8 @@ DIGIT   : '0'..'9' ;
 fragment 
 LETTER  : ('a'..'z'|'A'..'Z'|'_') ;
 
+COMMENT : '#' (~ NEWLINE)* {self.skip()} ;
 
-NEWLINE : '\r'? '\n' ;
+NEWLINE :  '\r' | '\n';
 
 WS      : (' '|'\t'|'\n'|'\r') {self.skip()} ;

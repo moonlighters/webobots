@@ -25,6 +25,7 @@ class UsersController < ApplicationController
             else
               current_user
             end
+    @fws = @user.firmwares
   end
 
   def edit
