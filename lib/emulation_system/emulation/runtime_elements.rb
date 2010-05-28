@@ -146,6 +146,77 @@ module EmulationSystem
         Timing.for self
       end
     end
+
+    # === Класс для элементов бинарных операций
+    # <tt>^(OP expr expr)</tt>
+    # Операции: +,-,*,/,>,>=,<,<=,==,!=
+    class BinaryOp
+      def initialize(bot, node)
+        @bot = bot
+        @op = node
+        @exprL, @exprR = node.children
+
+        @exprL_evaluated = false
+        @exprR_evaluated = false
+      end
+    
+      def run
+        if !@exprL_evaluated
+          @bot.push_element @exprL
+          @exprL_evaluated = true
+          Timing.for self, :evaluation
+
+        elsif @exprL_evaluated && !@exprR_evaluated
+          @varL = @bot.pop_var
+
+          @bot.push_element @exprR
+          @exprR_evaluated = true
+          Timing.for self, :evaluation
+
+        else # exprL and exprR are evaluated
+          @varR = @bot.pop_var
+          @bot.pop_element
+
+          # hack for division
+          if @op.data == '/'
+            @varL = @varL.to_f 
+            raise Errors::WFLRuntimeError, "деление на ноль" if @varR == 0
+          end
+          
+          # real calculation
+          res = if @op.data == '!='
+                  @varL != @varR
+                elsif @op.data == 'and'
+                  (@varL != 0) && (@varR != 0)
+                elsif @op.data == 'or'
+                  (@varL != 0) || (@varR != 0)
+                else
+                  @varL.send(@op.data, @varR)
+                end
+
+          # hack for booleans as 1 and 0
+          # cmp OPs return +true+ and +false+
+          if res == true
+            res = 1
+          elsif res == false
+            res = 0
+          end
+
+          @bot.push_var res
+
+          case @op.data
+          when /^[-+]$/
+            Timing.for self, :calculation_sum
+          when /^[*\/]$/
+            Timing.for self, :calculation_mult
+          when /^(?:[<>]=?|[!=]=)$/
+            Timing.for self, :calculation_cmp
+          when /^(?:and|or)$/
+            Timing.for self, :calculation_logical
+          end
+        end
+      end
+    end
   end
  end
 end

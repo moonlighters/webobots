@@ -168,4 +168,96 @@ describe EmulationSystem::Emulation::RuntimeElements do
       end
     end
   end
+
+  describe EmulationSystem::Emulation::RuntimeElements::BinaryOp do
+    it "should be creatable" do
+      RuntimeElements::BinaryOp.new @bot, build(:node, '+')
+    end
+
+    describe "#run" do
+      %w{ + - * }.each do |op|
+        it "should push left and right expr to stack, then pop and push (left#{op}right) if '#{op}'" do
+          lambda do
+            exprL = build :node
+            exprR = build :node
+            @bot.push_element build(:node, op, [exprL, exprR])
+
+            mock(@bot).push_element(exprL)
+            @bot.step.should be_a Fixnum
+
+            mock(@bot).pop_var { 37 }
+            mock(@bot).push_element(exprR)
+            @bot.step.should be_a Fixnum
+
+            mock(@bot).pop_var { 42 }
+            mock(@bot).push_var( eval "37#{op}42" )
+            @bot.step.should be_a Fixnum
+          end.should_not change { @bot.stack.size }
+        end
+      end
+      it "should push left and right expr to stack, then raise if '/' and right expr is 0" do
+        lambda do
+          exprL = build :node
+          exprR = build :node
+          @bot.push_element build(:node, '/', [exprL, exprR])
+
+          mock(@bot).push_element(exprL)
+          @bot.step.should be_a Fixnum
+
+          mock(@bot).pop_var { 37 }
+          mock(@bot).push_element(exprR)
+          @bot.step.should be_a Fixnum
+
+          mock(@bot).pop_var { 0 }
+          @bot.step
+        end.should raise_error EmulationSystem::Errors::WFLRuntimeError
+      end
+      %w{ > >= < <= != == }.each do |op|
+        [[37,42],[42,37],[6,6]].each do |l,r|
+          it "should push left(#{l}) and right(#{r}) expr to stack, then pop and push (#{l}#{op}#{r}) as int if '#{op}'" do
+            lambda do
+              exprL = build :node
+              exprR = build :node
+              @bot.push_element build(:node, op, [exprL, exprR])
+
+              mock(@bot).push_element(exprL)
+              @bot.step.should be_a Fixnum
+
+              mock(@bot).pop_var { l }
+              mock(@bot).push_element(exprR)
+              @bot.step.should be_a Fixnum
+
+              mock(@bot).pop_var { r }
+              mock(@bot).push_var( eval( "#{l}#{op}#{r}" ) ? 1 : 0 )
+              @bot.step.should be_a Fixnum
+            end.should_not change { @bot.stack.size }
+          end
+        end
+      end
+      %w{ and or }.each do |op|
+        [[37,42],[37,0],[0,0]].each do |l,r|
+          it "should push left(#{l}) and right(#{r}) expr to stack, then pop and push (#{l}#{op}#{r}) as int if '#{op}'" do
+            lambda do
+              exprL = build :node
+              exprR = build :node
+              @bot.push_element build(:node, op, [exprL, exprR])
+
+              mock(@bot).push_element(exprL)
+              @bot.step.should be_a Fixnum
+
+              mock(@bot).pop_var { l }
+              mock(@bot).push_element(exprR)
+              @bot.step.should be_a Fixnum
+
+              mock(@bot).pop_var { r }
+              mock(@bot).push_var( eval( "#{l != 0} #{op} #{r != 0}" ) ? 1 : 0 )
+              @bot.step.should be_a Fixnum
+            end.should_not change { @bot.stack.size }
+          end
+        end
+      end
+    end
+  end
+
+
 end

@@ -65,6 +65,18 @@ describe EmulationSystem::Emulation::Bot do
       '=' => RuntimeElements::Assignment,
       'if' => RuntimeElements::If,
       'id' => RuntimeElements::Identifier,
+      '+' => RuntimeElements::BinaryOp,
+      '-' => RuntimeElements::BinaryOp,
+      '*' => RuntimeElements::BinaryOp,
+      '/' => RuntimeElements::BinaryOp,
+      '>' => RuntimeElements::BinaryOp,
+      '<' => RuntimeElements::BinaryOp,
+      '>=' => RuntimeElements::BinaryOp,
+      '<=' => RuntimeElements::BinaryOp,
+      '==' => RuntimeElements::BinaryOp,
+      '!=' => RuntimeElements::BinaryOp,
+      'and' => RuntimeElements::BinaryOp,
+      'or' => RuntimeElements::BinaryOp,
     }.each_pair do |data, klass|
       it "should push to stack element #{klass.name.split('::').last}" do
         # несколько детей, чтобы конструкторы элементов не падали

@@ -27,6 +27,13 @@ module EmulationSystem::Emulation
       },
       Identifier => {
         :default => 0
+      },
+      BinaryOp => {
+        :evaluation => 0,
+        :calculation_sum => 5,
+        :calculation_mult => 10,
+        :calculation_cmp => 5,
+        :calculation_logical => 3
       }
     }
   end
