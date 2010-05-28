@@ -184,18 +184,19 @@ module EmulationSystem
             end
             
             # real calculation
-            res = if @op.data == '!='
+            res = case @op.data
+                  when '!='
                     @varL != @varR
-                  elsif @op.data == 'and'
+                  when 'and'
                     (@varL != 0) && (@varR != 0)
-                  elsif @op.data == 'or'
+                  when 'or'
                     (@varL != 0) || (@varR != 0)
                   else
                     @varL.send(@op.data, @varR)
                   end
 
             # hack for booleans as 1 and 0
-            # cmp OPs return +true+ and +false+
+            # cmps and logical return +true+ and +false+
             if res == true
               res = 1
             elsif res == false
@@ -212,6 +213,57 @@ module EmulationSystem
             when /^(?:[<>]=?|[!=]=)$/
               Timing.for self, :calculation_cmp
             when /^(?:and|or)$/
+              Timing.for self, :calculation_logical
+            end
+          end
+        end
+      end
+
+      # === Класс для элементов унарных операций
+      # <tt>^(OP expr)</tt>
+      # Операции: uminus, uplus, not
+      class UnaryOp
+        def initialize(bot, node)
+          @bot = bot
+          @op = node
+          @expr = node.children.first
+
+          @expr_evaluated = false
+        end
+      
+        def run
+          unless @expr_evaluated
+            @bot.push_element @expr
+            @expr_evaluated = true
+            Timing.for self, :evaluation
+          else
+            var = @bot.pop_var
+            @bot.pop_element
+
+            # real calculation
+            res = case @op.data
+                  when 'uminus'
+                    - var
+                  when 'uplus'
+                    var
+                  when 'not'
+                    ! (var != 0)
+                  end
+
+            # hack for booleans as 1 and 0
+            # cmp OPs return +true+ and +false+
+            if res == true
+              res = 1
+            elsif res == false
+              res = 0
+            end
+
+            @bot.push_var res
+
+            case @op.data
+            when /^(?:uminus|uplus)$/
+              Timing.for self, :calculation_umath
+            when /^not$/
               Timing.for self, :calculation_logical
             end
           end

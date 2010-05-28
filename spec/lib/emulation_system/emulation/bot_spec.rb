@@ -77,6 +77,9 @@ describe EmulationSystem::Emulation::Bot do
       '!=' => RuntimeElements::BinaryOp,
       'and' => RuntimeElements::BinaryOp,
       'or' => RuntimeElements::BinaryOp,
+      'uplus' => RuntimeElements::UnaryOp,
+      'uminus' => RuntimeElements::UnaryOp,
+      'not' => RuntimeElements::UnaryOp,
     }.each_pair do |data, klass|
       it "should push to stack element #{klass.name.split('::').last}" do
         # несколько детей, чтобы конструкторы элементов не падали

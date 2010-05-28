@@ -67,6 +67,8 @@ module EmulationSystem
           Identifier
         when /^(?:[-+*\/]|[<>]=?|[!=]=|and|or)$/
           BinaryOp
+        when /^(?:uminus|uplus|not)$/
+          UnaryOp
         end
         @stack.push type.new(self, node)
       end

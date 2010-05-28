@@ -34,6 +34,11 @@ module EmulationSystem::Emulation
         :calculation_mult => 10,
         :calculation_cmp => 5,
         :calculation_logical => 3
+      },
+      UnaryOp => {
+        :evaluation => 0,
+        :calculation_umath => 1,
+        :calculation_logical => 1
       }
     }
   end
