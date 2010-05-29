@@ -24,6 +24,6 @@ Factory.define :firmware_version do |fwv|
 end
 
 Factory.define :match do |m|
-  m.association :first, :factory => :firmware_version
-  m.association :second, :factory => :firmware_version
+  m.association :enemy_version, :factory => :firmware_version
+  m.association :friendly_version, :factory => :firmware_version
 end

@@ -12,9 +12,11 @@ describe Match do
                                           }
   end
 
-  [:first, :second].each do |attr|
+  [:enemy, :friendly, :enemy_version, :friendly_version].each do |attr|
     it "should not create a new instance without '#{attr}'" do
-      Factory.build(:match, attr => nil).should_not be_valid
+      m = Factory.build(:match)
+      m.update_attributes( attr => nil)
+      m.should_not be_valid
     end
   end
 
@@ -44,5 +46,20 @@ describe Match do
                                             :second => {:x => 0.1, :y => 0.1}
                                            }).should_not be_valid
     end
+  end
+  it "should not create a new instance given a firmware with syntax errors" do
+    fw = Factory.create :firmware
+    fwv = Factory.create :firmware_version, :code => "a=", :firmware => fw
+
+    f = Factory.build(:match, :enemy => fwv.firmware)
+    f.enemy = fwv.firmware
+    f.should_not be_valid
+  end
+
+  it "should not create a new instance given a firmware version with syntax errors" do
+    fwv = Factory.create :firmware_version, :code => "a="
+
+    Factory.build(:match, :enemy_version => fwv).should_not be_valid
+    Factory.build(:match, :friendly_version => fwv).should_not be_valid
   end
 end

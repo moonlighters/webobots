@@ -1,0 +1,15 @@
+%h2 Проведение матча
+%h3 Выбор своей прошивки
+
+%p
+  Прошивка соперника:
+  = link_to_firmware @match.enemy
+  пользователя
+  = link_to_user @match.enemy.user
+- semantic_form_for @match, :url => create_match_url do |f|
+  = f.semantic_errors
+  - f.inputs do
+    = f.input :enemy, :as => :select, :collection => @enemy_collection, :selected => @match.enemy ? @match.enemy.id : nil
+    = f.input :friendly, :as => :select, :collection => @friendly_collection, :selected => @match.friendly ? @match.friendly.id : nil
+  - f.buttons do
+    = f.commit_button 'Выбрать'

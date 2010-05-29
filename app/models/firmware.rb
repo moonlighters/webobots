@@ -14,12 +14,6 @@ class Firmware < ActiveRecord::Base
   # validates :presence_of_at_least_one_version
 
   def syntax_errors
-    @syntax_errors ||= check_syntax_errors
-  end
-  
-  private
-
-  def check_syntax_errors
-    EmulationSystem.check_syntax_errors(versions.last.code)
+    versions.last.syntax_errors
   end
 end

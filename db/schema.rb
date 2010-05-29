@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(:version => 20100528142140) do
   end
 
   create_table "matches", :force => true do |t|
+    t.integer  "result"
     t.text     "parameters"
     t.datetime "created_at"
     t.datetime "updated_at"

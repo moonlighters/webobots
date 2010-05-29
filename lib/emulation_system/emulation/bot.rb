@@ -74,6 +74,8 @@ module EmulationSystem
           Return
         when 'log'
           Log
+        else
+          raise Errors::WFLRuntimeError.new "System error: unknown element '#{node.data}'"
         end
         @stack.push type.new(self, node, *args)
       end

@@ -4,6 +4,7 @@ ru:
       user: "Пользователь"
       firmware: "Прошивка"
       firmware_version: "Версия прошивки"
+      match: "Матч"
     attributes:
       user:
         login: "Логин"
@@ -14,6 +15,9 @@ ru:
         name: "Название"
       firmware_version:
         code: "Исходный код"
+      match:
+        friendly: "Своя прошивка"
+        enemy: "Прошивка соперника"
   authlogic:
     error_messages:
       login_blank: "не должен быть пустым"

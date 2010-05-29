@@ -1,0 +1,28 @@
+%h2 Просмотр матча
+
+%p
+  %b
+    Вызов бросает
+    =link_to_user @match.friendly.user
+    c прошивкой
+    =link_to_firmware_version @match.friendly_version
+    -# TODO: link_to_firmware_version
+%p
+  %b
+    Вызов принимает
+    =link_to_user @match.enemy.user
+    c прошивкой
+    =link_to_firmware_version @match.enemy_version
+
+%p
+  %b
+    - if @match.winner_version
+      Победитель:
+      =link_to_firmware_version @match.winner_version
+    - else
+      Ничья!
+%p
+  Лог:
+  %hr
+  %pre=@logger.records * "\n"
+  %hr

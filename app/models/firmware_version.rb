@@ -8,6 +8,10 @@ class FirmwareVersion < ActiveRecord::Base
   # NB! Номера могут быть не уникальны в течении времени
   before_validation :generate_number
 
+  def syntax_errors
+    @syntax_errors ||= check_syntax_errors
+  end
+  
   private
 
   # Чтобы пустые версии тоже могли существовать,
@@ -19,5 +23,9 @@ class FirmwareVersion < ActiveRecord::Base
   # Задать версии номер
   def generate_number
     self.number = (self.firmware.versions.last_number || 0) + 1 if not self.number and self.firmware
+  end
+
+  def check_syntax_errors
+    EmulationSystem.check_syntax_errors(code)
   end
 end

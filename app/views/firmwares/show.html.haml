@@ -10,7 +10,8 @@
   %b= "Синтаксис: #{@fw.syntax_errors.empty? ? '✔' : '✘'}"
   %ul= syntax_errors_list_for @fw
 
-= link_to( 'Редактировать', edit_firmware_path(@fw) ) if current_user.owns? @fw
+%p= link_to( 'Сразиться!', match_choose_yours_path(@fw) )
+%p= link_to( 'Редактировать', edit_firmware_path(@fw) ) if current_user.owns? @fw
 
 - code = @fw.versions.last.code
 %p

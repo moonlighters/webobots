@@ -1,7 +1,7 @@
 class CreateMatches < ActiveRecord::Migration
   def self.up
     create_table :matches do |t|
-      t.int :result
+      t.integer :result
       t.text :parameters
 
       t.timestamps
