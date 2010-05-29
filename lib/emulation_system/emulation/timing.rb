@@ -18,7 +18,7 @@ module EmulationSystem::Emulation
         :evaluation => 0,
         :assignment => 0
       },
-      Number => {
+      Literal => {
         :default => 0
       },
       If => {

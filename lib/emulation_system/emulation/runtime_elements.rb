@@ -132,9 +132,9 @@ module EmulationSystem
         end
       end
 
-      # === Класс для элементов NUMBER
-      # <tt>NUMBER</tt>
-      class Number
+      # === Класс для числовых и строковых литералов
+      # <tt>NUMBER</tt> или <tt>STRING</tt>
+      class Literal
         def initialize(bot, node)
           @bot = bot
           
@@ -143,7 +143,9 @@ module EmulationSystem
 
         def run
           @bot.pop_element
-          var = if @value.data =~ /^\d+$/
+          var = if @value.data =~ /^"([^"]*)"$/
+                  $1
+                elsif @value.data =~ /^\d+$/
                   @value.data.to_i
                 else
                   @value.data.to_f

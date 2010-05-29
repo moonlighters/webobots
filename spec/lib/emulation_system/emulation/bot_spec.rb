@@ -87,8 +87,9 @@ describe EmulationSystem::Emulation::Bot do
   describe "#push_element" do
     {
       'block' => RuntimeElements::Block,
-      '3' => RuntimeElements::Number,
-      '3.7' => RuntimeElements::Number,
+      '3' => RuntimeElements::Literal,
+      '3.7' => RuntimeElements::Literal,
+      '"str"' => RuntimeElements::Literal,
       '=' => RuntimeElements::Assignment,
       'if' => RuntimeElements::If,
       'var' => RuntimeElements::Variable,

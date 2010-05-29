@@ -160,17 +160,25 @@ describe EmulationSystem::Emulation::RuntimeElements do
     end
   end
 
-  describe EmulationSystem::Emulation::RuntimeElements::Number do
+  describe EmulationSystem::Emulation::RuntimeElements::Literal do
     it "should be creatable" do
-      RuntimeElements::Number.new @bot, build(:node, '3.7')
+      RuntimeElements::Literal.new @bot, build(:node, '3.7')
     end
 
     describe "#run" do
-      it "should push value from node and pop" do
+      it "should push numeric literal value from node and pop" do
         lambda do
           @bot.push_element build(:node, '3.7')
 
           mock(@bot).push_var 3.7
+          @bot.step.should be_a Fixnum
+        end.should_not change { @bot.stack.size }
+      end
+      it "should push string literal value from node and pop" do
+        lambda do
+          @bot.push_element build(:node, '"3.7"')
+
+          mock(@bot).push_var "3.7"
           @bot.step.should be_a Fixnum
         end.should_not change { @bot.stack.size }
       end

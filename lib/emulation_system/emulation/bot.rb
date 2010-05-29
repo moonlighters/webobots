@@ -52,8 +52,8 @@ module EmulationSystem
       # соответствующего данному +node+
       def push_element(node, *args)
         type = case node.data
-        when /^\d+$/, /^\d+\.\d+$/
-          Number
+        when /^\d+$/, /^\d+\.\d+$/, /^"[^"]*"$/ # integer, float or string literal
+          Literal
         when 'block'
           Block
         when '='
