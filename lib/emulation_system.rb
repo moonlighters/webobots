@@ -15,4 +15,13 @@ module EmulationSystem
     end
   end
   module_function :check_syntax_errors
+
+  # TODO: написать
+  def emulate(code1, code2, params, logger)
+    # TODO: придумать что делать с ошибками
+    ir1 = Parsing::Parser.new(code1).parse
+    ir2 = Parsing::Parser.new(code2).parse
+    Emulation::VM.new(ir1, ir2, params, logger).emulate
+  end
+  module_function :emulate
 end

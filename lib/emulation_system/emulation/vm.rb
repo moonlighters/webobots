@@ -42,6 +42,13 @@ module EmulationSystem
           end
         end
 
+        if @bots.first.halted? and not @bots.second.halted?
+          :second
+        elsif not @bots.first.halted? and @bots.second.halted?
+          :first
+        else
+          :draw
+        end
       end
     end
   end
