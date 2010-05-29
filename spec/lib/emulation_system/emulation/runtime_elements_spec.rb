@@ -18,6 +18,17 @@ describe EmulationSystem::Emulation::RuntimeElements do
       block.get_variable('foo').should == 37
     end
 
+    it "should correctly get upper block" do
+      # комплексный на
+      # Block#new, Bot#push_element, Bot#upper_block_for
+      @bot.push_element build(:node, 'block')
+      upper = @bot.stack.last
+      @bot.push_element build(:node, 'block')
+      block = @bot.stack.last
+      block.instance_variable_get( '@upper_block' ).should == upper
+      block.should_not be_global
+    end
+
     describe "#run" do
       it "should pop if there are no children" do
         lambda do
