@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100528142140) do
+ActiveRecord::Schema.define(:version => 20100529182416) do
 
   create_table "firmware_versions", :force => true do |t|
     t.integer  "firmware_id"
@@ -31,8 +31,8 @@ ActiveRecord::Schema.define(:version => 20100528142140) do
     t.text     "parameters"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "fwv_id1"
-    t.integer  "fwv_id2"
+    t.integer  "fwv1_id"
+    t.integer  "fwv2_id"
   end
 
   create_table "users", :force => true do |t|

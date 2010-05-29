@@ -16,8 +16,10 @@ ru:
       firmware_version:
         code: "Исходный код"
       match:
-        friendly: "Своя прошивка"
-        enemy: "Прошивка соперника"
+        first_version: "Первая прошивка"
+        second_version: "Вторая прошивка"
+        parameters: "Параметры"
+        result: "Результат"
   authlogic:
     error_messages:
       login_blank: "не должен быть пустым"
@@ -42,4 +44,5 @@ ru:
       update: "Обновить"
       login: "Войти"
       register: "Зарегистрироваться"
+      choose: "Выбрать"
       
