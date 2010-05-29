@@ -75,7 +75,7 @@ module EmulationSystem
         when 'log'
           Log
         else
-          raise Errors::WFLRuntimeError.new "System error: unknown element '#{node.data}'"
+          raise "Внутренняя ошибка емуляции: попытка добавления в стек неизвестного узла '#{node.data}'"
         end
         @stack.push type.new(self, node, *args)
       end

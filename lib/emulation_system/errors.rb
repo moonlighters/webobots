@@ -8,14 +8,14 @@ module EmulationSystem
       attr :errors
 
       def initialize(errors)
-        super "Syntax errors: " + errors * ";"
+        super "Ситаксические ошибки: " + errors * ";"
         @errors = errors
       end
     end
 
     # === Ошибка времени исполнения
     # Может возникать при интерпретации прошивки,
-    # текстовая информация об ошибки в сообщении
+    # текстовая информация об ошибке в сообщении
     class WFLRuntimeError < Exception
     end
   end

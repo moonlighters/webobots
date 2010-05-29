@@ -15,6 +15,7 @@ module EmulationSystem
     # === Логгер записей
     # Логгер, сохраняющий записи
     class RecordListLogger
+      # Список записей в формате "<tt>1: ...</tt>"
       attr_reader :records
       
       def initialize

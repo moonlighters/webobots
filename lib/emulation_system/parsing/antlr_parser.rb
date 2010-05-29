@@ -13,7 +13,13 @@ module EmulationSystem
           p.close_write
           p.read.strip
         end
-        raise Errors::WFLSyntaxError.new(output.split("\n")) if not $?.success?
+        unless $?.success?
+          unless output.blank?
+            raise Errors::WFLSyntaxError.new(output.split("\n"))
+          else
+            raise "Внутренняя ошибка ANTLR"
+          end
+        end
         output
       end
     end

@@ -33,13 +33,17 @@ module EmulationSystem
 
         # рекурсивный поиск
         root = detect_node
-        raise "Unrecognized symbols at the end" if @cur != @tokens.count
+        if @cur != @tokens.count
+          raise "Внутренняя ошибка парсера Lisp-нотации: неожиданные символы в конце"
+        end
         IR.new root
       end
 
       # Текущий токен
       def get
-        raise "Unexpected end of source" if @cur >= @tokens.count
+        if @cur >= @tokens.count
+          raise "Внутренняя ошибка парсера Lisp-нотации: неожиданный конец"
+        end
         @tokens[@cur]
       end
       # Следующий токен
