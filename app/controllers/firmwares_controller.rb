@@ -1,5 +1,5 @@
 class FirmwaresController < ApplicationController
-  before_filter :find_firmware, :only => [:show, :edit, :update]
+  before_filter :find_firmware, :only => [:show, :edit, :update, :show_version]
 
   before_filter :require_user, :only => [:index, :show, :new, :create, :edit, :update]
   before_filter :require_owner, :only => [:edit, :update]
@@ -30,6 +30,10 @@ class FirmwaresController < ApplicationController
   end
 
   def show
+  end
+
+  def show_version
+    @fwv = FirmwareVersion.find_by_firmware_id_and_number! @fw, params[:number]
   end
 
   def edit

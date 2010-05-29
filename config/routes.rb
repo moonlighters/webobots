@@ -9,6 +9,9 @@ ActionController::Routing::Routes.draw do |map|
   map.connect 'signup', :controller => 'users', :action => 'create', :conditions => {:method => :post}
 
   map.resources :firmwares, :controller => 'firmwares', :except => :destroy
+  map.show_firmware_version "firmwares/:id/versions/:number", :controller => "firmwares",
+                                                              :action => "show_version",
+                                                              :conditions => {:method => :get}
 
   map.with_options :controller => "matches", :path_prefix => "match" do |m|
     m.match_choose_yours "choose_yours/enemy/:enemy_id", :action => 'choose_yours', :conditions => {:method => :get}
