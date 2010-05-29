@@ -30,7 +30,7 @@ def getCharErrorDisplay(c):
         return u'конец файла'
     if c == '\n':
         return u'конец строки'
-    return "'%s'" % str(c)
+    return u"'%s'" % unicode(c)
 
 def getParserErrorMessage(parser, e, tokenNames):
     if isinstance(e, UnwantedTokenException):
@@ -108,7 +108,7 @@ def getParserErrorMessage(parser, e, tokenNames):
               + "}?"
 
     else:
-        msg = str(e)
+        msg = unicode(e)
 
     return msg
 

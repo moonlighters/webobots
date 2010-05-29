@@ -2,12 +2,13 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import codecs
 import antlr3
 import antlr3.tree
 from waffleLexer import waffleLexer
 from waffleParser import waffleParser
 
-char_stream = antlr3.ANTLRInputStream(sys.stdin)
+char_stream = antlr3.ANTLRInputStream(codecs.lookup('utf8')[-2](sys.stdin))
 lexer = waffleLexer(char_stream)
 tokens = antlr3.CommonTokenStream(lexer)
 parser = waffleParser(tokens)
