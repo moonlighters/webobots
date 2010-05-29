@@ -60,6 +60,8 @@ module EmulationSystem
           Assignment
         when 'if'
           If
+        when 'while'
+          While
         when 'var'
           Variable
         when /^(?:[-+*\/]|[<>]=?|[!=]=|and|or)$/

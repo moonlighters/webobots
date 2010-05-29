@@ -92,6 +92,7 @@ describe EmulationSystem::Emulation::Bot do
       '"str"' => RuntimeElements::Literal,
       '=' => RuntimeElements::Assignment,
       'if' => RuntimeElements::If,
+      'while' => RuntimeElements::While,
       'var' => RuntimeElements::Variable,
       '+' => RuntimeElements::BinaryOp,
       '-' => RuntimeElements::BinaryOp,

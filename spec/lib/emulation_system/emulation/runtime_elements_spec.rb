@@ -236,6 +236,49 @@ describe EmulationSystem::Emulation::RuntimeElements do
     end
   end
 
+  describe EmulationSystem::Emulation::RuntimeElements::While do
+    it "should be creatable" do
+      RuntimeElements::While.new @bot, build(:node, 'while')
+    end
+    describe "#run" do
+      it "should push expr to stack, then pop if expr == 0" do
+        lambda do
+          expr = build :node
+          @bot.push_element build(:node, 'while', [expr, build(:node)])
+          
+          mock(@bot).push_element(expr)
+          @bot.step.should be_a Fixnum
+
+          mock(@bot).pop_var { 0 }
+          @bot.step.should be_a Fixnum
+        end.should_not change { @bot.stack.size }
+      end
+
+      it "should push expr to stack, then pop and push block while expr != 0" do
+        lambda do
+          expr = build :node
+          block = build :block
+          @bot.push_element build(:node, 'while', [expr, block])
+          
+          3.times do
+            mock(@bot).push_element(expr)
+            @bot.step.should be_a Fixnum
+
+            mock(@bot).pop_var { 1 }
+            mock(@bot).push_element(block)
+            @bot.step.should be_a Fixnum
+          end
+
+          mock(@bot).push_element(expr)
+          @bot.step.should be_a Fixnum
+
+          mock(@bot).pop_var { 0 }
+          @bot.step.should be_a Fixnum
+        end.should_not change { @bot.stack.size }
+      end
+    end
+  end
+
   describe EmulationSystem::Emulation::RuntimeElements::Variable do
     it "should be creatable" do
       RuntimeElements::Variable.new @bot, build(:node, 'var', [build(:node,'foo')])

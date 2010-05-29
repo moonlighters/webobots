@@ -182,6 +182,33 @@ module EmulationSystem
         end
       end
 
+      # === Класс для элемента while
+      # <tt>('while' expr block)</tt>
+      class While
+        def initialize(bot, node)
+          @bot = bot
+          @expr, @block = node.children
+
+          @expr_evaluated = false
+        end
+
+        def run
+          unless @expr_evaluated
+            @bot.push_element @expr
+            @expr_evaluated = true
+            Timing.for self, :evaluation
+          else
+            @expr_evaluated = false
+            if @bot.pop_var != 0
+              @bot.push_element @block
+            else
+              @bot.pop_element
+            end
+            Timing.for self, :execution
+          end
+        end
+      end
+
       # === Класс для элемента id
       # <tt>^(NODE["var"] ID)</tt>
       class Variable
