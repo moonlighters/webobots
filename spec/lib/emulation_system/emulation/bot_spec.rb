@@ -53,8 +53,8 @@ describe EmulationSystem::Emulation::Bot do
       @bot.stack = [@block1, @blockF, @block2, :foo]
     end
 
-    it "should return nil if we got the block not in the stack" do
-      @bot.upper_block_from( :blah ).should be_nil
+    it "should return lowest block if we got the block not in the stack" do
+      @bot.upper_block_from( :blah ).should == @block2
     end
 
     it "should return nil if we got the uppest block" do

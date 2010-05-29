@@ -100,7 +100,7 @@ module EmulationSystem
       # Находит ближайший +Block+, лежащий над +elem+.
       # +only_function+ указывает на поиск только функциональных блоков
       def upper_block_from(elem, only_function = false)
-        elem_index = @stack.find_index(elem) or return nil
+        elem_index = @stack.find_index(elem) || @stack.size
         # нужно найти последний Block, среди @run_stack[0,elem_index]
         @stack[0,elem_index].reverse.find {|e| e.is_a?(Block) and (not only_function or e.function?)}
       end
