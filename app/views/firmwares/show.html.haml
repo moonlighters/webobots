@@ -1,4 +1,4 @@
-%h2= "Прошивка #{h @fw.name}"
+%h2= %Q{Прошивка "#{h @fw.name}"}
 
 %p
   %b Автор
@@ -6,23 +6,11 @@
   
 %p
   %b= "Последняя версия прошивки ##{@fw.versions.last_number}"
-%p
-  %b= "Синтаксис: #{@fw.syntax_errors.empty? ? '✔' : '✘'}"
-  %ul= syntax_errors_list_for @fw
+=render :partial => 'syntax', :locals => {:fw => @fw}
 
 %p= link_to( 'Сразиться!', match_choose_yours_path(@fw) )
 %p= link_to( 'Редактировать', edit_firmware_path(@fw) ) if current_user.owns? @fw
 
-- code = @fw.versions.last.code
-%p
-  %hr
-  %table
-    %tr
-      -# TODO: styles
-      %td{:style => 'color: #aaaaaa;'}
-        %pre= (1..code.lines.count).to_a * "\n"
-      %td
-        %pre= format_code( code )
-  %hr
+= render :partial => 'code', :locals => {:code => @fw.versions.last.code}
 
 = link_to( 'Редактировать', edit_firmware_path(@fw) ) if current_user.owns? @fw

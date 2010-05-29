@@ -1,0 +1,10 @@
+%p
+  %hr
+  %table
+    %tr
+      -# TODO: styles
+      %td{:style => 'color: #aaaaaa;'}
+        %pre= (1..code.lines.count).to_a * "\n"
+      %td
+        %pre= format_code( code )
+  %hr

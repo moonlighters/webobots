@@ -2,13 +2,14 @@ module FirmwaresHelper
   def link_to_firmware(fw, parameters = {})
     no_version = parameters.delete :no_version
     version =  no_version ? "" : " (версия ##{fw.versions.last_number})"
-    link_to "#{h fw.name}"+version, firmware_path(fw), parameters
+
+    text = parameters.delete(:text) || "#{h fw.name}"+version
+    link_to text, firmware_path(fw), parameters
   end
 
   def link_to_firmware_version(fwv)
-   link_to_firmware(fwv.firmware, :no_version => true) +
-     " версии " +
-     fwv.number.to_s
+    fw = fwv.firmware
+    link_to %Q{"#{fw.name}" версии #{fwv.number}}, show_firmware_version_path( fw.id, fwv.number )
   end
 
   def format_code(code)
