@@ -1,0 +1,15 @@
+%h2 Проведение матча
+%h3 Выбор прошивок
+
+%p
+- semantic_form_for @match do |f|
+  = f.semantic_errors
+  - f.inputs do
+    = f.input :enemy, :as => :hidden, :value => @enemy, :name => 'enemy' if @enemy
+    = f.input :enemy_fw, :as => :hidden, :value => @enemy_fw, :name => 'enemy_fw' if @enemy_fw
+    = f.input :first_version, :collection => @enemy_collection,
+      :hint => @enemy_selection_hint
+    = f.input :second_version, :collection => @friendly_collection,
+      :hint => "одна из ваших прошивок"
+  - f.buttons do
+    = f.commit_button :choose

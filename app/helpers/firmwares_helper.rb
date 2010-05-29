@@ -20,9 +20,9 @@ module FirmwaresHelper
         '<strong>\1</strong>')
   end
 
-  def syntax_errors_list_for(fw)
-    if current_user.owns? fw and not fw.syntax_errors.empty?
-      render :partial => 'syntax_error', :collection => fw.syntax_errors
+  def syntax_errors_list_for(fwv)
+    if current_user.owns? fwv.firmware and not fwv.syntax_errors.empty?
+      render :partial => 'syntax_error', :collection => fwv.syntax_errors
     end
   end
 end

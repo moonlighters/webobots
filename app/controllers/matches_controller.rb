@@ -1,30 +1,25 @@
 class MatchesController < ApplicationController
   before_filter :require_user
-  before_filter :prepare_collections, :only => [:choose_yours, :create]
 
-  def choose_yours
-    @match = Match.new :enemy => Firmware.find(params[:enemy_id])
-    unless @friendly_collection.empty?
-      render
-    else
-      flash[:error] = "Сначала создайте прошивку для участия в матче"
+  def new
+    prepare_select
+
+    @match = Match.new :first_version => (
+      Firmware.find(params[:enemy_fw]).version if params[:enemy_fw]
+    )
+    if current_user.firmwares.count == 0
+      flash[:error] = "Сначала создайте прошивку для участия в матчах"
       redirect_to firmwares_path
     end
   end
 
   def create
-    @enemy = Firmware.find params[:match][:enemy]
-    @friendly = Firmware.find params[:match][:friendly]
-    @match = Match.new :enemy => @enemy, :friendly => @friendly
-    if @match.friendly.user != current_user
-      @match.errors.add :friendly, 'должна принадлежать тому, кто проводит матч'
-      render :action => :choose_yours
+    @match = Match.new params[:match]
+    if @match.save
+      redirect_to match_path( @match )
     else
-      if @match.save
-        redirect_to match_path(@match)
-      else
-        render :action => :choose_yours
-      end
+      prepare_select
+      render :action => :new
     end
   end
 
@@ -39,8 +34,28 @@ class MatchesController < ApplicationController
   end
 
   private
-  def prepare_collections
-    @enemy_collection = Firmware.all
-    @friendly_collection = current_user.firmwares
+
+  def prepare_select
+    @enemy = params[:enemy]
+    user = User.find @enemy if @enemy
+
+    @enemy_fw = params[:enemy_fw]
+    fw = Firmware.find @enemy_fw if @enemy_fw
+    user = fw.user if fw
+
+    if user
+      @enemy_collection = user.firmwares.map do |x|
+        [ x.name, x.version.id ]
+      end
+      @enemy_selection_hint = "одна из прошивок игрока #{render_to_string :inline => "<%= link_to_user u %>", :locals => { :u => user }}"
+    else
+      @enemy_collection = Firmware.all(:order => :user_id).map do |x|
+        [ "#{x.user.login} -- #{x.name}", x.version.id ]
+      end
+      @enemy_selection_hint = "одна из прошивок игроков"
+    end
+    @friendly_collection = current_user.firmwares.map do |x|
+      [ x.name, x.version.id ]
+    end
   end
 end

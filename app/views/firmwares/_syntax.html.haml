@@ -1,4 +1,4 @@
 %p
-  %b= "Синтаксис: #{fw.syntax_errors.empty? ? '✔' : '✘'}"
-  - unless fw.syntax_errors.empty?
-    %ul= syntax_errors_list_for fw
+  %b= "Синтаксис: #{fwv.syntax_errors.empty? ? '✔' : '✘'}"
+  - unless fwv.syntax_errors.empty?
+    %ul= syntax_errors_list_for fwv

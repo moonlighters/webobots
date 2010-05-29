@@ -3,11 +3,11 @@
 %p
   %b
     Создана:
-  =format_datetime @fwv.created_at
+  = format_datetime @fwv.created_at
 
-%p=link_to_firmware @fw, :text => "Перейти к последней версии (##{@fw.versions.last_number})"
+%p= link_to_firmware @fw, :text => "Перейти к последней версии (##{@fw.versions.last_number})"
 
-=render :partial => 'syntax', :locals => {:fw => @fw}
+= render :partial => 'syntax', :locals => {:fwv => @fw.version}
 = render :partial => 'code', :locals => {:code => @fwv.code}
 
 

@@ -3,26 +3,25 @@
 %p
   %b
     Вызов бросает
-    =link_to_user @match.friendly.user
+    = link_to_user @match.second_version.firmware.user
     c прошивкой
-    =link_to_firmware_version @match.friendly_version
-    -# TODO: link_to_firmware_version
+    = link_to_firmware_version @match.second_version
 %p
   %b
     Вызов принимает
-    =link_to_user @match.enemy.user
+    = link_to_user @match.first_version.firmware.user
     c прошивкой
-    =link_to_firmware_version @match.enemy_version
+    = link_to_firmware_version @match.first_version
 
 %p
   %b
-    - if @match.winner_version
+    - if @match.result != :draw
       Победитель:
-      =link_to_firmware_version @match.winner_version
+      = link_to_firmware_version @match.winner_version
     - else
       Ничья!
 %p
   Лог:
   %hr
-  %pre=@logger.records * "\n"
+  %pre= @logger.records * "\n"
   %hr

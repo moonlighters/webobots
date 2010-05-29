@@ -15,6 +15,7 @@
 
 - unless @fws.empty?
   %h3 Список прошивок
+  %p= link_to( 'Сразиться!', new_match_path(:enemy => @user) )
   %ul= render @fws
 - else
   %p

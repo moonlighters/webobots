@@ -13,11 +13,7 @@ ActionController::Routing::Routes.draw do |map|
                                                               :action => "show_version",
                                                               :conditions => {:method => :get}
 
-  map.with_options :controller => "matches", :path_prefix => "match" do |m|
-    m.match_choose_yours "choose_yours/enemy/:enemy_id", :action => 'choose_yours', :conditions => {:method => :get}
-    m.match "show/:id", :action => 'show', :conditions => {:method => :get}
-    m.create_match "new", :action => 'create', :conditions => {:method => :post}
-  end
+  map.resources :matches, :only => [:new, :create, :show]
 
   map.root :controller => 'user_sessions', :action => 'new'
 end

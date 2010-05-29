@@ -13,7 +13,7 @@ class Firmware < ActiveRecord::Base
   # TODO: может быть стоит занести это в модель?
   # validates :presence_of_at_least_one_version
 
-  def syntax_errors
-    versions.last.syntax_errors
+  def version
+    versions.last
   end
 end

@@ -25,6 +25,9 @@ class FirmwareVersion < ActiveRecord::Base
     self.number = (self.firmware.versions.last_number || 0) + 1 if not self.number and self.firmware
   end
 
+  # Возвращает массив синтаксических ошибок
+  #
+  # Массив пустой, если ошибок нет
   def check_syntax_errors
     EmulationSystem.check_syntax_errors(code)
   end

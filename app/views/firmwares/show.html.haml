@@ -3,14 +3,16 @@
 %p
   %b Автор
   = link_to_user @fw.user
-  
+
+- @fwv = @fw.versions.last
 %p
   %b= "Последняя версия прошивки ##{@fw.versions.last_number}"
-=render :partial => 'syntax', :locals => {:fw => @fw}
 
-%p= link_to( 'Сразиться!', match_choose_yours_path(@fw) )
+= render :partial => 'syntax', :locals => {:fwv => @fw.version}
+
+%p= link_to( 'Сразиться!', new_match_path(:enemy_fw => @fw) )
 %p= link_to( 'Редактировать', edit_firmware_path(@fw) ) if current_user.owns? @fw
 
 = render :partial => 'code', :locals => {:code => @fw.versions.last.code}
 
-= link_to( 'Редактировать', edit_firmware_path(@fw) ) if current_user.owns? @fw
+%p= link_to( 'Редактировать', edit_firmware_path(@fw) ) if current_user.owns? @fw
