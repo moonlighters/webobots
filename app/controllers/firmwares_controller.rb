@@ -1,7 +1,7 @@
 class FirmwaresController < ApplicationController
   before_filter :find_firmware, :only => [:show, :edit, :update, :show_version]
 
-  before_filter :require_user, :only => [:index, :show, :new, :create, :edit, :update]
+  before_filter :require_user
   before_filter :require_owner, :only => [:edit, :update]
   
   def index
