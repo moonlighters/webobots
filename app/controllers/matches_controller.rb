@@ -37,12 +37,15 @@ class MatchesController < ApplicationController
   private
 
   def prepare_select
-    @enemy = params[:enemy]
-    user = User.find @enemy if @enemy
+    if params[:enemy]
+      user = User.find params[:enemy]
+    end
 
-    @enemy_fw = params[:enemy_fw]
-    fw = Firmware.find @enemy_fw if @enemy_fw
-    user = fw.user if fw
+    if params[:enemy_fw]
+      fw = Firmware.find params[:enemy_fw]
+      user = fw.user
+    end
+    @enemy = user
 
     if user
       @enemy_collection = user.firmwares.map do |x|
