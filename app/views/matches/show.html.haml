@@ -1,17 +1,15 @@
 %h2 Просмотр матча
 
-%p
-  %b
-    Вызов бросает
-    = link_to_user @match.second_version.firmware.user
-    c прошивкой
-    = link_to_firmware_version @match.second_version
-%p
-  %b
-    Вызов принимает
-    = link_to_user @match.first_version.firmware.user
-    c прошивкой
-    = link_to_firmware_version @match.first_version
+%h3
+  = link_to_firmware_version @match.first_version
+  VS
+  = link_to_firmware_version @match.second_version
+
+- unless @match.user.nil?
+  %p
+    %b
+      Матч инициирован игроком
+      = link_to_user @match.user
 
 %p
   %b

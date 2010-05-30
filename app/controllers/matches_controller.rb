@@ -15,6 +15,7 @@ class MatchesController < ApplicationController
 
   def create
     @match = Match.new params[:match]
+    @match.user = current_user
     if @match.save
       redirect_to match_path( @match )
     else

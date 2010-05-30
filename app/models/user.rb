@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   attr_protected :login
 
   has_many :firmwares
+  has_many :matches
 
   def owns?(obj)
     obj.respond_to? :user and obj.user == self

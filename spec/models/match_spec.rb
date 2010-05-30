@@ -49,4 +49,10 @@ describe Match do
     Factory.build(:match, :first_version => fwv).should_not be_valid
     Factory.build(:match, :second_version => fwv).should_not be_valid
   end
+
+  it "should not create a new instance given user and not user's versions" do
+    fwv = Factory :firmware_version
+    not_owner = Factory :user
+    Factory.build(:match, :first_version => fwv, :second_version => fwv, :user => not_owner)
+  end
 end
