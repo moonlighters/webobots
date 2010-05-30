@@ -9,15 +9,13 @@ module FirmwaresHelper
 
   def link_to_firmware_version(fwv)
     fw = fwv.firmware
-    link_to %Q{"#{fw.name}" версии #{fwv.number}}, show_firmware_version_path( fw.id, fwv.number )
+    link_to %Q{"#{h fw.name}" версии #{fwv.number}}, show_firmware_version_path( :id => fw, :number => fwv.number )
   end
 
   def format_code(code)
-    code.gsub(
-      /(#.+)$/,
-      '<i>\1</i>').gsub(
-        /(?:^|\b)(if|else|end|while|def|return|@log)\b/,
-        '<strong>\1</strong>')
+    code = code.gsub /(#.+)$/, '<i>\1</i>'
+    code = code.gsub /(?:^|\b)(if|else|end|while|def|return|and|or|not)\b/, '<strong>\1</strong>'
+    code = code.gsub /(^|\b|\s)(@log)\b/, '\1<strong>\2</strong>'
   end
 
   def syntax_errors_list_for(fwv)
