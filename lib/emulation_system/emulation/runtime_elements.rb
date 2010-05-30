@@ -40,18 +40,33 @@ module EmulationSystem
           end
         end
 
+        attr_reader :upper_block
+        attr_reader :scope_block
+
         def initialize(bot, node, options={})
           @bot = bot
           @children = node.children
           @next_child = 0
 
+          @function = options.delete(:function) || false
           @upper_block = @bot.upper_block_from self
+
+          # определение вышестоящего блока в терминах областей видимости
+          @scope_block = if global?
+                            # у глобального блока нету вышестоящих
+                            nil
+                          elsif function?
+                            # у функции только глобальный блок выше них
+                            @bot.upper_block_from(self, :global => true)
+                          else
+                            # если это простой блок, то +@upper_block+
+                            @upper_block
+                          end
 
           @variables = {}
           # функции объявляются только в глобальном блоке
           @functions = {} if global?
 
-          @function = options.delete(:function) || false
           (options.delete(:params) || {}).each {|id, value| set_variable id, value }
         end
 
@@ -76,14 +91,20 @@ module EmulationSystem
         end
 
         def set_variable(id, value)
-          @variables[id] = value
+          if get_variable(id, :safe => true) and not @variables.has_key?(id)
+            @scope_block.set_variable(id, value)
+          else
+            @variables[id] = value
+          end
         end
 
-        def get_variable(id)
+        # Если <tt>options[:safe]</tt> равно +true+, в случае неудачи возвращает +nil+, 
+        # иначе возбуждает ошибку
+        def get_variable(id, options = {})
           if global?
-            @variables[id] or raise Errors::WFLRuntimeError, "неизвестная переменная '#{id}'"
+            @variables[id] or (raise Errors::WFLRuntimeError, "неизвестная переменная '#{id}'" unless options[:safe])
           else
-            @variables[id] || @upper_block.get_variable(id)
+            @variables[id] || @scope_block.get_variable(id, options)
           end
         end
 
@@ -104,7 +125,7 @@ module EmulationSystem
           if global?
             @functions[id] or raise Errors::WFLRuntimeError, "неизвестная функция '#{id}'"
           else
-            @upper_block.get_function(id)
+            @scope_block.get_function(id)
           end
         end
       end
@@ -408,7 +429,7 @@ module EmulationSystem
             Timing.for self, :evaluation
           else
             # нужное возращаемое значение уже на стеке
-            func_block = @bot.upper_block_from( self, true ) or raise Errors::WFLRuntimeError,
+            func_block = @bot.upper_block_from( self, :function => true ) or raise Errors::WFLRuntimeError,
               "недопустимо использование 'return' вне функции"
 
             loop { break if @bot.pop_element == func_block }
