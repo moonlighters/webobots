@@ -31,6 +31,14 @@ describe EmulationSystem::Parsing::Parser do
     parse( "(some 3.2 2.0)" ).root.should == n( 'some', [ n('3.2'), n('2.0')] )
   end
 
+  it "should parse tree with simple strings" do
+    parse( "(some \"foo\" \"blah\")" ).root.should == n( 'some', [ n('"foo"'), n('"blah"')] )
+  end
+
+  it "should parse tree with complex string" do
+    parse( "(some \"foo (blah)\")" ).root.should == n( 'some', [ n('"foo (blah)"') ] )
+  end
+
   it "should parse tree with data of random chars" do
     parse( "(= ! ?)" ).root.should == n( '=', [ n('!'), n('?')] )
   end
