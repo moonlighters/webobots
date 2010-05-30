@@ -15,5 +15,9 @@ def build(what, *args)
 end
 
 def Object.const_missing(c)
-  EmulationSystem::Emulation.const_get(c)
+  if EmulationSystem::Emulation.const_defined? c
+    EmulationSystem::Emulation.const_get(c)
+  else
+    raise NameError, "uninitialized constant #{c}"
+  end
 end
