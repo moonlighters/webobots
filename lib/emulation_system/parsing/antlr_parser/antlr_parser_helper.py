@@ -81,7 +81,7 @@ def getParserErrorMessage(parser, e, tokenNames):
               % (e.node, tokenName)
 
     elif isinstance(e, NoViableAltException):
-        msg = u"невозможно продолжить разобр около " \
+        msg = u"невозможно продолжить разбор около " \
               + parser.getTokenErrorDisplay(e.token)
 
     elif isinstance(e, EarlyExitException):
