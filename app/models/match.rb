@@ -19,12 +19,6 @@ class Match < ActiveRecord::Base
     m.errors.add :first_version, message if ! m.first_version.nil? && ! m.first_version.syntax_errors.empty?
     m.errors.add :second_version, message if ! m.second_version.nil? && ! m.second_version.syntax_errors.empty?
 
-    # если юзер есть, то хотя бы одна из прошивок должна принадлежать ему
-    if !m.user.nil? && !m.first_version.nil? && !m.second_version.nil? &&
-      ![m.first_version, m.second_version].any? {|fwv| m.user.owns? fwv.firmware }
-      m.errors.add_to_base "хотя бы одна из прошивок должна быть ваша"
-    end
-
     unless m.parameters.nil?
       p = m.parameters
       unless p.is_a? Hash and
