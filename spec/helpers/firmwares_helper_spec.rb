@@ -62,8 +62,8 @@ describe FirmwaresHelper do
     %w{if else end while def return @log or and not}.each do |kw|
       it "should highlight keyword #{kw}" do
         hw = "<strong>#{kw}</strong>" # highlighted kw
-        format_code("bla-bla\n#{kw} bla-bla\n   #{kw}\na b c #{kw}").should ==
-                    "bla-bla\n#{hw} bla-bla\n   #{hw}\na b c #{hw}"
+        format_code("bla-bla\n#{kw} bla-bla\n   #{kw}\na b not_a_@log #{kw}").should ==
+                    "bla-bla\n#{hw} bla-bla\n   #{hw}\na b not_a_@log #{hw}"
       end
     end
     it "should highlight comments" do

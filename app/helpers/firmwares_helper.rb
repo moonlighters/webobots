@@ -15,7 +15,7 @@ module FirmwaresHelper
   def format_code(code)
     code = code.gsub /(#.+)$/, '<i>\1</i>'
     code = code.gsub /(?:^|\b)(if|else|end|while|def|return|and|or|not)\b/, '<strong>\1</strong>'
-    code = code.gsub /(^|\b|\s)(@log)\b/, '\1<strong>\2</strong>'
+    code = code.gsub /(^|\s)(@log)\b/, '\1<strong>\2</strong>'
   end
 
   def syntax_errors_list_for(fwv)
