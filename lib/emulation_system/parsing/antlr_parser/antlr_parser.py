@@ -22,7 +22,7 @@ if len(errors) > 0:
     sys.exit(1)
 
 root = r.tree
-print root.toStringTree();
+print root.toStringTree().encode('utf8');
 
 #nodes = antlr3.tree.CommonTreeNodeStream(root)
 #nodes.setTokenStream(tokens)
