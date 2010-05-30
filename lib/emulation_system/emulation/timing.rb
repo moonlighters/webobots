@@ -18,12 +18,16 @@ module EmulationSystem::Emulation
         :evaluation => 0,
         :assignment => 0
       },
-      Number => {
+      Literal => {
         :default => 0
       },
       If => {
         :evaluation => 0,
         :finish => 0
+      },
+      While => {
+        :evaluation => 0,
+        :execution => 0
       },
       Variable => {
         :default => 0

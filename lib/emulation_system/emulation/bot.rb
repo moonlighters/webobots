@@ -52,14 +52,16 @@ module EmulationSystem
       # соответствующего данному +node+
       def push_element(node, *args)
         type = case node.data
-        when /^\d+$/, /^\d+\.\d+$/
-          Number
+        when /^\d+$/, /^\d+\.\d+$/, /^"[^"]*"$/ # integer, float or string literal
+          Literal
         when 'block'
           Block
         when '='
           Assignment
         when 'if'
           If
+        when 'while'
+          While
         when 'var'
           Variable
         when /^(?:[-+*\/]|[<>]=?|[!=]=|and|or)$/
@@ -98,11 +100,16 @@ module EmulationSystem
       end
 
       # Находит ближайший +Block+, лежащий над +elem+.
-      # +only_function+ указывает на поиск только функциональных блоков
-      def upper_block_from(elem, only_function = false)
+      # +options+:
+      # * +function+ указывает на поиск только функциональных блоков, по умолчанию +false+
+      # * +global+ указывает на поиск глобального блока, по умолчанию +false+
+      def upper_block_from(elem, options={})
+        function = options.delete( :function ) || false
+        global = options.delete( :global ) || false
+        return @stack[0] if global
         elem_index = @stack.find_index(elem) || @stack.size
         # нужно найти последний Block, среди @run_stack[0,elem_index]
-        @stack[0,elem_index].reverse.find {|e| e.is_a?(Block) and (not only_function or e.function?)}
+        @stack[0,elem_index].reverse.find {|e| e.is_a?(Block) and (not function or e.function?)}
       end
 
       # Записывает в лог строку +str+

@@ -18,15 +18,37 @@ describe EmulationSystem::Emulation::RuntimeElements do
       block.get_variable('foo').should == 37
     end
 
-    it "should correctly get upper block" do
+    it "should correctly set upper block" do
       # комплексный на
       # Block#new, Bot#push_element, Bot#upper_block_for
       @bot.push_element build(:node, 'block')
       upper = @bot.stack.last
       @bot.push_element build(:node, 'block')
       block = @bot.stack.last
-      block.instance_variable_get( '@upper_block' ).should == upper
+      block.upper_block.should == upper
       block.should_not be_global
+    end
+
+    describe "#scope_blocks" do
+      # комплексный на 
+      # Block#new, Bot#push_element, Bot#upper_block_for
+      it "should correctly set scope blocks for global block" do
+        @bot.stack.last.scope_block.should == nil
+      end
+
+      it "should correctly set scope blocks for function block" do
+        @bot.push_element build(:node, 'block')
+        @bot.push_element build(:node, 'block'), :function => true
+        @bot.stack.last.scope_block.should == @bot.stack.first
+      end
+
+      it "should correctly set scope blocks for other blocks" do
+        @bot.push_element build(:node, 'block') #1
+        @bot.push_element build(:node, 'block'), :function => true #2
+        @bot.push_element build(:node, 'block') #3
+        @bot.push_element build(:node, 'block') #4
+        @bot.stack[4].scope_block.should == @bot.stack[3]
+      end
     end
 
     describe "#run" do
@@ -62,8 +84,8 @@ describe EmulationSystem::Emulation::RuntimeElements do
         block.get_variable('foo').should == 37
       end
 
-      it "should ask upper block if could not find identifier" do
-        mock(upper = Object.new).get_variable('blah') { 42 }
+      it "should ask scope block if could not find identifier" do
+        mock(upper = Object.new).get_variable('blah', anything) { 42 }
         mock(@bot).upper_block_from(anything) { upper }
 
         block = RuntimeElements::Block.new @bot, build(:node, 'block')
@@ -74,6 +96,15 @@ describe EmulationSystem::Emulation::RuntimeElements do
         mock(@bot).upper_block_from(anything) { nil }
         block = RuntimeElements::Block.new @bot, build(:node, 'block')
         lambda { block.get_variable 'unknown' }.should raise_error EmulationSystem::Errors::WFLRuntimeError
+      end
+
+      it "should set scope block's variable if necessary" do
+        mock(upper = Object.new).get_variable('blah', anything) { 42 }
+        mock(@bot).upper_block_from(anything) { upper }
+
+        mock(upper).set_variable('blah', 37)
+        block = RuntimeElements::Block.new @bot, build(:node, 'block')
+        block.set_variable('blah', 37)
       end
     end
 
@@ -95,7 +126,9 @@ describe EmulationSystem::Emulation::RuntimeElements do
       end
 
       it "should get functions from lower blocks" do
-        mock(@bot).upper_block_from(anything) { mock!.get_function('foo') { :func } }
+        upper = mock!.get_function('foo') { :func }
+        stub(upper).scope_blocks { [] }
+        mock(@bot).upper_block_from(anything) { upper }
         block = RuntimeElements::Block.new @bot, build(:node, 'block')
         block.get_function('foo').should == :func
       end
@@ -160,17 +193,25 @@ describe EmulationSystem::Emulation::RuntimeElements do
     end
   end
 
-  describe EmulationSystem::Emulation::RuntimeElements::Number do
+  describe EmulationSystem::Emulation::RuntimeElements::Literal do
     it "should be creatable" do
-      RuntimeElements::Number.new @bot, build(:node, '3.7')
+      RuntimeElements::Literal.new @bot, build(:node, '3.7')
     end
 
     describe "#run" do
-      it "should push value from node and pop" do
+      it "should push numeric literal value from node and pop" do
         lambda do
           @bot.push_element build(:node, '3.7')
 
           mock(@bot).push_var 3.7
+          @bot.step.should be_a Fixnum
+        end.should_not change { @bot.stack.size }
+      end
+      it "should push string literal value from node and pop" do
+        lambda do
+          @bot.push_element build(:node, '"3.7"')
+
+          mock(@bot).push_var "3.7"
           @bot.step.should be_a Fixnum
         end.should_not change { @bot.stack.size }
       end
@@ -222,6 +263,49 @@ describe EmulationSystem::Emulation::RuntimeElements do
 
           mock(@bot).pop_var { 0 }
           mock(@bot).push_element(else_block)
+          @bot.step.should be_a Fixnum
+        end.should_not change { @bot.stack.size }
+      end
+    end
+  end
+
+  describe EmulationSystem::Emulation::RuntimeElements::While do
+    it "should be creatable" do
+      RuntimeElements::While.new @bot, build(:node, 'while')
+    end
+    describe "#run" do
+      it "should push expr to stack, then pop if expr == 0" do
+        lambda do
+          expr = build :node
+          @bot.push_element build(:node, 'while', [expr, build(:node)])
+          
+          mock(@bot).push_element(expr)
+          @bot.step.should be_a Fixnum
+
+          mock(@bot).pop_var { 0 }
+          @bot.step.should be_a Fixnum
+        end.should_not change { @bot.stack.size }
+      end
+
+      it "should push expr to stack, then pop and push block while expr != 0" do
+        lambda do
+          expr = build :node
+          block = build :block
+          @bot.push_element build(:node, 'while', [expr, block])
+          
+          3.times do
+            mock(@bot).push_element(expr)
+            @bot.step.should be_a Fixnum
+
+            mock(@bot).pop_var { 1 }
+            mock(@bot).push_element(block)
+            @bot.step.should be_a Fixnum
+          end
+
+          mock(@bot).push_element(expr)
+          @bot.step.should be_a Fixnum
+
+          mock(@bot).pop_var { 0 }
           @bot.step.should be_a Fixnum
         end.should_not change { @bot.stack.size }
       end

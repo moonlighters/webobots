@@ -120,7 +120,7 @@ multExpr
         ;
 
 atom    : NUMBER
-        | (ID '(') => funccall
+        | funccall
         | variable^
         | '('! expr ')'!
         | '-' atom              -> ^(NODE["uminus"] atom) /* unary minus */
@@ -130,7 +130,7 @@ atom    : NUMBER
 variable: ID                    -> ^(NODE["var"] ID)
         ;
 
-STRING  : '"' (LETTER | DIGIT)* '"'
+STRING  : '"' .* '"'
         ;
 
 NUMBER  : DIGIT+ ( '.' DIGIT+ )? ; /* integer or float */

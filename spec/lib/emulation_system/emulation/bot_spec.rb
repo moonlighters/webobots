@@ -66,7 +66,11 @@ describe EmulationSystem::Emulation::Bot do
     end
 
     it "should return upper function block from element" do
-      @bot.upper_block_from( :foo, true ).should == @blockF
+      @bot.upper_block_from( :foo, :function => true ).should == @blockF
+    end
+
+    it "should return global block" do
+      @bot.upper_block_from( :foo, :global => true ).should == @block1
     end
 
     it "should return upper block from other block" do
@@ -87,10 +91,12 @@ describe EmulationSystem::Emulation::Bot do
   describe "#push_element" do
     {
       'block' => RuntimeElements::Block,
-      '3' => RuntimeElements::Number,
-      '3.7' => RuntimeElements::Number,
+      '3' => RuntimeElements::Literal,
+      '3.7' => RuntimeElements::Literal,
+      '"str"' => RuntimeElements::Literal,
       '=' => RuntimeElements::Assignment,
       'if' => RuntimeElements::If,
+      'while' => RuntimeElements::While,
       'var' => RuntimeElements::Variable,
       '+' => RuntimeElements::BinaryOp,
       '-' => RuntimeElements::BinaryOp,

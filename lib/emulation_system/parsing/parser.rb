@@ -27,7 +27,8 @@ module EmulationSystem
       def transform_to_ir(text)
         # разбивает строку на токены по пробельным символам и скобкам,
         # при этом сохраняя скобки
-        @tokens = text.split( /([\s#{LP}#{RP}])/ ).reject(&:blank?)
+        @tokens = text.split( /([\s#{LP}#{RP}])(?=(?:[^"]*"[^"]*")*[^"]*$)/ ).reject(&:blank?)
+        
         # текущий токен
         @cur = 0
 

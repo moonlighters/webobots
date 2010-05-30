@@ -92,8 +92,14 @@ describe EmulationSystem::Parsing::ANTLRParser do
     end
   end
 
-  it "should parse @log directive" do
-    call(%Q{ a=2\n@log "a", a\na=3 }).should == %Q{(block (= a 2) (log "a" (var a)) (= a 3))}
+  describe "(with @log directive)" do
+    it "should parse variables" do
+      call(%Q{ a=2\n@log a, b\na=3 }).should == %Q{(block (= a 2) (log (var a) (var b)) (= a 3))}
+    end
+
+    it "should parse strings" do
+      call(%Q{ a=2\n@log "value", "for debug:", a }).should == %Q{(block (= a 2) (log "value" "for debug:" (var a)))}
+    end
   end
 
   it "should ignore comments" do
