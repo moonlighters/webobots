@@ -2,6 +2,9 @@
 %p
   %b Логин:
   =h @user.login
+%p
+  %b Очки рейтинга:
+  = @user.rating_points
 
 - if @user == current_user
   %p
@@ -14,8 +17,8 @@
   = link_to 'Редактировать', edit_account_path
 
 - unless @fws.empty?
-  %h3 Список прошивок
   %p= link_to( 'Сразиться!', new_match_path(:enemy => @user) )
+  %h3 Список прошивок
   %ul= render @fws
 - else
   %p

@@ -1,12 +1,15 @@
 %h2= %Q{Прошивка "#{h @fw.name}"}
 
 %p
-  %b Автор
+  %b Автор:
   = link_to_user @fw.user
+%p
+  %b Очки рейтинга:
+  = @fw.rating_points
 
 - @fwv = @fw.version
 %p
-  %b= "Последняя версия прошивки ##{@fwv.number}"
+  %b= "Последняя версия прошивки: ##{@fwv.number}"
 
 = render :partial => 'syntax', :locals => {:fwv => @fwv}
 

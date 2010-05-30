@@ -44,10 +44,15 @@ class Match < ActiveRecord::Base
   end
  
   def emulate(logger)
-    EmulationSystem.emulate first_version.code,
-                            second_version.code,
-                            parameters,
-                            logger
+    res = EmulationSystem.emulate first_version.code,
+                                  second_version.code,
+                                  parameters,
+                                  logger
+    unless result
+      set_result!(res)
+    end
+
+    result
   end
 
   def winner_version
@@ -61,7 +66,40 @@ class Match < ActiveRecord::Base
     end
   end
 
+  def winner_points
+    case result
+    when :first
+      first_points
+    when :second
+      second_points
+    else
+      nil
+    end
+  end
+
   private
+
+  def set_result!(res)
+    fw1 = first_version.firmware
+    fw2 = second_version.firmware
+
+    self.result = res
+    if fw1.user != fw2.user
+      case result
+      when :first
+        self.first_points, self.second_points = Rating.points_for *[fw1, fw2].map(&:rating_points)
+      when :second
+        self.second_points, self.first_points = Rating.points_for *[fw2, fw1].map(&:rating_points)
+      else
+        self.first_points, self.second_points = 0, 0
+      end
+    end
+    save!
+    fw1.rating_points += first_points
+    fw1.save!
+    fw2.rating_points += second_points
+    fw2.save!
+  end
 
   def generate_parameters
     self.parameters ||= {

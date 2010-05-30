@@ -11,13 +11,17 @@
       Матч инициирован игроком
       = link_to_user @match.user
 
-%p
-  %b
-    - if @match.result != :draw
-      Победитель:
-      = link_to_firmware_version @match.winner_version
-    - else
-      Ничья!
+- if @match.result != :draw
+  %p
+    %b Победитель:
+    = link_to_firmware_version @match.winner_version
+  %p
+    %b Получает:
+    = @match.winner_points
+    очков рейтинга
+- else
+  %p
+    %b Ничья!
 %p
   Лог:
   %hr

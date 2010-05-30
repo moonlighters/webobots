@@ -28,11 +28,7 @@ class MatchesController < ApplicationController
   def show
     @match = Match.find params[:id]
     @logger = EmulationSystem::Loggers::RecordListLogger.new
-    res = @match.emulate @logger
-    unless @match.result
-      @match.result = res
-      @match.save! # must be no errors
-    end
+    @match.emulate @logger
   end
 
   private

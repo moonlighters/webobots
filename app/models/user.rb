@@ -12,6 +12,10 @@ class User < ActiveRecord::Base
   has_many :firmwares
   has_many :matches
 
+  def rating_points
+    firmwares.sum :rating_points
+  end
+
   def owns?(obj)
     obj.respond_to? :user and obj.user == self
   end
