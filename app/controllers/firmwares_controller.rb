@@ -46,7 +46,7 @@ class FirmwaresController < ApplicationController
     @fwv = FirmwareVersion.new params[:firmware].delete :firmware_version
     if @fw.update_attributes params[:firmware]
       # Если код не изменен, то версию обновлять вовсе не нужно
-      if @fwv.code != @fw.versions.last.code
+      if @fwv.code != @fw.version.code
         @fwv.firmware = @fw
         # Модель FirmwareVersion сделана так, что ошибок быть не может
         @fwv.save!
