@@ -1,4 +1,5 @@
 require 'spec_helper'
+require RAILS_ROOT + '/lib/rating'
 
 describe Match do
   it "should create a new instance given valid attributes (no params given, generate automatically)" do
@@ -54,5 +55,20 @@ describe Match do
     fwv = Factory :firmware_version
     not_owner = Factory :user
     Factory :match, :first_version => fwv, :second_version => fwv, :user => not_owner
+  end
+
+  describe "#emulate" do
+    it "should set result and point values" do
+      m = Factory :match
+      logger = Object.new
+      stub(logger).add_log_record
+      mock(EmulationSystem).emulate(m.first_version.code,
+                                    m.second_version.code,
+                                    m.parameters,
+                                    logger) { :second }
+      m.emulate(logger).should == :second
+      m.first_points.should_not be_nil
+      m.second_points.should_not be_nil
+    end
   end
 end

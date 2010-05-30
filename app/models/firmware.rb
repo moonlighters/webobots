@@ -16,4 +16,8 @@ class Firmware < ActiveRecord::Base
   def version
     versions.last
   end
+
+  def rating_position
+    1 + Firmware.count( :conditions => ['rating_points > ?', self.rating_points] )
+  end
 end

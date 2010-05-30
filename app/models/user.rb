@@ -13,7 +13,11 @@ class User < ActiveRecord::Base
   has_many :matches
 
   def rating_points
-    firmwares.sum :rating_points
+    @rating_points ||= firmwares.sum( :rating_points )
+  end
+  
+  def rating_position
+    1 + User.all.count {|u| u.rating_points > self.rating_points}
   end
 
   def owns?(obj)
