@@ -5,7 +5,11 @@ class FirmwaresController < ApplicationController
   before_filter :require_owner, :only => [:edit, :update]
   
   def index
-    @fws = Firmware.all
+    @fws = current_user.firmwares.all :order => 'id desc'
+  end
+
+  def all
+    @fws = Firmware.all :order => 'id desc'
   end
 
   def new

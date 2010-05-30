@@ -21,8 +21,11 @@
 
 - unless @fws.empty?
   %p= link_to( 'Сразиться!', new_match_path(:enemy => @user) )
-  %h3 Список прошивок
-  %ul= render @fws
-- else
-  %p
-    %i Пользователь ещё не создал ни одной прошивки
+
+- if @user != current_user
+  - unless @fws.empty?
+    %h3 Список прошивок
+    %ul= render @fws
+  - else
+    %p
+      %i Пользователь ещё не создал ни одной прошивки

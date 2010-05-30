@@ -1,5 +1,10 @@
-%h2 Список прошивок
+%h2 Список ваших прошивок
 
-%ul= render @fws
+%p= link_to "Перейти к списку всех прошивок", all_firmwares_path
 
-= link_to "Создать", new_firmware_path
+%p= link_to "Создать", new_firmware_path
+
+- unless @fws.empty?
+  %ul= render @fws
+- else
+  %i Вы ещё не создали не одной прошивки

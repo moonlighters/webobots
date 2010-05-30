@@ -1,0 +1,7 @@
+%h2 Список всех прошивок
+
+%p= link_to "Перейти к списку ваших прошивок", firmwares_path
+
+%p= link_to "Создать", new_firmware_path
+
+%ul= render :partial => 'firmware_with_author', :collection => @fws
