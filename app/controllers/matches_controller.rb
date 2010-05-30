@@ -45,7 +45,7 @@ class MatchesController < ApplicationController
       fw = Firmware.find params[:enemy_fw]
       user = fw.user
     end
-    @enemy = user
+    @enemy_id = user.id if user
 
     if user
       @enemy_collection = user.firmwares.map do |x|

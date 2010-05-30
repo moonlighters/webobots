@@ -2,7 +2,7 @@
 %h3 Выбор прошивок
 
 %p
-- semantic_form_for @match, :url => matches_url( :enemy => (@enemy.id if @enemy) ) do |f|
+- semantic_form_for @match, :url => matches_url( :enemy => @enemy_id ) do |f|
   = f.semantic_errors
   - f.inputs do
     = f.input :first_version, :collection => @enemy_collection,
