@@ -1,0 +1,11 @@
+%h2 Рейтинг прошивок
+
+= link_to 'Перейти к рейтингу пользователей', users_rating_path
+
+%table{:border => 1}
+  %tr
+    %th Место
+    %th Прошивка
+    %th Автор
+    %th Очки
+  = render :partial => 'firmware', :collection => @firmwares

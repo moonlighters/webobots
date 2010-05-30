@@ -6,6 +6,9 @@
 %p
   %b Очки рейтинга:
   = @fw.rating_points
+%p
+  %b Позиция в рейтинге:
+  = @fw.rating_position.to_s + "-я из " + @fws_count.to_s
 
 - @fwv = @fw.version
 %p

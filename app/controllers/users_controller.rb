@@ -26,6 +26,7 @@ class UsersController < ApplicationController
               current_user
             end
     @fws = @user.firmwares
+    @users_count = User.count
   end
 
   def edit

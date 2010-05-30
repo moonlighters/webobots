@@ -30,6 +30,7 @@ class FirmwaresController < ApplicationController
   end
 
   def show
+    @fws_count = Firmware.count
   end
 
   def show_version

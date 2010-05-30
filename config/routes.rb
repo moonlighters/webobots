@@ -15,5 +15,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :matches, :only => [:new, :create, :show]
 
+  map.users_rating 'rating/users', :controller => 'rating', :action => 'show_users', :conditions => {:method => :get}
+  map.firmwares_rating 'rating/firmwares', :controller => 'rating', :action => 'show_firmwares', :conditions => {:method => :get}
+
   map.root :controller => 'user_sessions', :action => 'new'
 end
