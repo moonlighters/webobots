@@ -10,6 +10,28 @@ class Match < ActiveRecord::Base
 
   belongs_to :user
 
+  def self.all_including_stuff
+    self.all_including_stuff_for nil
+  end
+
+  named_scope :all_including_stuff_for, lambda { |user|
+    {
+      :order => 'id DESC',
+      :include => {
+        :first_version => {:firmware => :user},
+        :second_version => {:firmware => :user}
+      }
+    }.merge(
+      user ? {
+        :select => 'DISTINCT matches.*',
+        :joins => 'JOIN firmware_versions ON firmware_versions.id IN (matches.fwv1_id, matches.fwv2_id)
+                   JOIN firmwares ON firmwares.id = firmware_versions.firmware_id
+                   JOIN users ON users.id = firmwares.user_id',
+        :conditions => {'users.id' => user}
+      } : {})
+  }
+
+
   before_validation :generate_parameters
 
   validates_presence_of :first_version, :second_version, :parameters

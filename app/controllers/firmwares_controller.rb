@@ -9,7 +9,7 @@ class FirmwaresController < ApplicationController
   end
 
   def all
-    @fws = Firmware.all :order => 'id desc'
+    @fws = Firmware.all :order => 'id desc', :include => :user
   end
 
   def new

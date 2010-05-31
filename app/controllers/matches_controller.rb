@@ -2,14 +2,11 @@ class MatchesController < ApplicationController
   before_filter :require_user
 
   def index
-    # OPTIMIZE: select by sql (:joins, wooooo...)
-    @matches = Match.all(:order => 'id desc').select do |m|
-      [m.first_version, m.second_version].any? { |fwv| fwv.firmware.user == current_user }
-    end
+    @matches = Match.all_including_stuff_for current_user
   end
 
   def all
-    @matches = Match.all :order => 'id desc'
+    @matches = Match.all_including_stuff
   end
 
   def new
