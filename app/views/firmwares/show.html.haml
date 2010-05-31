@@ -5,7 +5,7 @@
   = link_to_user @fw.user
 %p
   %b Очки рейтинга:
-  = @fw.rating_points
+  = format_points(@fw.rating_points)
 %p
   %b Позиция в рейтинге:
   = @fw.rating_position.to_s + "-я из " + @fws_count.to_s

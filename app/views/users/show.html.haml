@@ -4,7 +4,7 @@
   =h @user.login
 %p
   %b Очки рейтинга:
-  = @user.rating_points
+  = format_points(@user.rating_points)
 %p
   %b Позиция в рейтинге:
   = @user.rating_position.to_s + "-й из " + @users_count.to_s

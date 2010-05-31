@@ -6,5 +6,5 @@
     %b VS
   %td= link_to_firmware_version match.second_version, :no_version => true
   %td= link_to_user( match.second_version.firmware.user )
-  %td= match.first_points.to_s + ' : ' + match.second_points.to_s
+  %td= format_points(match.first_points) + ' : ' + format_points(match.second_points)
 
