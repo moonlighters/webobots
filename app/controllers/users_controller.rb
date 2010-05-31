@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   before_filter :require_user, :only => [:index, :show, :edit, :update]
 
   def index
-    @users = User.all
+    @users = User.all :order => 'lower(login)'
   end
   
   def new
