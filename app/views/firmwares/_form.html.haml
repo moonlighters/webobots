@@ -2,5 +2,5 @@
 - form.inputs do
   = form.input :name
   - form.fields_for :firmware_version, fwv do |version_form|
-    = version_form.input :code
+    = version_form.input :code, :input_html => { :class => :code }
 = form.buttons

@@ -1,3 +1,7 @@
 body {
   font: 14px Tahoma, Verdana, Arial, sans-serif
 }
+textarea.code {
+  padding: 10px;
+  font-family: monospace !important;
+}
