@@ -1,7 +1,30 @@
 body {
   font: 14px Tahoma, Verdana, Arial, sans-serif
 }
+
 textarea.code {
-  padding: 10px;
   font-family: monospace !important;
+}
+
+table.list {
+  border-width: 2px;
+  border-spacing: 0px;
+  border-style: outset;
+  border-collapse: collapse;
+}
+
+.list td {
+  border-width: 1px;
+  border-style: inset;
+  padding: 5px;
+}
+
+.list th {
+  border-width: 2px 1px;
+  border-style: inset;
+  padding: 5px;
+}
+
+td.line-numbers {
+  color: #aaaaaa;
 }

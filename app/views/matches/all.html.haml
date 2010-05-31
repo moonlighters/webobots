@@ -2,6 +2,6 @@
 
 %p= link_to "Перейти к списку матчей с участием ваших прошивок", matches_path
 
-%p= link_to "Провести матч"
+%p= link_to "Провести матч", new_match_path
 
-%ul= render @matches
+= render :partial => 'table', :locals => {:matches => @matches}
