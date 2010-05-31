@@ -5,11 +5,11 @@ class FirmwaresController < ApplicationController
   before_filter :require_owner, :only => [:edit, :update]
   
   def index
-    @fws = current_user.firmwares.all :order => 'id desc'
+    @fws = current_user.firmwares.all :order => 'id DESC'
   end
 
   def all
-    @fws = Firmware.all :order => 'id desc', :include => :user
+    @fws = Firmware.all :order => 'id DESC', :include => :user
   end
 
   def new
@@ -38,7 +38,7 @@ class FirmwaresController < ApplicationController
   end
 
   def show_version
-    @fwv = FirmwareVersion.find_by_firmware_id_and_number! @fw, params[:number]
+    @fwv = @fw.versions.find_by_number! params[:number]
   end
 
   def edit

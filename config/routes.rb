@@ -1,24 +1,32 @@
 ActionController::Routing::Routes.draw do |map|
-  map.login   'login', :controller => 'user_sessions', :action => 'new', :conditions => {:method => :get}
-  map.connect 'login', :controller => 'user_sessions', :action => 'create', :conditions => {:method => :post}
-  map.logout  'logout', :controller => 'user_sessions', :action => 'destroy'
+  # user_sessions
+  map.with_options :controller => 'user_sessions' do |sessions|
+    sessions.login   'login',  :action => 'new',     :conditions => {:method => :get}
+    sessions.connect 'login',  :action => 'create',  :conditions => {:method => :post}
+    sessions.logout  'logout', :action => 'destroy'
+  end
 
-  map.resource :account, :controller => 'users', :except => :destroy
-  map.resources :users, :controller => 'users', :only => [:show]
-  map.signup 'signup', :controller => 'users', :action => 'new', :conditions => {:method => :get}
-  map.connect 'signup', :controller => 'users', :action => 'create', :conditions => {:method => :post}
+  # users
+  map.resource :account, :controller => 'users', :only => [:show, :edit, :update]
+  map.resources :users, :controller => 'users', :only => [:show, :index]
+  map.with_options :controller => 'users' do |users|
+    users.signup  'signup', :action => 'new', :conditions => {:method => :get}
+    users.connect 'signup', :action => 'create', :conditions => {:method => :post}
+  end
 
-  map.all_firmwares 'firmwares/all', :controller => 'firmwares', :action => 'all', :conditions => {:method => :get}
-  map.resources :firmwares, :controller => 'firmwares', :except => :destroy
-  map.show_firmware_version "firmwares/:id/versions/:number", :controller => "firmwares",
-                                                              :action => "show_version",
-                                                              :conditions => {:method => :get}
+  # firmwares
+  map.resources :firmwares, :controller => 'firmwares', :except => :destroy, :collection => { :all => :get }
+  map.firmware_version 'firmwares/:id/version/:number', :controller => 'firmwares', :action => 'show_version', :conditions => {:method => :get}
 
-  map.all_matches 'matches/all', :controller => 'matches', :action => 'all', :conditions => {:method => :get}
-  map.resources :matches, :only => [:new, :create, :show, :index]
+  # matches
+  map.resources :matches, :only => [:new, :create, :show, :index], :collection => {:all => :get}
 
-  map.users_rating 'rating/users', :controller => 'rating', :action => 'show_users', :conditions => {:method => :get}
-  map.firmwares_rating 'rating/firmwares', :controller => 'rating', :action => 'show_firmwares', :conditions => {:method => :get}
+  # rating
+  map.with_options :controller => 'rating', :conditions => {:method => :get}, :path_prefix => 'rating' do |rating|
+    rating.users_rating 'users', :action => 'show_users'
+    rating.firmwares_rating 'firmwares', :action => 'show_firmwares'
+  end
 
+  # root
   map.root :controller => 'user_sessions', :action => 'new'
 end

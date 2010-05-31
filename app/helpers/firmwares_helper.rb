@@ -6,7 +6,7 @@ module FirmwaresHelper
 
   def link_to_firmware_version(fwv)
     fw = fwv.firmware
-    link_to %Q{"#{h fw.name}" версии #{fwv.number}}, show_firmware_version_path( :id => fw, :number => fwv.number )
+    link_to %Q{"#{h fw.name}" версии #{fwv.number}}, firmware_version_path( :id => fw, :number => fwv.number )
   end
 
   def format_code(code)

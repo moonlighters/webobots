@@ -39,7 +39,7 @@ describe FirmwaresHelper do
 
   describe "#link_to_firmware_version" do
     before do
-      mock(self).show_firmware_version_path( :number => @fwv.number, :id => @fw ) { '/path_yeah' }
+      mock(self).firmware_version_path( :number => @fwv.number, :id => @fw ) { '/path_yeah' }
     end
 
     it "should generate link to firmware version with default text" do
