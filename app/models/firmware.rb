@@ -17,7 +17,23 @@ class Firmware < ActiveRecord::Base
     versions.last
   end
 
+  attr_writer :rating_position
   def rating_position
-    1 + Firmware.count( :conditions => ['rating_points > ?', self.rating_points] )
+    @rating_position ||= 1 + Firmware.count( :conditions => ['rating_points > ?', self.rating_points] )
   end
+  
+  def self.all_sorted_by_rating
+    firmwares = Firmware.scoped :order => 'rating_points DESC',
+                                :include => :user
+    pos = 0
+    val = nil
+    firmwares.each_with_index do |fw, i|
+      if fw.rating_points != val
+        val = fw.rating_points
+        pos = i + 1
+      end
+      fw.rating_position = pos
+    end
+  end
+  
 end

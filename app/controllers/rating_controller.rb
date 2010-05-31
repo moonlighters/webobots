@@ -1,9 +1,9 @@
 class RatingController < ApplicationController
   def show_firmwares
-    @firmwares = Firmware.all :order => "rating_points desc"
+    @firmwares = Firmware.all_sorted_by_rating
   end
 
   def show_users
-    @users = User.all.sort {|x,y| x.rating_position <=> y.rating_position}
+    @users = User.all_sorted_by_rating
   end
 end

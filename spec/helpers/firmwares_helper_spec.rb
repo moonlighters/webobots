@@ -16,18 +16,10 @@ describe FirmwaresHelper do
 
     it "should generate link to firmware with default text" do
       mock(self).h(@fw.name) { @fw.name }
-      mock(self).link_to "#{@fw.name} (версия ##{@fwv.number})",
-                         "/some_path",
-                         {}
-      link_to_firmware(@fw)
-    end
-
-    it "should generate link to firmware without version" do
-      mock(self).h(@fw.name) { @fw.name }
       mock(self).link_to "#{@fw.name}",
                          "/some_path",
                          {}
-      link_to_firmware(@fw, :no_version => true)
+      link_to_firmware(@fw)
     end
 
     it "should generate link to firmware with given text" do
