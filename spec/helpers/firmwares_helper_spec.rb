@@ -45,8 +45,31 @@ describe FirmwaresHelper do
     it "should generate link to firmware version with default text" do
       mock(self).h(@fw.name) { @fw.name }
       mock(self).link_to %Q{"#{@fw.name}" версии #{@fwv.number}},
-                         "/path_yeah"
+                         "/path_yeah",
+                         {}
       link_to_firmware_version(@fwv)
+    end
+
+    it "should generate link to firmware version without version info" do
+      mock(self).h(@fw.name) { @fw.name }
+      mock(self).link_to %Q{"#{@fw.name}"},
+                         "/path_yeah",
+                         {}
+      link_to_firmware_version(@fwv, :no_version => true)
+    end
+
+    it "should generate link to firmware version with given text" do
+      mock(self).link_to "abcabc",
+                         "/path_yeah",
+                         {}
+      link_to_firmware_version(@fwv, :text => "abcabc")
+    end
+
+    it "should pass options to link_to" do
+      mock(self).link_to "abcabc",
+                         "/path_yeah",
+                         {:class => "class"}
+      link_to_firmware_version(@fwv, :text => "abcabc", :class => "class")
     end
   end
 
@@ -54,8 +77,8 @@ describe FirmwaresHelper do
     %w{if else end while def return @log or and not}.each do |kw|
       it "should highlight keyword #{kw}" do
         hw = "<strong>#{kw}</strong>" # highlighted kw
-        format_code("bla-bla\n#{kw} bla-bla\n   #{kw}\na b not_a_@log #{kw}").should ==
-                    "bla-bla\n#{hw} bla-bla\n   #{hw}\na b not_a_@log #{hw}"
+        format_code("bla-bla\n#{kw} bla < bla\n   #{kw}\na b not_a_@log #{kw}").should ==
+                    "bla-bla\n#{hw} bla &lt; bla\n   #{hw}\na b not_a_@log #{hw}"
       end
     end
     it "should highlight comments" do

@@ -13,6 +13,8 @@
 - @fwv = @fw.version
 %p
   %b= "Последняя версия прошивки: ##{@fwv.number}"
+%p
+  = link_to "История версий", firmware_versions_path(@fw)
 
 = render :partial => 'syntax', :locals => {:fwv => @fwv}
 

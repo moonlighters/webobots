@@ -16,7 +16,8 @@ ActionController::Routing::Routes.draw do |map|
 
   # firmwares
   map.resources :firmwares, :controller => 'firmwares', :except => :destroy, :collection => { :all => :get }
-  map.firmware_version 'firmwares/:id/version/:number', :controller => 'firmwares', :action => 'show_version', :conditions => {:method => :get}
+  map.firmware_version 'firmwares/:id/versions/:number', :controller => 'firmwares', :action => 'show_version', :conditions => {:method => :get}
+  map.firmware_versions 'firmwares/:id/versions', :controller => 'firmwares', :action => 'index_versions', :conditions => {:method => :get}
 
   # matches
   map.resources :matches, :only => [:new, :create, :show, :index], :collection => {:all => :get}

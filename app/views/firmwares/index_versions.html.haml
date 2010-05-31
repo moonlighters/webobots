@@ -1,0 +1,5 @@
+%h2
+  Список версий прошивки
+  = link_to_firmware @fw
+
+%ul= render :partial => 'firmware_version', :collection => @fwvs

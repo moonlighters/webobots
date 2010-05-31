@@ -1,5 +1,5 @@
 class FirmwaresController < ApplicationController
-  before_filter :find_firmware, :only => [:show, :edit, :update, :show_version]
+  before_filter :find_firmware, :only => [:show, :edit, :update, :show_version, :index_versions]
 
   before_filter :require_user
   before_filter :require_owner, :only => [:edit, :update]
@@ -37,8 +37,17 @@ class FirmwaresController < ApplicationController
     @fws_count = Firmware.count
   end
 
+  def index_versions
+    @fwvs = @fw.versions.all :order => 'number DESC'
+  end
+
   def show_version
     @fwv = @fw.versions.find_by_number! params[:number]
+    if @fwv == @fw.version
+      redirect_to firmware_path @fw
+    else
+      render
+    end
   end
 
   def edit
