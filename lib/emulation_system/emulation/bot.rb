@@ -15,6 +15,53 @@ module EmulationSystem
       # * +desired_speed+ - конечное значение модуля скорости при разгоне и торможении
       # * +health+ - здоровье
       class State < Struct.new :pos, :angle, :speed, :desired_speed, :health
+        def radians
+          angle * Math::PI / 180
+        end
+        
+        def radians=(value)
+          self.angle = value / Math::PI * 180
+        end
+
+        def cosa
+          Math::cos(radians)
+        end
+
+        def sina
+          Math::sin(radians)
+        end
+
+        # Просчитывает шаг физики за время dt
+        def calc_physics_for(dt)
+          if speed < desired_speed
+            acc = World::ACCELERATION
+          elsif speed > desired_speed
+            acc = -World::DECELERATION
+          else
+            acc = 0
+          end
+          
+          self.speed += acc*dt
+          self.pos.x += speed*cosa*dt
+          self.pos.y += speed*sina*dt
+
+          correct_state
+        end
+
+        # Корректирует значения координат, скорости и здоровья
+        # если они выходят за пределы
+        def correct_state
+          self.pos.x  = correct_value pos.x,  0, World::FIELD_SIZE
+          self.pos.y  = correct_value pos.y,  0, World::FIELD_SIZE
+          self.speed  = correct_value speed,  0, World::MAX_SPEED
+          self.health = correct_value health, 0, World::MAX_HEALTH
+        end
+
+        # Возвращает значение +val+, ограниченное
+        # до пределов +min+..+max+
+        def correct_value(val, min, max)
+          val < min ? min : (val > max ? max : val)
+        end
       end
       
       attr_reader :state
