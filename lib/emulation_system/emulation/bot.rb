@@ -17,7 +17,8 @@ module EmulationSystem
       class State < Struct.new :pos, :angle, :speed, :desired_speed, :health
       end
       
-      attr_reader :state, :time
+      attr_reader :state
+      attr_accessor :time
 
       # Прямой доступ к стеку не рекомендован, исключительно для тестов
       attr_accessor :stack
@@ -26,7 +27,7 @@ module EmulationSystem
         @state = State.new Point[x,y], angle, 0, 0, World::MAX_HEALTH
         @log_func = log_func
 
-        @time = 0
+        @time = 0.0
 
         # стек элементов выполнения
         # вершина стека - конец массива
@@ -39,13 +40,16 @@ module EmulationSystem
 
       # Закончено ли выполение?
       def halted?
-        @stack.empty?
+        @stack.empty? or @state.health <= 0
       end
 
       # Выполняет одно атомарное действие,
       # возвращает количество тактов потраченное на выполнение
       def step
-        @stack.last.run unless @stack.empty?
+        raise "Внутренняя ошибка емуляции: попытка вызова #step у halted-бота" if halted?
+        last = @stack.last.run
+        @time += last
+        last
       end
 
       # Добавляет в стек класс элемента,

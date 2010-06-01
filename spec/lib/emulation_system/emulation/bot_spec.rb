@@ -21,9 +21,14 @@ describe EmulationSystem::Emulation::Bot do
   end
 
   describe "#step" do
-    it "should return 0 if nothing to run" do
+    it "should raise internal error if nothing to run" do
       @bot.stack = []
-      @bot.step.should be_nil
+      lambda { @bot.step }.should raise_error
+    end
+
+    it "should raise internal error if bot already dead" do
+      @bot.state.health = 0
+      lambda { @bot.step }.should raise_error
     end
 
     it "should return time spent on last step" do
