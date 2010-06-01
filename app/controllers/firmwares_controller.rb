@@ -5,11 +5,11 @@ class FirmwaresController < ApplicationController
   before_filter :require_owner, :only => [:edit, :update]
   
   def index
-    @fws = current_user.firmwares.all :order => 'id DESC'
+    @fws = current_user.firmwares.paginate :page => params[:page], :order => 'id DESC'
   end
 
   def all
-    @fws = Firmware.all :order => 'id DESC', :include => :user
+    @fws = Firmware.paginate :page => params[:page], :order => 'id DESC', :include => :user
   end
 
   def new
@@ -38,7 +38,7 @@ class FirmwaresController < ApplicationController
   end
 
   def index_versions
-    @fwvs = @fw.versions.all :order => 'number DESC'
+    @fwvs = @fw.versions.paginate :page => params[:page], :order => 'number DESC'
   end
 
   def show_version

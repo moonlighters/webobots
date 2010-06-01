@@ -1,6 +1,9 @@
 class FirmwareVersion < ActiveRecord::Base
   belongs_to :firmware, :touch => true
 
+  cattr_reader :per_page
+  @@per_page = 10
+
   validates_presence_of :firmware_id, :number
   validates_uniqueness_of :number, :scope => :firmware_id
   

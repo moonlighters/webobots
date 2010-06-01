@@ -8,6 +8,9 @@ Rails::Initializer.run do |config|
   config.gem 'haml'
   config.gem 'russian'
   config.gem 'factory_girl' 
+  config.gem 'will_paginate'
 
   config.time_zone = 'Novosibirsk'
 end
+
+require "will_paginate"

@@ -9,6 +9,11 @@ class User < ActiveRecord::Base
 
   attr_protected :login
 
+  cattr_reader :per_page
+  @@per_page = 10
+  cattr_reader :per_page_of_rating
+  @@per_page_of_rating = 10
+
   has_many :firmwares
   has_many :matches
 

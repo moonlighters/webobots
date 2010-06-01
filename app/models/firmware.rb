@@ -7,6 +7,12 @@ class Firmware < ActiveRecord::Base
   end
 
   belongs_to :user
+  
+  cattr_reader :per_page
+  @@per_page = 10
+  cattr_reader :per_page_of_rating
+  @@per_page_of_rating = 10
+
 
   validates_presence_of :name, :user_id
 

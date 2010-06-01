@@ -5,6 +5,7 @@
 %p= link_to "Создать", new_firmware_path
 
 - unless @fws.empty?
-  %ul= render @fws
+  - paginated_section @fws do
+    %ul= render @fws
 - else
   %i Вы ещё не создали не одной прошивки

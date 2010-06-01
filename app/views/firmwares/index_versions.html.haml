@@ -2,4 +2,5 @@
   Список версий прошивки
   = link_to_firmware @fw
 
-%ul= render :partial => 'firmware_version', :collection => @fwvs
+- paginated_section @fwvs do
+  %ul= render :partial => 'firmware_version', :collection => @fwvs

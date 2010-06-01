@@ -45,4 +45,7 @@ ru:
       login: "Войти"
       register: "Зарегистрироваться"
       choose: "Выбрать"
-      
+  will_paginate:
+    previous_label: "« Назад"
+    next_label: "Вперед »"
+ 

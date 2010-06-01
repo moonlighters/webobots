@@ -2,10 +2,11 @@
 
 %p= link_to 'Перейти к рейтингу пользователей', users_rating_path
 
-%table.list
-  %tr
-    %th Место
-    %th Прошивка
-    %th Автор
-    %th Очки
-  = render :partial => 'firmware', :collection => @firmwares
+- paginated_section @firmwares do
+  %table.list
+    %tr
+      %th Место
+      %th Прошивка
+      %th Автор
+      %th Очки
+    = render :partial => 'firmware', :collection => @firmwares

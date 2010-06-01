@@ -1,4 +1,4 @@
 %h2 Список пользователей
 
-%ul
-  = render :partial => 'user', :collection => @users
+- paginated_section do
+  %ul= render :partial => 'user', :collection => @users

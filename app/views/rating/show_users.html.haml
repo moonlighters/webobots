@@ -2,9 +2,10 @@
 
 %p= link_to 'Перейти к рейтингу прошивок', firmwares_rating_path
 
-%table.list
-  %tr
-    %th Место
-    %th Пользователь
-    %th Очки
-  = render :partial => 'user', :collection => @users
+- paginated_section @users do
+  %table.list
+    %tr
+      %th Место
+      %th Пользователь
+      %th Очки
+    = render :partial => 'user', :collection => @users

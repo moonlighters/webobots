@@ -28,3 +28,7 @@ table.list {
 td.line-numbers {
   color: #aaaaaa;
 }
+
+.pagination {
+  margin: 10px 0px;
+}

@@ -4,4 +4,5 @@
 
 %p= link_to "Создать", new_firmware_path
 
-%ul= render :partial => 'firmware_with_author', :collection => @fws
+- paginated_section @fws do
+  %ul= render :partial => 'firmware_with_author', :collection => @fws
