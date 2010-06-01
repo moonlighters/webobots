@@ -69,7 +69,11 @@ module EmulationSystem::Emulation
 
     def rt_times(func)
       case func
-      when 'posx', 'posy': 30
+      # простые getter'ы
+      when  'posx', 'posy', 'angle', 'speed',
+            'desired_speed', 'health', 'time'
+        30
+
       end
     end
     module_function :rt_times

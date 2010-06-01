@@ -26,7 +26,7 @@ module EmulationSystem
       attr_accessor :stack
 
       def initialize(ir, x, y, angle, log_func)
-        @state = State.new Point[x,y], angle, 0, 0, World::MAX_HEALTH
+        @state = State.new Point[x,y], angle, 0.0, 0.0, World::MAX_HEALTH
         @log_func = log_func
 
         @time = 0.0

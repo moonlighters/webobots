@@ -37,12 +37,26 @@ module EmulationSystem
 
       private
 
-      FUNCTIONS = %w{ posx posy }
+      FUNCTIONS = [
+        # простые getter'ы
+        'posx', 'posy', 'angle', 'speed',
+        'desired_speed', 'health', 'time'
+      ]
 
       # координата X
       def posx; @friendly.state.pos.x; end
       # координата Y
       def posy; @friendly.state.pos.y; end
+      # направление движения
+      def angle; @friendly.state.angle; end
+      # текущая скорость
+      def speed; @friendly.state.speed; end
+      # "желаемая" скорость
+      def desired_speed; @friendly.state.desired_speed; end
+      # здоровье
+      def health; @friendly.state.health; end
+      # время прошедшее с начала
+      def time; @friendly.time; end
     end
   end
 end
