@@ -4,7 +4,11 @@ module EmulationSystem::Emulation
     include RuntimeElements
 
     def for(elem, action = nil)
-      World::VM_TIME * TIMES[elem.is_a?(Class) ? elem : elem.class][action || :default]
+      World::VM_TIME *  if elem == :rt
+                          rt_times(action)
+                        else
+                          TIMES[elem.is_a?(Class) ? elem : elem.class][action || :default]
+                        end
     end
     module_function :for
 
@@ -62,5 +66,12 @@ module EmulationSystem::Emulation
         :logging => 5
       },
     }
+
+    def rt_times(func)
+      case func
+      when 'posx', 'posy': 30
+      end
+    end
+    module_function :rt_times
   end
 end

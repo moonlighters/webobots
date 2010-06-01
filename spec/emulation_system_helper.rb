@@ -11,6 +11,19 @@ def build(what, *args)
     EmulationSystem::IR.new( args[0] || build(:node) )
   when :bot
     EmulationSystem::Emulation::Bot.new(args[0] || build(:ir), 1, 2, 3, :log_func)
+  when :vm
+    stub(logger = Object.new).add_frame(anything, anything, anything)
+    stub(logger).add_log_record(anything, anything)
+    EmulationSystem::Emulation::VM.new(
+      args[0] || build(:ir), args[1] || build(:ir),
+      {:first=>{:x=>1,:y=>1,:angle=>1},:second=>{:x=>2,:y=>2,:angle=>2},:seed=>3},
+      logger)
+
+  when :rtlib
+    EmulationSystem::Emulation::RTLib.new(
+      :for => args[0] || build(:bot), :against => args[1] || build(:bot),
+      :vm => args[2] || build(:vm)
+    )
   end
 end
 

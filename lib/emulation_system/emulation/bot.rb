@@ -20,6 +20,8 @@ module EmulationSystem
       attr_reader :state
       attr_accessor :time
 
+      attr_accessor :rtlib
+
       # Прямой доступ к стеку не рекомендован, исключительно для тестов
       attr_accessor :stack
 
@@ -46,7 +48,7 @@ module EmulationSystem
       # Выполняет одно атомарное действие,
       # возвращает количество тактов потраченное на выполнение
       def step
-        raise "Внутренняя ошибка емуляции: попытка вызова #step у halted-бота" if halted?
+        raise "Внутренняя ошибка эмуляции: попытка вызова #step у halted-бота" if halted?
         last = @stack.last.run
         @time += last
         last

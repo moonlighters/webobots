@@ -507,6 +507,7 @@ describe EmulationSystem::Emulation::RuntimeElements do
           func = Object.new
           mock(func).variables_hash_for([37,42]) { :func_vars_hash }
           mock(func).block { :func_block }
+          mock(@bot).rtlib { mock!.has_function?('foo') { false } }
           mock(@bot).upper_block_from(anything) { mock!.get_function('foo') { func } }
           @bot.push_element build(:node, 'funccall',
             [ build(:node, 'foo'), build(:node, 'params', [p1,p2]) ])
@@ -520,6 +521,29 @@ describe EmulationSystem::Emulation::RuntimeElements do
 
           mock(@bot).pop_var { 42 }
           mock(@bot).push_element( :func_block, :function => true, :params => :func_vars_hash )
+          @bot.step.should be_a Numeric
+        end.should_not change { @bot.stack.size }
+      end
+
+      it "should eval all params, get function from runtime library, pop and push result" do
+        lambda do
+          p1 = build(:node, 'block')
+          p2 = build(:node, 'block')
+          mock(rtlib = Object.new).call('posx', 37, 42) { 173 }
+          mock(rtlib).has_function?('posx') { true }
+          mock(@bot).rtlib.times(any_times) { rtlib }
+          @bot.push_element build(:node, 'funccall',
+            [ build(:node, 'posx'), build(:node, 'params', [p1,p2]) ])
+          
+          mock(@bot).push_element p1 
+          @bot.step.should be_a Numeric
+
+          mock(@bot).pop_var { 37 }
+          mock(@bot).push_element p2
+          @bot.step.should be_a Numeric
+
+          mock(@bot).pop_var { 42 }
+          mock(@bot).push_var( 173 )
           @bot.step.should be_a Numeric
         end.should_not change { @bot.stack.size }
       end

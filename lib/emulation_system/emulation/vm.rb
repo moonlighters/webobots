@@ -31,6 +31,9 @@ module EmulationSystem
             params[:second][:x], params[:second][:y], params[:second][:angle],
             lambda {|str| @logger.add_log_record(:second, str) })
         ]
+        @bots.each do |bot|
+          bot.rtlib = RTLib.new :for => bot, :against => (@bots-[bot])[0], :vm => self
+        end
 
         @time = 0
       end
