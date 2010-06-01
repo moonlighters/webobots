@@ -4,4 +4,5 @@
 
 %p= link_to "Провести матч", new_match_path
 
-= render :partial => 'table', :locals => {:matches => @matches}
+- paginated_section do
+  = render :partial => 'table', :locals => {:matches => @matches}

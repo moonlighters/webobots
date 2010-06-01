@@ -10,27 +10,37 @@ class Match < ActiveRecord::Base
 
   belongs_to :user
 
+  JOINS_FOR_USER = 'JOIN firmware_versions ON firmware_versions.id IN (matches.fwv1_id, matches.fwv2_id)
+                    JOIN firmwares ON firmwares.id = firmware_versions.firmware_id
+                    JOIN users ON users.id = firmwares.user_id'
+
   def self.all_including_stuff
     self.all_including_stuff_for nil
+  end
+
+  def self.count_for(user)
+    count :select => 'DISTINCT matches.id',
+          :joins => JOINS_FOR_USER,
+          :conditions => {'users.id' => user}
   end
 
   named_scope :all_including_stuff_for, lambda { |user|
     {
       :order => 'id DESC',
       :include => {
-        :first_version => {:firmware => :user},
-        :second_version => {:firmware => :user}
+       :first_version => {:firmware => :user},
+       :second_version => {:firmware => :user}
       }
     }.merge(
       user ? {
         :select => 'DISTINCT matches.*',
-        :joins => 'JOIN firmware_versions ON firmware_versions.id IN (matches.fwv1_id, matches.fwv2_id)
-                   JOIN firmwares ON firmwares.id = firmware_versions.firmware_id
-                   JOIN users ON users.id = firmwares.user_id',
+        :joins => JOINS_FOR_USER,
         :conditions => {'users.id' => user}
       } : {})
   }
 
+  cattr_reader :per_page
+  @@per_page = 10
 
   before_validation :generate_parameters
 

@@ -2,11 +2,13 @@ class MatchesController < ApplicationController
   before_filter :require_user
 
   def index
-    @matches = Match.all_including_stuff_for current_user
+    @matches = Match.all_including_stuff_for(current_user).paginate :page => params[:page],
+      :total_entries => Match.count_for(current_user)
   end
 
   def all
-    @matches = Match.all_including_stuff
+    @matches = Match.all_including_stuff.paginate :page => params[:page],
+      :total_entries => Match.count
   end
 
   def new
