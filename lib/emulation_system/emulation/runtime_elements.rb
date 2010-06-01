@@ -464,7 +464,9 @@ module EmulationSystem
             Timing.for self, :evaluation
           else
             @bot.pop_element
-            @bot.log( @evaluated_items.map(&:to_s) * ' ' )
+            @bot.log( @evaluated_items.map do |item|
+              item.is_a?(Float) ? ('%.2f' % item) : item.to_s
+            end * ' ' )
             Timing.for self, :logging
           end
         end

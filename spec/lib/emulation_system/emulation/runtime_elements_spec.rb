@@ -605,17 +605,22 @@ describe EmulationSystem::Emulation::RuntimeElements do
         lambda do
           p1 = build(:node, 'block')
           p2 = build(:node, 'block')
-          @bot.push_element build(:node, 'log', [p1,p2])
+          p3 = build(:node, 'block')
+          @bot.push_element build(:node, 'log', [p1,p2,p3])
           
-          mock(@bot).push_element p1 
+          mock(@bot).push_element p1
           @bot.step.should be_a Numeric
 
           mock(@bot).pop_var { "foo" }
           mock(@bot).push_element p2
           @bot.step.should be_a Numeric
 
+          mock(@bot).pop_var { 2.5 }
+          mock(@bot).push_element p3
+          @bot.step.should be_a Numeric
+
           mock(@bot).pop_var { 37 }
-          mock(@bot).log("foo 37")
+          mock(@bot).log("foo 2.50 37")
           @bot.step.should be_a Numeric
         end.should_not change { @bot.stack.size }
       end
