@@ -50,6 +50,7 @@ class MatchesController < ApplicationController
 
   def find_match
     @match = Match.find params[:id]
+    render( :action => :show_with_error ) if @match.failed?
   end
 
   def prepare_select

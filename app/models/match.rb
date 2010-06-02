@@ -78,10 +78,14 @@ class Match < ActiveRecord::Base
   end
  
   def emulate(logger)
-    res = EmulationSystem.emulate first_version.code,
-                                  second_version.code,
-                                  parameters,
-                                  logger
+    begin
+      res = EmulationSystem.emulate first_version.code,
+                                    second_version.code,
+                                    parameters,
+                                    logger
+    rescue EmulationSystem::Errors::WFLRuntimeError => e
+      self.rt_error_msg = e.message
+    end
     
     set_result!(res) unless result
 
@@ -93,6 +97,10 @@ class Match < ActiveRecord::Base
 
   def emulated?
     not result.nil?
+  end
+
+  def failed?
+    not rt_error_msg.blank?
   end
 
   def winner_version
