@@ -29,7 +29,5 @@ module EmulationSystem
         (self - vector).abs <= radius
       end
     end
-    
-    Point = Vector
   end
 end

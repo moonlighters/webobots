@@ -46,8 +46,8 @@ module EmulationSystem
         # Корректирует значения координат, скорости и здоровья
         # если они выходят за пределы
         def correct_state
-          self.pos.x  = correct_value pos.x,  0, World::FIELD_SIZE
-          self.pos.y  = correct_value pos.y,  0, World::FIELD_SIZE
+          self.pos.x  = correct_value pos.x,  World::BOT_RADIUS, World::FIELD_SIZE - World::BOT_RADIUS
+          self.pos.y  = correct_value pos.y,  World::BOT_RADIUS, World::FIELD_SIZE - World::BOT_RADIUS
           self.speed  = correct_value speed,  0, World::MAX_SPEED
           self.health = correct_value health, 0, World::MAX_HEALTH
         end
