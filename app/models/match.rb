@@ -87,6 +87,10 @@ class Match < ActiveRecord::Base
     result
   end
 
+  def emulated?
+    not result.nil?
+  end
+
   def winner_version
     case result
     when :first
@@ -134,14 +138,6 @@ class Match < ActiveRecord::Base
   end
 
   def generate_parameters
-    self.parameters ||= {
-      :first => random_bot_hash,
-      :second => random_bot_hash,
-      :seed => srand
-    }
-  end
-
-  def random_bot_hash
-    { :x => rand, :y => rand, :angle => rand*360}
+    self.parameters ||= EmulationSystem.generate_vm_params
   end
 end

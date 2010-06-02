@@ -12,12 +12,28 @@ module EmulationSystem
   end
   module_function :check_syntax_errors
 
-  # TODO: написать
+  # Выполняет эмуляцию матча двух прошивок
   def emulate(code1, code2, params, logger)
-    # TODO: придумать что делать с ошибками
     ir1 = Parsing::Parser.new(code1).parse
     ir2 = Parsing::Parser.new(code2).parse
     Emulation::VM.new(ir1, ir2, params, logger).emulate
   end
   module_function :emulate
+
+  # Сгенерировать случайные параметры для матча
+  def generate_vm_params
+    bots = 2.times.map do
+      {
+        :x => rand*Emulation::World::FIELD_SIZE,
+        :y => rand*Emulation::World::FIELD_SIZE,
+        :angle => rand*360
+      }
+    end
+    {
+      :first => bots.first,
+      :second => bots.second,
+      :seed => srand
+    }
+  end
+  module_function :generate_vm_params
 end
