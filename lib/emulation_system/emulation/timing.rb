@@ -4,33 +4,39 @@ module EmulationSystem::Emulation
     include RuntimeElements
 
     def for(elem, action = nil)
-      TIMES[elem.is_a?(Class) ? elem : elem.class][action || :default]
+      World::VM_TIME *  if elem == :rt
+                          rt_times(action)
+                        else
+                          TIMES[elem.is_a?(Class) ? elem : elem.class][action || :default]
+                        end
     end
     module_function :for
 
     private
+    # TODO: раскидать времена
+    # и не забыть про бесконечные циклы, которые не тратят время!
     TIMES = {
       Block => {
         :step => 0,
-        :finish => 0
+        :finish => 1
       },
       Assignment => {
         :evaluation => 0,
-        :assignment => 0
+        :assignment => 1
       },
       Literal => {
         :default => 0
       },
       If => {
         :evaluation => 0,
-        :finish => 0
+        :finish => 1
       },
       While => {
         :evaluation => 0,
-        :execution => 0
+        :execution => 1
       },
       Variable => {
-        :default => 0
+        :default => 1
       },
       BinaryOp => {
         :evaluation => 0,
@@ -45,7 +51,7 @@ module EmulationSystem::Emulation
         :calculation_logical => 1
       },
       FuncDef => {
-        :default => 0
+        :default => 1
       },
       FuncCall => {
         :evaluation => 0,
@@ -60,5 +66,30 @@ module EmulationSystem::Emulation
         :logging => 5
       },
     }
+
+    def rt_times(func)
+      case func
+      when  'posx', 'posy', 'angle', 'speed',
+            'desired_speed', 'health', 'time'
+        8
+
+      when 'rotate','set_speed'
+        13
+
+      when 'sleep'
+        5
+
+      when 'enemy_posx','enemy_posy'
+        20
+
+      when 'fire'
+        16
+
+      when 'sin','cos','atan2','sqr','sqrt'
+        10
+
+      end
+    end
+    module_function :rt_times
   end
 end

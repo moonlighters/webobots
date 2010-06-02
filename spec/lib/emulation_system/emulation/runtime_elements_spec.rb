@@ -55,7 +55,7 @@ describe EmulationSystem::Emulation::RuntimeElements do
       it "should pop if there are no children" do
         lambda do
           @bot.push_element build(:node, 'block', [])
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
         end.should_not change { @bot.stack.size }
       end
 
@@ -67,12 +67,12 @@ describe EmulationSystem::Emulation::RuntimeElements do
           @bot.push_element build(:node, 'block', [ node1,node2 ])
           
           mock(@bot).push_element(node1)
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
           
           mock(@bot).push_element(node2)
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
 
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
         end.should_not change { @bot.stack.size }
       end
     end
@@ -183,11 +183,11 @@ describe EmulationSystem::Emulation::RuntimeElements do
           @bot.push_element build(:node, '=', [ build(:node, 'foo'), expr ])
           
           mock(@bot).push_element(expr)
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
 
           mock(@bot).pop_var { 37 }
           mock(@bot).upper_block_from(anything) { mock!.set_variable('foo',37) }
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
         end.should_not change { @bot.stack.size }
       end
     end
@@ -204,7 +204,7 @@ describe EmulationSystem::Emulation::RuntimeElements do
           @bot.push_element build(:node, '3.7')
 
           mock(@bot).push_var 3.7
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
         end.should_not change { @bot.stack.size }
       end
       it "should push string literal value from node and pop" do
@@ -212,7 +212,7 @@ describe EmulationSystem::Emulation::RuntimeElements do
           @bot.push_element build(:node, '"3.7"')
 
           mock(@bot).push_var "3.7"
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
         end.should_not change { @bot.stack.size }
       end
     end
@@ -231,11 +231,11 @@ describe EmulationSystem::Emulation::RuntimeElements do
           @bot.push_element build(:node, 'if', [expr, if_block])
 
           mock(@bot).push_element(expr)
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
 
           mock(@bot).pop_var { 37 }
           mock(@bot).push_element(if_block)
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
         end.should_not change { @bot.stack.size }
       end
 
@@ -245,10 +245,10 @@ describe EmulationSystem::Emulation::RuntimeElements do
           @bot.push_element build(:node, 'if', [expr, build(:node)])
 
           mock(@bot).push_element(expr)
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
 
           mock(@bot).pop_var { 0 }
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
         end.should_not change { @bot.stack.size }
       end
 
@@ -259,11 +259,11 @@ describe EmulationSystem::Emulation::RuntimeElements do
           @bot.push_element build(:node, 'if', [expr, build(:node), else_block])
 
           mock(@bot).push_element(expr)
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
 
           mock(@bot).pop_var { 0 }
           mock(@bot).push_element(else_block)
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
         end.should_not change { @bot.stack.size }
       end
     end
@@ -280,10 +280,10 @@ describe EmulationSystem::Emulation::RuntimeElements do
           @bot.push_element build(:node, 'while', [expr, build(:node)])
           
           mock(@bot).push_element(expr)
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
 
           mock(@bot).pop_var { 0 }
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
         end.should_not change { @bot.stack.size }
       end
 
@@ -295,18 +295,18 @@ describe EmulationSystem::Emulation::RuntimeElements do
           
           3.times do
             mock(@bot).push_element(expr)
-            @bot.step.should be_a Fixnum
+            @bot.step.should be_a Numeric
 
             mock(@bot).pop_var { 1 }
             mock(@bot).push_element(block)
-            @bot.step.should be_a Fixnum
+            @bot.step.should be_a Numeric
           end
 
           mock(@bot).push_element(expr)
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
 
           mock(@bot).pop_var { 0 }
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
         end.should_not change { @bot.stack.size }
       end
     end
@@ -324,7 +324,7 @@ describe EmulationSystem::Emulation::RuntimeElements do
 
           mock(@bot).upper_block_from(anything) { mock!.get_variable('foo') { 37 } }
           mock(@bot).push_var(37)
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
         end.should_not change { @bot.stack.size }
       end
     end
@@ -344,15 +344,15 @@ describe EmulationSystem::Emulation::RuntimeElements do
             @bot.push_element build(:node, op, [exprL, exprR])
 
             mock(@bot).push_element(exprL)
-            @bot.step.should be_a Fixnum
+            @bot.step.should be_a Numeric
 
             mock(@bot).pop_var { 37 }
             mock(@bot).push_element(exprR)
-            @bot.step.should be_a Fixnum
+            @bot.step.should be_a Numeric
 
             mock(@bot).pop_var { 42 }
             mock(@bot).push_var( eval "37#{op}42" )
-            @bot.step.should be_a Fixnum
+            @bot.step.should be_a Numeric
           end.should_not change { @bot.stack.size }
         end
       end
@@ -364,11 +364,11 @@ describe EmulationSystem::Emulation::RuntimeElements do
           @bot.push_element build(:node, '/', [exprL, exprR])
 
           mock(@bot).push_element(exprL)
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
 
           mock(@bot).pop_var { 37 }
           mock(@bot).push_element(exprR)
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
 
           mock(@bot).pop_var { 0 }
           @bot.step
@@ -384,15 +384,15 @@ describe EmulationSystem::Emulation::RuntimeElements do
               @bot.push_element build(:node, op, [exprL, exprR])
 
               mock(@bot).push_element(exprL)
-              @bot.step.should be_a Fixnum
+              @bot.step.should be_a Numeric
 
               mock(@bot).pop_var { l }
               mock(@bot).push_element(exprR)
-              @bot.step.should be_a Fixnum
+              @bot.step.should be_a Numeric
 
               mock(@bot).pop_var { r }
               mock(@bot).push_var( eval( "#{l}#{op}#{r}" ) ? 1 : 0 )
-              @bot.step.should be_a Fixnum
+              @bot.step.should be_a Numeric
             end.should_not change { @bot.stack.size }
           end
         end
@@ -407,15 +407,15 @@ describe EmulationSystem::Emulation::RuntimeElements do
               @bot.push_element build(:node, op, [exprL, exprR])
 
               mock(@bot).push_element(exprL)
-              @bot.step.should be_a Fixnum
+              @bot.step.should be_a Numeric
 
               mock(@bot).pop_var { l }
               mock(@bot).push_element(exprR)
-              @bot.step.should be_a Fixnum
+              @bot.step.should be_a Numeric
 
               mock(@bot).pop_var { r }
               mock(@bot).push_var( eval( "#{l != 0} #{op} #{r != 0}" ) ? 1 : 0 )
-              @bot.step.should be_a Fixnum
+              @bot.step.should be_a Numeric
             end.should_not change { @bot.stack.size }
           end
         end
@@ -435,11 +435,11 @@ describe EmulationSystem::Emulation::RuntimeElements do
           @bot.push_element build(:node, 'uplus', [expr])
 
           mock(@bot).push_element(expr)
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
 
           mock(@bot).pop_var { 37 }
           mock(@bot).push_var( 37 )
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
         end.should_not change { @bot.stack.size }
       end
 
@@ -449,11 +449,11 @@ describe EmulationSystem::Emulation::RuntimeElements do
           @bot.push_element build(:node, 'uminus', [expr])
 
           mock(@bot).push_element(expr)
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
 
           mock(@bot).pop_var { 37 }
           mock(@bot).push_var( -37 )
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
         end.should_not change { @bot.stack.size }
       end
 
@@ -464,11 +464,11 @@ describe EmulationSystem::Emulation::RuntimeElements do
             @bot.push_element build(:node, 'not', [expr])
 
             mock(@bot).push_element(expr)
-            @bot.step.should be_a Fixnum
+            @bot.step.should be_a Numeric
 
             mock(@bot).pop_var { value }
             mock(@bot).push_var( value!=0 ? 0 : 1 )
-            @bot.step.should be_a Fixnum
+            @bot.step.should be_a Numeric
           end.should_not change { @bot.stack.size }
         end
       end
@@ -488,7 +488,7 @@ describe EmulationSystem::Emulation::RuntimeElements do
             [ build(:node, 'foo'), build(:node, 'params', [build(:node,'a'),build(:node,'b')]), block ])
           
           mock(@bot).upper_block_from(anything) { mock!.set_function('foo', ['a','b'], block) }
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
         end.should_not change { @bot.stack.size }
       end
     end
@@ -507,20 +507,44 @@ describe EmulationSystem::Emulation::RuntimeElements do
           func = Object.new
           mock(func).variables_hash_for([37,42]) { :func_vars_hash }
           mock(func).block { :func_block }
+          mock(@bot).rtlib { mock!.has_function?('foo') { false } }
           mock(@bot).upper_block_from(anything) { mock!.get_function('foo') { func } }
           @bot.push_element build(:node, 'funccall',
             [ build(:node, 'foo'), build(:node, 'params', [p1,p2]) ])
           
           mock(@bot).push_element p1 
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
 
           mock(@bot).pop_var { 37 }
           mock(@bot).push_element p2
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
 
           mock(@bot).pop_var { 42 }
           mock(@bot).push_element( :func_block, :function => true, :params => :func_vars_hash )
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
+        end.should_not change { @bot.stack.size }
+      end
+
+      it "should eval all params, get function from runtime library, pop and push result" do
+        lambda do
+          p1 = build(:node, 'block')
+          p2 = build(:node, 'block')
+          mock(rtlib = Object.new).call('posx', 37, 42) { 173 }
+          mock(rtlib).has_function?('posx') { true }
+          mock(@bot).rtlib.times(any_times) { rtlib }
+          @bot.push_element build(:node, 'funccall',
+            [ build(:node, 'posx'), build(:node, 'params', [p1,p2]) ])
+          
+          mock(@bot).push_element p1 
+          @bot.step.should be_a Numeric
+
+          mock(@bot).pop_var { 37 }
+          mock(@bot).push_element p2
+          @bot.step.should be_a Numeric
+
+          mock(@bot).pop_var { 42 }
+          mock(@bot).push_var( 173 )
+          @bot.step.should be_a Numeric
         end.should_not change { @bot.stack.size }
       end
     end
@@ -539,7 +563,7 @@ describe EmulationSystem::Emulation::RuntimeElements do
           @bot.push_element build(:node, 'block')
           @bot.push_element build(:node, 'return')
 
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
         end.should_not change { @bot.stack.size }
       end
       
@@ -552,9 +576,9 @@ describe EmulationSystem::Emulation::RuntimeElements do
           @bot.push_element build(:node, 'return', [expr])
 
           mock(@bot).push_element expr
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
 
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
         end.should_not change { @bot.stack.size }
       end
       
@@ -565,7 +589,7 @@ describe EmulationSystem::Emulation::RuntimeElements do
           @bot.push_element build(:node, 'block')
           @bot.push_element build(:node, 'return')
 
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
         end.should raise_error EmulationSystem::Errors::WFLRuntimeError
       end
     end
@@ -581,18 +605,23 @@ describe EmulationSystem::Emulation::RuntimeElements do
         lambda do
           p1 = build(:node, 'block')
           p2 = build(:node, 'block')
-          @bot.push_element build(:node, 'log', [p1,p2])
+          p3 = build(:node, 'block')
+          @bot.push_element build(:node, 'log', [p1,p2,p3])
           
-          mock(@bot).push_element p1 
-          @bot.step.should be_a Fixnum
+          mock(@bot).push_element p1
+          @bot.step.should be_a Numeric
 
           mock(@bot).pop_var { "foo" }
           mock(@bot).push_element p2
-          @bot.step.should be_a Fixnum
+          @bot.step.should be_a Numeric
+
+          mock(@bot).pop_var { 2.5 }
+          mock(@bot).push_element p3
+          @bot.step.should be_a Numeric
 
           mock(@bot).pop_var { 37 }
-          mock(@bot).log("foo 37")
-          @bot.step.should be_a Fixnum
+          mock(@bot).log("foo 2.50 37")
+          @bot.step.should be_a Numeric
         end.should_not change { @bot.stack.size }
       end
     end

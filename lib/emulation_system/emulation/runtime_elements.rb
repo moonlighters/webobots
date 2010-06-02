@@ -4,7 +4,8 @@ module EmulationSystem
     #
     # В нем объявлены классы, реализующие семантику языка WaFfLe.
     #
-    # Классы реализуют методы <tt>new(bot, node)</tt> и <tt>run</tt>
+    # Классы реализуют методы <tt>new(bot, node)</tt> и <tt>run</tt>,
+    # которые могут кидать +WFLRuntimeError+
     module RuntimeElements
       # === Класс для элемента block
       # <tt>^(NODE["block"] stat*)</tt>
@@ -402,13 +403,18 @@ module EmulationSystem
             @next_param += 1
             Timing.for self, :evaluation
           else
-            # OPTIMIZE: количество параметров можно проверить при первом же запуске
-            func = @bot.upper_block_from(self).get_function( @id.data )
             @bot.pop_element
 
-            params = func.variables_hash_for @evaluated_params
-            @bot.push_element func.block, :function => true, :params => params
-            Timing.for self, :calling
+            if @bot.rtlib.has_function? @id.data
+              res = @bot.rtlib.call(@id.data, *@evaluated_params)
+              @bot.push_var res
+              Timing.for :rt, @id.data
+            else
+              func = @bot.upper_block_from(self).get_function( @id.data )
+              params = func.variables_hash_for @evaluated_params
+              @bot.push_element func.block, :function => true, :params => params
+              Timing.for self, :calling
+            end
           end
         end
       end
@@ -458,7 +464,9 @@ module EmulationSystem
             Timing.for self, :evaluation
           else
             @bot.pop_element
-            @bot.log( @evaluated_items.map(&:to_s) * ' ' )
+            @bot.log( @evaluated_items.map do |item|
+              item.is_a?(Float) ? ('%.2f' % item) : item.to_s
+            end * ' ' )
             Timing.for self, :logging
           end
         end

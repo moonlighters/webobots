@@ -4,6 +4,10 @@ module EmulationSystem
     # === Виртуальная машина
     # Интерпретирует матч между прошивками
     class VM
+      # Каждые SYNC_PERIOD секунд происходит просчет физического мира,
+      # и синхронизация ботов
+      SYNC_PERIOD = World::VM_TIME/2
+
       # * <tt>ir1</tt>, <tt>ir2</tt> - IR двух прошивок
       # * +params+ - хеш содержащий позицию и угол ботов,
       #   а также seed для рандомизатора
@@ -26,6 +30,16 @@ module EmulationSystem
             params[:second][:x], params[:second][:y], params[:second][:angle],
             lambda {|str| @logger.add_log_record(:second, str) })
         ]
+        @bots.each do |bot|
+          bot.rtlib = RTLib.new :for => bot, :against => (@bots-[bot])[0], :vm => self
+        end
+
+        @time = 0
+        @missiles = []
+      end
+
+      def launch_missile(*args)
+        @missiles << Missile.new(*args)
       end
     
       # Производит эмуляцию матча
@@ -35,15 +49,35 @@ module EmulationSystem
       # * <tt>:second</tt>
       # * <tt>:draw</tt>
       def emulate
-        while not @bots.any?(&:halted?)
-          @bots.each do |bot|
-            bot.step
+        while not @bots.any? &:halted?
+          # calc bot's health
+          # calc missiles positions
+          # ....
+          @bots.each { |bot| bot.state.calc_physics_for SYNC_PERIOD }
+          
+          @missiles.each do |missile| 
+            missile.calc_physics_for SYNC_PERIOD
+            missile.explode! if @bots.any? { |bot| missile.pos.near_to? bot.state.pos, World::BOT_RADIUS }
           end
+
+          @missiles.select(&:exploded?).each do |missile|
+            @bots.each do |bot|
+              bot.state.health -= World::MISSILE_DAMAGE if missile.pos.near_to? bot.state.pos, World::EXLOSION_RADIUS
+            end
+            @missiles.delete missile
+          end
+
+          @bots.each { |bot| bot.step while bot.time < @time and not bot.halted? }
+          
+          @time += SYNC_PERIOD
+
+          break if @time > World::MAX_LIFE_TIME
         end
 
-        if @bots.first.halted? and not @bots.second.halted?
+        case @bots.map &:halted?
+        when [true, false]
           :second
-        elsif not @bots.first.halted? and @bots.second.halted?
+        when [false, true]
           :first
         else
           :draw

@@ -21,9 +21,14 @@ describe EmulationSystem::Emulation::Bot do
   end
 
   describe "#step" do
-    it "should return 0 if nothing to run" do
+    it "should raise internal error if nothing to run" do
       @bot.stack = []
-      @bot.step.should be_nil
+      lambda { @bot.step }.should raise_error
+    end
+
+    it "should raise internal error if bot already dead" do
+      @bot.state.health = 0
+      lambda { @bot.step }.should raise_error
     end
 
     it "should return time spent on last step" do
@@ -129,6 +134,102 @@ describe EmulationSystem::Emulation::Bot do
       node = build(:node, 'block')
       mock(RuntimeElements::Block).new(is_a(Bot), node, :arg1, :arg2)
       @bot.push_element node, :arg1, :arg2
+    end
+  end
+  
+  describe EmulationSystem::Emulation::Bot::State do
+    before do
+      @state = @bot.state
+    end
+
+    describe "#radians" do
+      it "should get" do
+        @state.angle = 45
+        @state.radians.should == Math::PI/4
+      end
+      
+      it "should assign" do
+        @state.radians = 2*Math::PI/3
+        @state.angle.should == 120
+      end
+      
+      it "should get and assign" do
+        # комплексный на #radians и #radians=
+        @state.radians = 2.3
+        @state.radians.should == 2.3
+      end
+    end
+    
+    describe "#correct_value" do
+      it "should correct if less than min" do
+        @state.correct_value(2, 3, 4).should == 3
+      end
+      it "should correct if greater than max" do
+        @state.correct_value(5, 3, 4).should == 4
+      end
+      it "should not correct if less than min" do
+        @state.correct_value(3.754, 3, 4).should == 3.754
+      end
+    end
+    
+    describe "#calc_physics_for" do
+      before do
+        @dt = 0.0001
+      end
+
+      it "should emulate bot that is not moving" do
+        @state.speed = 0
+        @state.desired_speed = 0
+        lambda{ @state.calc_physics_for @dt }.should_not change { @state }
+      end
+
+      it "should emulate uniform motion" do
+        @state.desired_speed = @state.speed = 68.0
+        @state.angle = 0
+        x = @state.pos.x
+
+        lambda do
+          158.times { @state.calc_physics_for @dt }
+        end.should_not change { [@state.speed, @state.pos.y] }
+
+        @state.pos.x.should be_approximately_equal_to(x + 158*@dt*@state.speed)
+      end
+
+      it "should emulate uniformly accelerated motion" do
+        @state.speed = 0.0
+        @state.desired_speed = 10.0
+        @state.angle = -90
+        y = @state.pos.y
+        t = 0
+
+        lambda do
+          until @state.speed == @state.desired_speed
+            @state.calc_physics_for @dt
+            t += @dt
+          end
+        end.should_not change { [@state.pos.x, @state.desired_speed] }
+
+        t.should be_approximately_equal_to @state.desired_speed/World::ACCELERATION
+        @state.pos.y.should be_approximately_equal_to y - World::ACCELERATION*t**2/2, 0.001
+      end
+
+      it "should emulate uniformly decelerated motion" do
+        @state.speed = 10.0
+        @state.desired_speed = 0.0
+        @state.angle = 180
+        x = @state.pos.x
+        t = 0
+
+        lambda do
+          until @state.speed == 0
+            @state.calc_physics_for @dt
+            t += @dt
+          end
+        end.should_not change { [@state.pos.y, @state.desired_speed] }
+
+        t.should be_approximately_equal_to 10.0/World::DECELERATION
+        @state.pos.x.should be_approximately_equal_to x - World::DECELERATION*t**2/2, 0.01
+      end
     end
   end
 end

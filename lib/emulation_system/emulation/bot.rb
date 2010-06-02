@@ -5,9 +5,6 @@ module EmulationSystem
     class Bot
       include RuntimeElements
 
-      Vector = Struct.new :x, :y
-      Point = Vector
-
       # === Состояние бота
       # * +pos+ - позиция бота на поле
       # * +angle+ - направление движения бота
@@ -15,18 +12,66 @@ module EmulationSystem
       # * +desired_speed+ - конечное значение модуля скорости при разгоне и торможении
       # * +health+ - здоровье
       class State < Struct.new :pos, :angle, :speed, :desired_speed, :health
+        def radians
+          angle * Math::PI / 180
+        end
+        
+        def radians=(value)
+          self.angle = value / Math::PI * 180
+        end
+
+        def cosa
+          Math::cos(radians)
+        end
+
+        def sina
+          Math::sin(radians)
+        end
+
+        # Просчитывает шаг физики за время dt
+        def calc_physics_for(dt)
+          if speed < desired_speed
+            self.speed += World::ACCELERATION*dt
+            self.speed = desired_speed if speed > desired_speed
+          elsif speed > desired_speed
+            self.speed -= World::DECELERATION*dt
+            self.speed = desired_speed if speed < desired_speed
+          end
+          
+          self.pos += Vector[cosa, sina]*speed*dt
+
+          correct_state
+        end
+
+        # Корректирует значения координат, скорости и здоровья
+        # если они выходят за пределы
+        def correct_state
+          self.pos.x  = correct_value pos.x,  0, World::FIELD_SIZE
+          self.pos.y  = correct_value pos.y,  0, World::FIELD_SIZE
+          self.speed  = correct_value speed,  0, World::MAX_SPEED
+          self.health = correct_value health, 0, World::MAX_HEALTH
+        end
+
+        # Возвращает значение +val+, ограниченное
+        # до пределов +min+..+max+
+        def correct_value(val, min, max)
+          val < min ? min : (val > max ? max : val)
+        end
       end
       
-      attr_reader :state, :time
+      attr_reader :state
+      attr_accessor :time
+
+      attr_accessor :rtlib
 
       # Прямой доступ к стеку не рекомендован, исключительно для тестов
       attr_accessor :stack
 
       def initialize(ir, x, y, angle, log_func)
-        @state = State.new Point[x,y], angle, 0, 0, World::MAX_HEALTH
+        @state = State.new Point[x,y], angle, 0.0, 0.0, World::MAX_HEALTH
         @log_func = log_func
 
-        @time = 0
+        @time = 0.0
 
         # стек элементов выполнения
         # вершина стека - конец массива
@@ -39,13 +84,16 @@ module EmulationSystem
 
       # Закончено ли выполение?
       def halted?
-        @stack.empty?
+        @stack.empty? or @state.health <= 0
       end
 
       # Выполняет одно атомарное действие,
       # возвращает количество тактов потраченное на выполнение
       def step
-        @stack.last.run unless @stack.empty?
+        raise "Внутренняя ошибка эмуляции: попытка вызова #step у halted-бота" if halted?
+        last = @stack.last.run
+        @time += last
+        last
       end
 
       # Добавляет в стек класс элемента,
