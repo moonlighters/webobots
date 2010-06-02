@@ -69,10 +69,21 @@ module EmulationSystem::Emulation
 
     def rt_times(func)
       case func
-      # простые getter'ы
       when  'posx', 'posy', 'angle', 'speed',
             'desired_speed', 'health', 'time'
-        30
+        8
+
+      when 'rotate','set_speed'
+        13
+
+      when 'sleep'
+        5
+
+      when 'enemy_posx','enemy_posy'
+        20
+
+      when 'fire'
+        16
 
       end
     end

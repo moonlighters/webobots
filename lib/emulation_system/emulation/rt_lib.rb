@@ -38,25 +38,78 @@ module EmulationSystem
       private
 
       FUNCTIONS = [
-        # простые getter'ы
-        'posx', 'posy', 'angle', 'speed',
-        'desired_speed', 'health', 'time'
+        'posx','posy','angle','speed',
+        'desired_speed','health','time',
+        'rotate','set_speed',
+        'sleep',
+        'enemy_posx','enemy_posy',
+        'fire',
       ]
 
-      # координата X
+      # Возвращает координату бота X
       def posx; @friendly.state.pos.x; end
-      # координата Y
+
+      # Возвращает координату бота Y
       def posy; @friendly.state.pos.y; end
-      # направление движения
+
+      # Возвращает направление движения бота
       def angle; @friendly.state.angle; end
-      # текущая скорость
+
+      # Возвращает текущую скорость бота
       def speed; @friendly.state.speed; end
-      # "желаемая" скорость
+
+      # Возвращает последнюю установленную скорость
       def desired_speed; @friendly.state.desired_speed; end
-      # здоровье
+
+      # Возвращает здоровье бота
       def health; @friendly.state.health; end
-      # время прошедшее с начала
+
+      # Возвращает время прошедшее с начала матча
       def time; @friendly.time; end
+
+      # Устанавливает направление движения бота, если
+      # скорость допустима для поворота
+      #
+      # Возвращает 1, если поворот возможен, 0 - иначе
+      def rotate(angle)
+        if @friendly.state.speed <= World::MAX_SPEED_WHEN_ROTATION_POSSIBLE
+          @friendly.state.angle = angle
+          1
+        else
+          0
+        end
+      end
+
+      # Устанавливает скорость, до который бот начнет
+      # ускоряться или тормозить
+      #
+      # Возвращает 1, если скорость не выходит за допустимые пределы,
+      # 0 - иначе
+      def set_speed(speed)
+        @friendly.state.desired_speed = ( speed < 0 ? 0 : ( speed > World::MAX_SPEED ? World::MAX_SPEED : speed) )
+        (0..World::MAX_SPEED).include?(speed) ? 1 : 0
+      end
+
+      # Бот "засыпает" на +time+ секунд, при этом движение не останавливается
+      #
+      # Возвращает +time+
+      def sleep(time)
+        @friendly.time += time
+        time
+      end
+
+      # Возвращает координату X бота-врага
+      def enemy_posx; @enemy.state.pos.x; end
+
+      # Возвращает координату Y бота-врага
+      def enemy_posy; @enemy.state.pos.y; end
+
+      # Выпускает ракету в направлении угла +angle+,
+      # которая взрывается либо на расстоянии +distance+, либо
+      # от прямого столкновения с вражеским ботом
+      def fire(angle, distance)
+        raise "Not yet"
+      end
     end
   end
 end
