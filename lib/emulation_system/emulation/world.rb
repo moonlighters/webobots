@@ -14,6 +14,10 @@ module EmulationSystem
     #   иначе поворот невозможен
     # * такт процессора - 2 мс
     # * ограничено время существования "мира" - 60 с
+    # * бот - круг радиуса 30 см
+    # * скорость ракеты 500 м/с
+    # * урон от ракеты 10 (пока константный)
+    # * радиус взрыва ракеты 50 см
     module World
       FIELD_SIZE = 1000.0
       MAX_HEALTH = 100.0
@@ -22,9 +26,12 @@ module EmulationSystem
       DECELERATION = 30.0
       RATE_OF_FIRE = 2.0
       MAX_SPEED_WHEN_ROTATION_POSSIBLE = 50.0
-      MAX_LIFE_TIME = 60
-
       VM_TIME = 2e-3
+      MAX_LIFE_TIME = 60.0
+      BOT_RADIUS = 30.0
+      MISSILE_SPEED = 500.0
+      MISSILE_DAMAGE = 10.0
+      EXLOSION_RADIUS = 50.0
     end
   end
 end

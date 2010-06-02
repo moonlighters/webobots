@@ -36,6 +36,7 @@ module EmulationSystem
         end
 
         @time = 0
+        @missiles = []
       end
     
       # Производит эмуляцию матча
@@ -49,9 +50,21 @@ module EmulationSystem
           # calc bot's health
           # calc missiles positions
           # ....
-          @bots.each {|bot| bot.state.calc_physics_for SYNC_PERIOD}
+          @bots.each { |bot| bot.state.calc_physics_for SYNC_PERIOD }
+          
+          @missiles.each do |missile| 
+            missile.calc_physics_for SYNC_PERIOD
+            missile.explode! if @bots.any? { |bot| missile.pos.near_to? bot.state.pos, World::BOT_RADIUS }
+          end
 
-          @bots.each {|bot| bot.step while bot.time < @time and not bot.halted? }
+          @missiles.select(&:exploded?).each do |missile|
+            @bots.each do |bot|
+              bot.state.health -= MISSILE_DAMAGE if missile.pos.near_to? bot.state.pos, World::EXLOSION_RADIUS
+            end
+            @missiles.delete missile
+          end
+
+          @bots.each { |bot| bot.step while bot.time < @time and not bot.halted? }
           
           @time += SYNC_PERIOD
 

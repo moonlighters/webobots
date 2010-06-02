@@ -24,6 +24,10 @@ module EmulationSystem
       def abs
         return Math::sqrt(x**2 + y**2)
       end
+
+      def near_to?(vector, radius)
+        (self - vector).abs <= radius
+      end
     end
     
     Point = Vector
