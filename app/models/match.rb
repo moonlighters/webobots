@@ -1,6 +1,8 @@
 class Match < ActiveRecord::Base
   serialize :parameters, Hash
 
+  has_one :replay, :class_name => 'MatchReplay'
+
   belongs_to  :first_version,
               :class_name => 'FirmwareVersion',
               :foreign_key => 'fwv1_id'
@@ -80,10 +82,12 @@ class Match < ActiveRecord::Base
                                   second_version.code,
                                   parameters,
                                   logger
-    unless result
-      set_result!(res)
-    end
+    
+    set_result!(res) unless result
 
+    if logger.is_a? EmulationSystem::Loggers::ReplayLogger and replay.nil?
+      create_replay :config => logger.config, :frames => logger.frames
+    end
     result
   end
 

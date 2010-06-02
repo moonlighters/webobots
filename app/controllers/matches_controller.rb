@@ -29,6 +29,8 @@ class MatchesController < ApplicationController
     @match.user = current_user
 
     if prevalidate( @match ) and @match.save
+      @match.emulate EmulationSystem::Loggers::ReplayLogger.new
+
       redirect_to match_path( @match )
     else
       prepare_select
@@ -37,15 +39,11 @@ class MatchesController < ApplicationController
   end
 
   def show
-    unless @match.emulated?
-      @logger = EmulationSystem::Loggers::DummyLogger.new
-      @match.emulate @logger
-    end
   end
 
   def play
-    @logger = EmulationSystem::Loggers::ReplayLogger.new
-    @match.emulate @logger
+    @match.emulate( EmulationSystem::Loggers::ReplayLogger.new ) if @match.replay.nil?
+    @replay = @match.replay
   end
 
   private

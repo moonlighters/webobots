@@ -1,8 +1,8 @@
 %h2 Просмотр повтора матча
 
 :javascript
-  var config = #{@logger.config.to_json};
-  var frames = #{@logger.frames.to_json};
+  var config = #{@replay.config};
+  var frames = #{@replay.frames};
 
 %h3
   = link_to_firmware_version @match.first_version
