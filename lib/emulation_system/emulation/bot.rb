@@ -5,9 +5,6 @@ module EmulationSystem
     class Bot
       include RuntimeElements
 
-      Vector = Struct.new :x, :y
-      Point = Vector
-
       # === Состояние бота
       # * +pos+ - позиция бота на поле
       # * +angle+ - направление движения бота
@@ -42,8 +39,7 @@ module EmulationSystem
           end
           
           self.speed += acc*dt
-          self.pos.x += speed*cosa*dt
-          self.pos.y += speed*sina*dt
+          self.pos += Vector[cosa, sina]*speed*dt
 
           correct_state
         end
