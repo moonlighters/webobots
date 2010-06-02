@@ -131,5 +131,36 @@ describe EmulationSystem::Emulation::RTLib do
         @rtlib.call( 'fire', 45, 100 )
       end
     end
+    describe "sin" do
+      it "should return sin of angle" do
+        @rtlib.call( 'sin', 30 ).should == Math.sin(Math::PI/6)
+      end
+    end
+    describe "cos" do
+      it "should return cos of angle" do
+        @rtlib.call( 'cos', 60 ).should == Math.cos(Math::PI/3)
+      end
+    end
+    describe "atan2" do
+      it "should return arc tangent given y and x" do
+        @rtlib.call( 'atan2', 2, 1).should == Math.atan2(2,1) * 180 / Math::PI
+      end
+    end
+    describe "sqr" do
+      it "should square argument" do
+        @rtlib.call( 'sqr', 5 ).should == 25
+      end
+      it "should square negative argument" do
+        @rtlib.call( 'sqr', -7 ).should == 49
+      end
+    end
+    describe "sqrt" do
+      it "should return square root of positive numeric" do
+        @rtlib.call( 'sqrt', 25 ).should == 5
+      end
+      it "should raise given negative numeric" do
+        lambda { @rtlib.call( 'sqrt', -49 ) }.should raise_error EmulationSystem::Errors::WFLRuntimeError
+      end
+    end
   end
 end
