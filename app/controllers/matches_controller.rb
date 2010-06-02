@@ -70,7 +70,7 @@ class MatchesController < ApplicationController
       end
       @enemy_selection_hint = "одна из прошивок игрока #{render_to_string :inline => "<%= link_to_user u %>", :locals => { :u => user }}"
     else
-      @enemy_collection = Firmware.all(:order => :user_id).map do |x|
+      @enemy_collection = Firmware.all(:order => :user_id, :include => [:user, :version]).map do |x|
         [ "#{x.name} (игрока #{x.user.login})", x.version.id ]
       end
       @enemy_selection_hint = "одна из прошивок игроков"

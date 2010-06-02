@@ -44,7 +44,7 @@ ru:
       update: "Обновить"
       login: "Войти"
       register: "Зарегистрироваться"
-      choose: "Выбрать"
+      conduct: "Провести"
   will_paginate:
     previous_label: "« Назад"
     next_label: "Вперед »"

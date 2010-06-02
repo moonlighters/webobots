@@ -5,6 +5,7 @@ class Firmware < ActiveRecord::Base
       last.number unless empty?
     end
   end
+  has_one :version, :class_name => 'FirmwareVersion', :order => 'number DESC'
 
   belongs_to :user
   
@@ -18,10 +19,6 @@ class Firmware < ActiveRecord::Base
 
   # TODO: может быть стоит занести это в модель?
   # validates :presence_of_at_least_one_version
-
-  def version
-    versions.last
-  end
 
   attr_writer :rating_position
   def rating_position
