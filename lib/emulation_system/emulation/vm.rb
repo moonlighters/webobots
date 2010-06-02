@@ -38,6 +38,10 @@ module EmulationSystem
         @time = 0
         @missiles = []
       end
+
+      def launch_missile(*args)
+        @missiles << Missile.new(*args)
+      end
     
       # Производит эмуляцию матча
       #
@@ -59,7 +63,7 @@ module EmulationSystem
 
           @missiles.select(&:exploded?).each do |missile|
             @bots.each do |bot|
-              bot.state.health -= MISSILE_DAMAGE if missile.pos.near_to? bot.state.pos, World::EXLOSION_RADIUS
+              bot.state.health -= World::MISSILE_DAMAGE if missile.pos.near_to? bot.state.pos, World::EXLOSION_RADIUS
             end
             @missiles.delete missile
           end

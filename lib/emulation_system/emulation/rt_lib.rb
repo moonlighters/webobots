@@ -127,9 +127,15 @@ module EmulationSystem
       # от прямого столкновения с вражеским ботом
       #
       # Возвращает 1, если выстрел прошел успешно,
-      # 0, если выстрел невозможен из-за огроничения скорострельности
+      # 0, если выстрел невозможен из-за ограничения скорострельности
       def fire(angle, distance) # :doc:
-        raise "Not yet"
+        if @last_launch.nil? || @friendly.time - @last_launch >= 1.0/World::RATE_OF_FIRE
+          @vm.launch_missile(@friendly, to_radians(angle), distance)
+          @last_launch = @friendly.time
+          1
+        else
+          0
+        end
       end
 
       # внутренний хелпер

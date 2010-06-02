@@ -126,9 +126,25 @@ describe EmulationSystem::Emulation::RTLib do
       end
     end
     describe "fire" do
-      it "should fire missile" do
-        pending "get missile control system"
-        @rtlib.call( 'fire', 45, 100 )
+      def should_add_missiles(n)
+        raise unless block_given?
+        lambda do
+          yield
+        end.should change { @rtlib.instance_variable_get('@vm').instance_variable_get('@missiles').count }.by n
+      end
+
+      it "should fire first missile" do
+        should_add_missiles(1) { @rtlib.call('fire', 45, 100).should == 1 }
+      end
+      it "should not fire missile if already fired" do
+        should_add_missiles(1) { @rtlib.call('fire', 45, 100) }
+        should_add_missiles(0) { @rtlib.call('fire', 99, 10).should == 0 }
+      end
+      it "should fire missile after pause" do
+        should_add_missiles(1) { @rtlib.call('fire', 45, 100) }
+        should_add_missiles(0) { @rtlib.call('fire', 99, 10) }
+        @bot1.time += 2/World::RATE_OF_FIRE
+        should_add_missiles(1) { @rtlib.call('fire', 45, 100).should == 1 }
       end
     end
     describe "sin" do
