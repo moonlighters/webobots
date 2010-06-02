@@ -88,6 +88,9 @@ module EmulationSystem::Emulation
       when 'sin','cos','atan2','sqr','sqrt'
         10
 
+      when 'rand'
+        10
+
       end
     end
     module_function :rt_times

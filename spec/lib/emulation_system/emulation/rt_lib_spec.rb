@@ -178,5 +178,10 @@ describe EmulationSystem::Emulation::RTLib do
         lambda { @rtlib.call( 'sqrt', -49 ) }.should raise_error EmulationSystem::Errors::WFLRuntimeError
       end
     end
+    describe "sqrt" do
+      it "should return random number" do
+        @rtlib.call( 'rand' ).should be_a Float
+      end
+    end
   end
 end

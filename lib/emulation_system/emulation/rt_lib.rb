@@ -44,7 +44,8 @@ module EmulationSystem
         'sleep',
         'enemy_posx','enemy_posy',
         'fire',
-        'sin','cos','atan2','sqr','sqrt' ] # :nodoc:
+        'sin','cos','atan2','sqr','sqrt',
+        'rand' ] # :nodoc:
 
       # Возвращает координату X бота
       def posx # :doc:
@@ -170,6 +171,11 @@ module EmulationSystem
       def sqrt(x) # :doc:
         raise Errors::WFLRuntimeError, "извлечение квадратного корня из отричательного числа" if x < 0
         Math.sqrt(x)
+      end
+
+      # Возвращает случайное число от 0 до 1
+      def rand() # :doc:
+        Kernel::rand
       end
     end
   end

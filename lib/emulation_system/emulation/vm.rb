@@ -21,7 +21,6 @@ module EmulationSystem
       # * +logger+ - класс из модуля +Loggers+,
       #   сохраняет информацию о прохождении матча
       def initialize(ir1, ir2, params, logger)
-        @seed = params[:seed]
         @logger = logger
 
         @bots = [
@@ -38,6 +37,8 @@ module EmulationSystem
 
         @time = 0
         @missiles = []
+
+        srand params[:seed]
       end
 
       def launch_missile(*args)
