@@ -7,6 +7,8 @@ module EmulationSystem
       # Каждые SYNC_PERIOD секунд происходит просчет физического мира,
       # и синхронизация ботов
       SYNC_PERIOD = World::VM_TIME/2
+      FRAME_RATE = 10
+      FRAME_PERIOD_IN_SYNCS = 1.0/FRAME_RATE/SYNC_PERIOD
 
       # * <tt>ir1</tt>, <tt>ir2</tt> - IR двух прошивок
       # * +params+ - хеш содержащий позицию и угол ботов,
@@ -49,10 +51,18 @@ module EmulationSystem
       # * <tt>:second</tt>
       # * <tt>:draw</tt>
       def emulate
+        syncs = 0
+        explosions = []
         while not @bots.any? &:halted?
-          # calc bot's health
-          # calc missiles positions
-          # ....
+          if syncs % FRAME_PERIOD_IN_SYNCS == 0
+            @logger.add_frame @bots[0], @bots[1], {
+              :missiles => @missiles,
+              :explosions => explosions,
+              :time => @time
+            }
+            explosions = []
+          end
+
           @bots.each { |bot| bot.state.calc_physics_for SYNC_PERIOD }
           
           @missiles.each do |missile| 
@@ -61,6 +71,7 @@ module EmulationSystem
           end
 
           @missiles.select(&:exploded?).each do |missile|
+            explosions << missile.pos
             @bots.each do |bot|
               bot.state.health -= World::MISSILE_DAMAGE if missile.pos.near_to? bot.state.pos, World::EXLOSION_RADIUS
             end
@@ -70,6 +81,7 @@ module EmulationSystem
           @bots.each { |bot| bot.step while bot.time < @time and not bot.halted? }
           
           @time += SYNC_PERIOD
+          syncs += 1
 
           break if @time > World::MAX_LIFE_TIME
         end

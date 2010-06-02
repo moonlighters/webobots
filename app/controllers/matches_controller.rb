@@ -1,5 +1,6 @@
 class MatchesController < ApplicationController
   before_filter :require_user
+  before_filter :find_match, :only => [:show, :play]
 
   def index
     @matches = Match.all_including_stuff_for(current_user).paginate :page => params[:page],
@@ -36,12 +37,22 @@ class MatchesController < ApplicationController
   end
 
   def show
-    @match = Match.find params[:id]
-    @logger = EmulationSystem::Loggers::RecordListLogger.new
+    unless @match.emulated?
+      @logger = EmulationSystem::Loggers::DummyLogger.new
+      @match.emulate @logger
+    end
+  end
+
+  def play
+    @logger = EmulationSystem::Loggers::ReplayLogger.new
     @match.emulate @logger
   end
 
   private
+
+  def find_match
+    @match = Match.find params[:id]
+  end
 
   def prepare_select
     if params[:enemy]

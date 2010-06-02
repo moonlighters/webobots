@@ -20,7 +20,8 @@ ActionController::Routing::Routes.draw do |map|
   map.firmware_versions 'firmwares/:id/versions', :controller => 'firmwares', :action => 'index_versions', :conditions => {:method => :get}
 
   # matches
-  map.resources :matches, :only => [:new, :create, :show, :index], :collection => {:all => :get}
+  map.resources :matches, :only => [:new, :create, :show, :index],
+                          :collection => {:all => :get}, :member => {:play => :get}
 
   # rating
   map.with_options :controller => 'rating', :conditions => {:method => :get}, :path_prefix => 'rating' do |rating|

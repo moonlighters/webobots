@@ -1,4 +1,4 @@
-%h2 Просмотр матча
+%h2 Просмотр информации о матче
 
 %h3
   = link_to_firmware_version @match.first_version
@@ -22,8 +22,5 @@
 - else
   %p
     %b Ничья!
-%p
-  Лог:
-  %hr
-  %pre= @logger.records * "\n"
-  %hr
+
+%p= link_to "Повтор матча", play_match_path( @match )

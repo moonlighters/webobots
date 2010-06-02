@@ -1,0 +1,33 @@
+%h2 Просмотр повтора матча
+
+:javascript
+  var config = #{@logger.config.to_json};
+  var frames = #{@logger.frames.to_json};
+
+%h3
+  = link_to_firmware_version @match.first_version
+  VS
+  = link_to_firmware_version @match.second_version
+
+- if @match.result != :draw
+  %p
+    %b Победитель:
+    = link_to_firmware_version @match.winner_version
+- else
+  %p
+    %b Ничья!
+
+%p
+  %i
+    = link_to_firmware @match.first_version.firmware
+    в красном,
+    = link_to_firmware @match.second_version.firmware
+    в синем
+
+#replay-canvas
+
+%p
+  Лог:
+  %hr
+  %pre#replay-logger
+  %hr

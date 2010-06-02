@@ -24,12 +24,12 @@ module EmulationSystem
       MAX_SPEED = 100.0
       ACCELERATION = 15.0
       DECELERATION = 30.0
-      RATE_OF_FIRE = 2.0
+      RATE_OF_FIRE = 1.5
       MAX_SPEED_WHEN_ROTATION_POSSIBLE = 50.0
       VM_TIME = 2e-3
       MAX_LIFE_TIME = 60.0
       BOT_RADIUS = 30.0
-      MISSILE_SPEED = 500.0
+      MISSILE_SPEED = 200.0
       MISSILE_DAMAGE = 10.0
       EXLOSION_RADIUS = 50.0
     end
