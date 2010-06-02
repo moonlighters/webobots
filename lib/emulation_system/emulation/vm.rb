@@ -46,10 +46,10 @@ module EmulationSystem
       # * <tt>:draw</tt>
       def emulate
         while not @bots.any? &:halted?
-          # calc physics
           # calc bot's health
           # calc missiles positions
           # ....
+          @bots.each {|bot| bot.state.calc_physics_for SYNC_PERIOD}
 
           @bots.each {|bot| bot.step while bot.time < @time and not bot.halted? }
           
