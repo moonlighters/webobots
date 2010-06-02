@@ -31,14 +31,13 @@ module EmulationSystem
         # Просчитывает шаг физики за время dt
         def calc_physics_for(dt)
           if speed < desired_speed
-            acc = World::ACCELERATION
+            self.speed += World::ACCELERATION*dt
+            self.speed = desired_speed if speed > desired_speed
           elsif speed > desired_speed
-            acc = -World::DECELERATION
-          else
-            acc = 0
+            self.speed -= World::DECELERATION*dt
+            self.speed = desired_speed if speed < desired_speed
           end
           
-          self.speed += acc*dt
           self.pos += Vector[cosa, sina]*speed*dt
 
           correct_state

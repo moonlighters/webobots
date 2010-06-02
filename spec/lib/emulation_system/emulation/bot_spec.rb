@@ -203,7 +203,7 @@ describe EmulationSystem::Emulation::Bot do
         t = 0
 
         lambda do
-          until @state.speed.approximately_equal_to? @state.desired_speed, 0.001
+          until @state.speed == @state.desired_speed
             @state.calc_physics_for @dt
             t += @dt
           end
@@ -221,14 +221,14 @@ describe EmulationSystem::Emulation::Bot do
         t = 0
 
         lambda do
-          until @state.speed.approximately_equal_to? 0, 0.001
+          until @state.speed == 0
             @state.calc_physics_for @dt
             t += @dt
           end
         end.should_not change { [@state.pos.y, @state.desired_speed] }
 
         t.should be_approximately_equal_to 10.0/World::DECELERATION
-        @state.pos.x.should be_approximately_equal_to x - World::DECELERATION*t**2/2, 0.001
+        @state.pos.x.should be_approximately_equal_to x - World::DECELERATION*t**2/2, 0.01
       end
     end
   end
