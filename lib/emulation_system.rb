@@ -16,7 +16,9 @@ module EmulationSystem
   def emulate(code1, code2, params, logger)
     ir1 = Parsing::Parser.new(code1).parse
     ir2 = Parsing::Parser.new(code2).parse
-    Emulation::VM.new(ir1, ir2, params, logger).emulate
+    res = Emulation::VM.new(ir1, ir2, params, logger).emulate
+    srand
+    res
   end
   module_function :emulate
 
