@@ -93,7 +93,13 @@ module EmulationSystem
         when [false, true]
           :first
         else
-          :draw
+          if @bots.first.state.health > @bots.second.state.health
+            :first
+          elsif @bots.second.state.health > @bots.first.state.health
+            :second
+          else
+            :draw
+          end
         end
       end
     end
