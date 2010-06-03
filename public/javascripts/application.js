@@ -77,10 +77,10 @@ window.onload = function() {
     for( var key in frame.explosions ) {
       var point = frame.explosions[key];
       var e = canvas.circle(point.x*SIZE, point.y*SIZE, 0);
-      e.attr('fill', '#ff0');
-      e.attr('fill-opacity', '0.75');
+      e.attr('fill', '#f40');
+      e.attr('fill-opacity', '1');
       e.attr('stroke-opacity', '0');
-      e.animate({r: EXPLOSION_RADIUS}, delay*2, ">");
+      e.animate({r: EXPLOSION_RADIUS, fill: '#ff0', 'fill-opacity': 0.5}, delay, ">");
       explosions.push(e);
     }
   }, delay);
