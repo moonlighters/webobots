@@ -53,7 +53,7 @@ describe EmulationSystem::Emulation::Missile do
           @m.calc_physics_for @dt
         end
       end.should_not change { @m.pos.y }
-      @m.pos.x.should be_approximately_equal_to 0
+      @m.pos.x.should be_approximately_equal_to 0, 0.05
     end
   end
 end
