@@ -2,6 +2,11 @@ body {
   font: 14px Tahoma, Verdana, Arial, sans-serif
 }
 
+h1 {
+  display: inline;
+  margin-right: 30px;
+}
+
 textarea.code {
   font-family: monospace !important;
 }
@@ -31,4 +36,9 @@ td.line-numbers {
 
 .pagination {
   margin: 10px 0px;
+}
+
+.account {
+  margin-top: 10px;
+  float: right;
 }
