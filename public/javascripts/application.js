@@ -1,7 +1,7 @@
 window.onload = function() {
   if( document.getElementById("replay-canvas") == null)
     return;
-  var SIZE = 500;
+  var SIZE = 400;
   var BOT_RADIUS = config.bot_radius*SIZE;
   var EXPLOSION_RADIUS = config.explosion_radius*SIZE;
   var frame_index = 0
