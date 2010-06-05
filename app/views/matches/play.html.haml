@@ -1,21 +1,10 @@
-%h2 Просмотр повтора матча
+%h2
+  Просмотр повтора матча
+  = link_to_match @match
 
 :javascript
   var config = #{@replay.config};
   var frames = #{@replay.frames};
-
-%h3
-  = link_to_firmware_version @match.first_version
-  VS
-  = link_to_firmware_version @match.second_version
-
-- if @match.result != :draw
-  %p
-    %b Победитель:
-    = link_to_firmware_version @match.winner_version
-- else
-  %p
-    %b Ничья!
 
 %p
   %i
