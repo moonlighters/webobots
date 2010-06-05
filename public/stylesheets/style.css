@@ -7,6 +7,20 @@ h1 {
   margin-right: 30px;
 }
 
+header h1.logo {
+  font-size: 2.5em;
+  float: left;
+  margin: 0px 30px 0px 10px;
+}
+
+.nav {
+  margin-top: 10px;
+}
+
+.account-panel {
+  float: right;
+}
+
 textarea.code {
   font-family: monospace !important;
 }
@@ -38,7 +52,6 @@ td.line-numbers {
   margin: 10px 0px;
 }
 
-.account {
-  margin-top: 10px;
-  float: right;
+.clear {
+  clear: both;
 }

@@ -11,7 +11,7 @@
 
   %body
     %header
-      .account
+      .account-panel
         - if current_user
           Вы вошли как
           = link_to_user(current_user) + "."
@@ -21,7 +21,7 @@
           |
           = link_to "Войти", login_path
 
-      %h1 Webobots Site
+      %h1.logo Webobots Site
 
       - if current_user
         %nav
@@ -31,7 +31,9 @@
           |
           = link_to "Матчи", matches_path
           |
-        = link_to "Рейтинг", users_rating_path
+          = link_to "Рейтинг", users_rating_path
+
+      .clear
 
     %section
       = flash_sections
