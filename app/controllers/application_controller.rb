@@ -51,4 +51,17 @@ class ApplicationController < ActionController::Base
       false
     end
   end
+
+  # Вывод страниц с ошибкой
+  def rescue_action_in_public(e)
+    case e
+    when ActiveRecord::RecordNotFound,
+         ActionController::UnknownController,
+         ActionController::UnknownAction,
+         ActionController::RoutingError
+      render 'application/404', :status => 404
+    else
+      render 'application/500', :status => 500
+    end
+  end
 end
