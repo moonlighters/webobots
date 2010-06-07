@@ -9,18 +9,26 @@
 %p
   %b Позиция в рейтинге:
   = @fw.rating_position.to_s + "-я из " + @fws_count.to_s
+%p
+  %b Исходный код:
+  = @fw.shared? ? "открытый" : "закрытый"
+%p
+  %b Доступность для сражения:
+  = "не" unless @fw.available
+  доступна
+  
 
 - @fwv = @fw.version
 %p
-  %b= "Последняя версия прошивки: ##{@fwv.number}"
+  %b Последняя версия прошивки:
+  = "##{@fwv.number}"
 %p
+  = link_to 'Сразиться!', new_match_path(:enemy_fw => @fw)
+  |
   = link_to "История версий", firmware_versions_path(@fw)
+  = '| ' + link_to( 'Редактировать', edit_firmware_path(@fw) ) if current_user.owns? @fw
 
 = render :partial => 'syntax', :locals => {:fwv => @fwv}
-
-%p= link_to( 'Сразиться!', new_match_path(:enemy_fw => @fw) )
-%p= link_to( 'Редактировать', edit_firmware_path(@fw) ) if current_user.owns? @fw
-
-= render :partial => 'code', :locals => {:code => @fwv.code}
+= render :partial => 'code', :locals => {:code => @fwv.code, :firmware => @fw}
 
 %p= link_to( 'Редактировать', edit_firmware_path(@fw) ) if current_user.owns? @fw

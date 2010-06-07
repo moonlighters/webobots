@@ -24,4 +24,8 @@ module FirmwaresHelper
       render :partial => 'syntax_error', :collection => fwv.syntax_errors
     end
   end
+
+  def can_see_code_of?(fw)
+    current_user.owns?(fw) || fw.shared?
+  end
 end

@@ -16,6 +16,8 @@ end
 Factory.define :firmware do |fw|
   fw.name "Best WaFfLe fw"
   fw.association :user
+  fw.shared false
+  fw.available true
 end
 
 Factory.define :firmware_version do |fwv|

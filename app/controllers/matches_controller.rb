@@ -28,7 +28,7 @@ class MatchesController < ApplicationController
     @match = Match.new params[:match]
     @match.user = current_user
 
-    if prevalidate( @match ) and @match.save
+    if MatchesController.prevalidate( @match ) and @match.save
       @match.emulate EmulationSystem::Loggers::ReplayLogger.new
 
       redirect_to match_path( @match )
@@ -44,6 +44,27 @@ class MatchesController < ApplicationController
   def play
     @match.emulate( EmulationSystem::Loggers::ReplayLogger.new ) if @match.replay.nil?
     @replay = @match.replay
+  end
+
+  # в этом случае одна из прошивок должна принадлежать юзеру,
+  # а те, что не принадлежат ему должны быть последней версии
+  def self.prevalidate(match)
+    u = match.user
+    fwvs = %w[ first second ].map {|n| match.send "#{n}_version" }.compact
+    owned = fwvs.select {|fwv| u.owns? fwv.firmware }
+    not_owned = fwvs - owned
+    if owned.count == 0
+      match.errors.add_to_base "хотя бы одна из прошивок должна быть ваша"
+      false
+    elsif not_owned.any? {|fwv| fwv.firmware.versions.last != fwv }
+      match.errors.add_to_base "нельзя проводить матчи со старыми версиями прошивок соперников"
+      false
+    elsif not_owned.any? {|fwv| not fwv.firmware.available?}
+      match.errors.add_to_base "прошивка соперника недоступна для сражения"
+      false
+    else
+      true
+    end
   end
 
   private
@@ -77,24 +98,6 @@ class MatchesController < ApplicationController
     end
     @friendly_collection = current_user.firmwares.map do |x|
       [ x.name, x.version.id ]
-    end
-  end
-
-  # в этом случае одна из прошивок должна принадлежать юзеру,
-  # а те, что не принадлежат ему должны быть последней версии
-  def prevalidate(match)
-    u = match.user
-    fwvs = %w[ first second ].map {|n| match.send "#{n}_version" }.compact
-    owned = fwvs.select {|fwv| u.owns? fwv.firmware }
-    not_owned = fwvs - owned
-    if owned.count == 0
-      match.errors.add_to_base "хотя бы одна из прошивок должна быть ваша"
-      false
-    elsif not_owned.any? {|fwv| fwv.firmware.versions.last != fwv }
-      match.errors.add_to_base "нельзя проводить матчи со старыми версиями прошивок соперников"
-      false
-    else
-      true
     end
   end
 end

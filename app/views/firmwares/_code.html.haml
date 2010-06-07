@@ -1,8 +1,11 @@
-%hr
-%table
-  %tr
-    %td.line-numbers
-      %pre= (1..code.lines.count).to_a * "\n"
-    %td
-      %pre= format_code( code )
-%hr
+- if can_see_code_of? firmware
+  %hr
+  %table
+    %tr
+      %td.line-numbers
+        %pre= (1..code.lines.count).to_a * "\n"
+      %td
+        %pre= format_code( code )
+  %hr
+- else
+  %i Пользователь предпочел скрыть код этой прошивки
