@@ -9,8 +9,7 @@ class UserSessionsController < ApplicationController
   def create
     @user_session = UserSession.new(params[:user_session])
     if @user_session.save
-      flash[:notice] = "Вы вошли на сайт!"
-      redirect_back_or_default account_url
+      redirect_back_or_default account_url, :notice => "Вы вошли на сайт"
     else
       render :action => :new
     end
@@ -18,7 +17,6 @@ class UserSessionsController < ApplicationController
   
   def destroy
     current_user_session.destroy
-    flash[:notice] = "Вы успешно прекратили сеанс работы!"
-    redirect_back_or_default root_url
+    redirect_back_or_default root_url, :notice => "Вы успешно прекратили сеанс работы"
   end
 end

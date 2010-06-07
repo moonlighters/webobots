@@ -38,7 +38,7 @@ module EmulationSystem
         self.distance += ds
 
         explode! if self.distance >= desired_distance ||
-                    [pos.x, pos.y].any? { |q| not (0..World::FIELD_SIZE).include? q }
+                    [pos.x, pos.y].any? { |q| (0..World::FIELD_SIZE).exclude? q }
       end
     end
   end

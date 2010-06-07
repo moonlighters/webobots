@@ -16,8 +16,7 @@ class UsersController < ApplicationController
     @user = User.new params[:user]
     @user.login = params[:user][:login]
     if @user.save
-      flash[:notice] = "Пользователь успешно зарегистрирован!"
-      redirect_back_or_default account_url
+      redirect_back_or_default account_url, :notice => "Пользователь успешно зарегистрирован"
     else
       render :action => :new
     end
@@ -39,8 +38,7 @@ class UsersController < ApplicationController
   def update
     params[:user].delete :login
     if @user.update_attributes params[:user]
-      flash[:notice] = "Аккаунт обновлен!"
-      redirect_to account_url
+      redirect_to account_url, :notice => "Аккаунт обновлен"
     else
       render :action => :edit
     end

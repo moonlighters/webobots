@@ -1,6 +1,6 @@
 module LayoutHelper
   def flash_sections
-    %w(error warning notice).map { |sec| flash_section(sec) } * "\n"
+    %w(alert notice).map { |sec| flash_section(sec) } * "\n"
   end
 
   def flash_section(sec)

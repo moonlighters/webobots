@@ -19,8 +19,7 @@ class MatchesController < ApplicationController
       Firmware.find(params[:enemy_fw]).version if params[:enemy_fw]
     )
     if current_user.firmwares.count == 0
-      flash[:error] = "Сначала создайте прошивку для участия в матчах"
-      redirect_to firmwares_path
+      redirect_to firmwares_path, :notice => "Сначала создайте прошивку для участия в матчах"
     end
   end
 

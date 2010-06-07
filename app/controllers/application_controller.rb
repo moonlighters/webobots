@@ -19,8 +19,7 @@ class ApplicationController < ActionController::Base
   def require_user
     unless current_user
       store_location
-      flash[:notice] = "Вы должны войти, чтобы получить доступ к этой странице"
-      redirect_to login_url
+      redirect_to login_url, :alert => "Вы должны войти, чтобы получить доступ к этой странице"
       false
     end
   end
@@ -28,9 +27,8 @@ class ApplicationController < ActionController::Base
   def require_no_user
     if current_user
       store_location
-      flash[:notice] = "Вы должны выйти из системы, чтобы получить доступ к этой странице"
       # TODO redirect_to root ?
-      redirect_to account_url
+      redirect_to account_url, :alert => "Вы должны выйти из системы, чтобы получить доступ к этой странице"
       false
     end
   end
@@ -39,15 +37,14 @@ class ApplicationController < ActionController::Base
     session[:return_to] = request.request_uri
   end
   
-  def redirect_back_or_default(default)
-    redirect_to(session[:return_to] || default)
+  def redirect_back_or_default(default, opts={})
+    redirect_to(session[:return_to] || default, opts)
     session[:return_to] = nil
   end
 
   def generalized_require_owner(resource)
     unless current_user and current_user.owns? resource
-      flash[:notice] = "У вас нет доступа к этой странице"
-      redirect_back_or_default root_path
+      redirect_back_or_default root_path, :alert => "У вас нет доступа к этой странице"
       false
     end
   end

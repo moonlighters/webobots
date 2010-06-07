@@ -26,8 +26,7 @@ class FirmwaresController < ApplicationController
       # Модель FirmwareVersion сделана так, что ошибок быть не может
       @fwv.save!
 
-      flash[:notice] = "Прошивка успешно создана!"
-      redirect_to firmware_path(@fw)
+      redirect_to firmware_path(@fw), :notice => "Прошивка успешно создана"
     else
       render :action => :new
     end
@@ -66,8 +65,7 @@ class FirmwaresController < ApplicationController
         @fwv.save!
       end
 
-      flash[:notice] = "Прошивка успешно обновлена!"
-      redirect_to firmware_path(@fw)
+      redirect_to firmware_path(@fw), :notice => "Прошивка успешно обновлена"
     else
       render :action => edit
     end
