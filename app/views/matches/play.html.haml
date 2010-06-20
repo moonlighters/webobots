@@ -5,6 +5,8 @@
 :javascript
   var config = #{@replay.config};
   var frames = #{@replay.frames};
+  var red_name = "#{@match.first_version.firmware.name}";
+  var blue_name = "#{@match.second_version.firmware.name}";
 
 %p
   %i
@@ -15,8 +17,5 @@
 
 #replay-canvas
 
-%p
-  Лог:
-  %hr
-  %pre#replay-logger
-  %hr
+%p Лог матча:
+#replay-logger

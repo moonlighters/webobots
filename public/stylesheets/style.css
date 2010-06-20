@@ -55,3 +55,23 @@ td.line-numbers {
 .clear {
   clear: both;
 }
+
+#replay-canvas {
+  float: left;
+  margin: 5px 20px;
+}
+
+#replay-logger {
+  height: 365px;
+  overflow: auto;
+}
+
+#red-log-entry {
+  color: #f00;
+  font-family: monospace;
+}
+
+#blue-log-entry {
+  color: #00f;
+  font-family: monospace;
+}

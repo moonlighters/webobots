@@ -83,5 +83,28 @@ window.onload = function() {
       e.animate({r: EXPLOSION_RADIUS, fill: '#ff0', 'fill-opacity': 0.5}, delay, ">");
       explosions.push(e);
     }
+
+    // log
+    for( var key in frame.log ) {
+      var bot = frame.log[key][0];
+      var msg = frame.log[key][1];
+
+      if( bot == "bot1" ) {
+        bot_name = red_name;
+        id = "red-log-entry";
+      }
+      else {
+        bot_name = blue_name;
+        id = "blue-log-entry";
+      }
+
+      log_entry = document.createElement("div");
+      log_entry.innerHTML = "[" + frame.time.toFixed(1) + "] " + bot_name + ": " + msg;
+      log_entry.id = id;
+
+      rl = document.getElementById("replay-logger")
+      rl.appendChild( log_entry );
+      rl.scrollTop = rl.scrollHeight;
+    }
   }, delay);
 };
