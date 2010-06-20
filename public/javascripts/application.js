@@ -106,7 +106,7 @@ window.onload = function() {
       }
 
       log_entry = document.createElement("div");
-      log_entry.innerHTML = "[" + frame.time.toFixed(1) + "] " + bot_name + ": " + msg;
+      log_entry.innerHTML = "[" + frame.time.toFixed(1) + " s] " + bot_name + ": " + msg;
       log_entry.id = id;
 
       rl = document.getElementById("replay-logger")
