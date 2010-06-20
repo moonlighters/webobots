@@ -23,6 +23,13 @@ window.onload = function() {
     var frame = frames[frame_index];
     if( frame == undefined ) {
       clearInterval(intervalId);
+
+      var fade_time = 10*delay;
+      bot1.animate({r: 0}, fade_time);
+      bot2.animate({r: 0}, fade_time);
+      for( var id in missiles ) {
+        missiles[id].animate({r: 0}, fade_time/5);
+      }
       return;
     }
     frame_index += 1;
