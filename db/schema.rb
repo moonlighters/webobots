@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100602221320) do
+ActiveRecord::Schema.define(:version => 20100621181015) do
 
   create_table "firmware_versions", :force => true do |t|
     t.integer  "firmware_id"
@@ -27,9 +27,16 @@ ActiveRecord::Schema.define(:version => 20100602221320) do
     t.float    "rating_points", :default => 0.0
   end
 
+  create_table "invites", :force => true do |t|
+    t.string   "code"
+    t.string   "comment"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "match_replays", :force => true do |t|
     t.text     "config"
-    t.text     "frames"
+    t.text     "frames",     :limit => 16777215
     t.integer  "match_id"
     t.datetime "created_at"
     t.datetime "updated_at"
