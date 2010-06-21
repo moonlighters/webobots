@@ -85,6 +85,6 @@ td.line-numbers {
 }
 
 .welcome-text .epigraph {
-  text-align: right;
   font-style: italic;
+  margin-left: 50%;
 }
