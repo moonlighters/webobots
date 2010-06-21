@@ -27,6 +27,10 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :rating, :controller => 'rating',
     :only => [], :member => {:users => :get, :firmwares => :get}
 
+  # admin
+  map.resource :admin, :controller => 'admin',
+    :only => :show, :member => {:stats => :get, :invites => :any}
+
   # root
   map.root :controller => 'welcome', :action => 'root'
 end

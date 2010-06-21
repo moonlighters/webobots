@@ -32,6 +32,16 @@ class ApplicationController < ActionController::Base
       false
     end
   end
+
+  def require_admin
+    return if require_user == false
+
+    unless current_user.admin?
+      store_location
+      redirect_to root_url, :alert => "У вас недостаточно прав, чтобы получить доступ к этой странице"
+      false
+    end
+  end
   
   def store_location
     session[:return_to] = request.request_uri

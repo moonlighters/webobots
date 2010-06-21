@@ -1,0 +1,16 @@
+%h2 Статистика
+
+%p На этом сайте
+%ul
+  %li
+    = "зарегистрирован#{Russian.p @users_count, '', *%w[о о]}"
+    = @users_count
+    = "пользовател#{Russian.p @users_count, *%w[ь я ей]}"
+  %li
+    = "создан#{Russian.p @fws_count, *%w[а о о]}"
+    = @fws_count
+    = "прошив#{Russian.p @fws_count, *%w[ка ки ок]}"
+  %li
+    = "проведен#{Russian.p @matches_count, '', *%w[о о]}"
+    = @matches_count
+    = "матч#{Russian.p @matches_count, '', *%w[а ей]}"
