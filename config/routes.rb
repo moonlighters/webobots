@@ -30,5 +30,5 @@ ActionController::Routing::Routes.draw do |map|
   end
 
   # root
-  map.root :controller => 'user_sessions', :action => 'new'
+  map.root :controller => 'welcome', :action => 'root'
 end

@@ -21,7 +21,7 @@
           |
           = link_to "Войти", login_path
 
-      %h1.logo Webobots Site
+      %h1.logo= link_to "Webobots Site", root_path
 
       - if current_user
         %nav
