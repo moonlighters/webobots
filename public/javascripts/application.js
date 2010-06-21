@@ -7,13 +7,11 @@ window.onload = function() {
   var frame_index = 0
   var delay = 1000/config.frame_rate;
 
-  var canvas = Raphael("replay-canvas", SIZE, SIZE);
+  var canvas = Raphael("replay-canvas", SIZE, SIZE)
   canvas.rect(0, 0, SIZE-1, SIZE-1);
 
-  var bot1 = canvas.circle(config.bot1.x*SIZE, config.bot1.y*SIZE, BOT_RADIUS);
-  bot1.attr("fill", "#f00");
-  var bot2 = canvas.circle(config.bot2.x*SIZE, config.bot2.y*SIZE, BOT_RADIUS);
-  bot2.attr("fill", "#00f");
+  var bot1 = canvas.circle(config.bot1.x*SIZE, config.bot1.y*SIZE, BOT_RADIUS).attr("fill", "#f00");
+  var bot2 = canvas.circle(config.bot2.x*SIZE, config.bot2.y*SIZE, BOT_RADIUS).attr("fill", "#00f");
 
   var explosions = [];
   var missiles = {};
@@ -25,20 +23,27 @@ window.onload = function() {
       clearInterval(intervalId);
 
       var fade_time = 10*delay;
-      bot1.animate({r: 0}, fade_time);
-      bot2.animate({r: 0}, fade_time);
-      for( var id in missiles ) {
-        missiles[id].animate({r: 0}, fade_time/5);
-      }
+      //bot1.animate({r: 0}, fade_time);
+      //bot2.animate({r: 0}, fade_time);
+      //for( var id in missiles ) {
+        //missiles[id].remove();
+      //}
+      //for( var key in explosions ) {
+        //explosions[key].remove();
+      //}
+      rect = canvas.rect(0, 0, SIZE-1, SIZE-1).attr({fill:"#fff", stroke:"#000", "fill-opacity":"0.0"});
+      text = canvas.text(SIZE/2, SIZE/2, "Конец").attr({font: "1px Tahoma, Verdana, Arial, sans-serif"});
+
+      rect.animate({"fill-opacity":"0.7"}, fade_time/4);
+      text.animate({"font-size":50}, fade_time, "elastic");
+
       return;
     }
     frame_index += 1;
 
     // move bots
-    bot1.animate({cx: frame.bot1.x*SIZE, cy: frame.bot1.y*SIZE}, delay);
-    bot1.attr("fill-opacity", frame.bot1.health);
-    bot2.animate({cx: frame.bot2.x*SIZE, cy: frame.bot2.y*SIZE}, delay);
-    bot2.attr("fill-opacity", frame.bot2.health);
+    bot1.animate({cx: frame.bot1.x*SIZE, cy: frame.bot1.y*SIZE}, delay).attr("fill-opacity", frame.bot1.health);
+    bot2.animate({cx: frame.bot2.x*SIZE, cy: frame.bot2.y*SIZE}, delay).attr("fill-opacity", frame.bot2.health);
 
     // draw missiles
     new_missiles = []
@@ -55,8 +60,7 @@ window.onload = function() {
         missiles[missile.id].animate({cx: missile.x*SIZE, cy: missile.y*SIZE}, delay);
       }
       else {
-        missiles[missile.id] = canvas.circle(missile.x*SIZE, missile.y*SIZE, 2);
-        missiles[missile.id].attr('fill', '#000');
+        missiles[missile.id] = canvas.circle(missile.x*SIZE, missile.y*SIZE, 2).attr('fill', '#000');
       }
       new_missiles.push(missile.id);
     }
@@ -83,10 +87,8 @@ window.onload = function() {
     explosions = [];
     for( var key in frame.explosions ) {
       var point = frame.explosions[key];
-      var e = canvas.circle(point.x*SIZE, point.y*SIZE, 0);
-      e.attr('fill', '#f40');
-      e.attr('fill-opacity', '1');
-      e.attr('stroke-opacity', '0');
+      var e = canvas.circle(point.x*SIZE, point.y*SIZE, 0)
+      e.attr({'fill':'#f40','fill-opacity':'1','stroke-opacity':'0'});
       e.animate({r: EXPLOSION_RADIUS, fill: '#ff0', 'fill-opacity': 0.5}, delay, ">");
       explosions.push(e);
     }
