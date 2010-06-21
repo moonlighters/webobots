@@ -44,29 +44,29 @@ module EmulationSystem
         s = Emulation::World::FIELD_SIZE
         h = Emulation::World::MAX_HEALTH
         @frames << {
-          'bot1' => { 'x' => bot1.state.pos.x/s,
-                      'y' => bot1.state.pos.y/s,
-                      'angle' => bot1.state.angle,
-                      'health' => bot1.state.health/h },
-          'bot2' => { 'x' => bot2.state.pos.x/s,
-                      'y' => bot2.state.pos.y/s,
-                      'angle' => bot2.state.angle,
-                      'health' => bot2.state.health/h },
+          'bot1' => { 'x' => r(bot1.state.pos.x/s),
+                      'y' => r(bot1.state.pos.y/s),
+                      'angle' => r(bot1.state.angle),
+                      'health' => r(bot1.state.health/h) },
+          'bot2' => { 'x' => r(bot2.state.pos.x/s),
+                      'y' => r(bot2.state.pos.y/s),
+                      'angle' => r(bot2.state.angle),
+                      'health' => r(bot2.state.health/h) },
           'missiles' => env[:missiles].map {|m|
             {
               'id' => m.object_id,
-              'x' => m.pos.x/s,
-              'y' => m.pos.y/s
+              'x' => r(m.pos.x/s),
+              'y' => r(m.pos.y/s)
             }
           },
           'explosions' => env[:explosions].map {|point|
             {
-              'x' => point.x/s,
-              'y' => point.y/s
+              'x' => r(point.x/s),
+              'y' => r(point.y/s)
             }
           },
           'log' => [],
-          'time' => env[:time]
+          'time' => r(env[:time])
         }
       end
 
@@ -80,10 +80,16 @@ module EmulationSystem
         {
           'bot1' => { 'x' => f['bot1']['x'], 'y' => f['bot1']['y'], 'angle' => f['bot1']['angle'] },
           'bot2' => { 'x' => f['bot2']['x'], 'y' => f['bot2']['y'], 'angle' => f['bot2']['angle'] },
-          'bot_radius' => Emulation::World::BOT_RADIUS/Emulation::World::FIELD_SIZE,
-          'explosion_radius' => Emulation::World::EXLOSION_RADIUS/Emulation::World::FIELD_SIZE,
-          'frame_rate' => Emulation::VM::FRAME_RATE
+          'bot_radius' => r(Emulation::World::BOT_RADIUS/Emulation::World::FIELD_SIZE),
+          'explosion_radius' => r(Emulation::World::EXLOSION_RADIUS/Emulation::World::FIELD_SIZE),
+          'frame_rate' => r(Emulation::VM::FRAME_RATE)
         }
+      end
+
+      private
+      
+      def r(value)
+        value.is_a?( Float ) ? value.round_with_precision(3) : value
       end
     end
   end
