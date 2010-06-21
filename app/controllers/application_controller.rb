@@ -27,8 +27,7 @@ class ApplicationController < ActionController::Base
   def require_no_user
     if current_user
       store_location
-      # TODO redirect_to root ?
-      redirect_to account_url, :alert => "Вы должны выйти из системы, чтобы получить доступ к этой странице"
+      redirect_to root_url, :alert => "Вы должны выйти из системы, чтобы получить доступ к этой странице"
       false
     end
   end
