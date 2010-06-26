@@ -27,3 +27,7 @@ Factory.define :match do |m|
   m.association :first_version, :factory => :firmware_version
   m.association :second_version, :factory => :firmware_version
 end
+
+Factory.define :invite do |i|
+  i.comment "for Mr.Smith"
+end
