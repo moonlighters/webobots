@@ -28,8 +28,9 @@ ActionController::Routing::Routes.draw do |map|
     :only => [], :member => {:users => :get, :firmwares => :get}
 
   # admin
-  map.resource :admin, :controller => 'admin',
-    :only => :show, :member => {:stats => :get, :invites => :any}
+  map.resource :admin, :controller => 'admin', :only => :show, :member => {:stats => :get} do |admin|
+    admin.resources :invites, :only => [:index, :create, :destroy]
+  end
 
   # root
   map.root :controller => 'welcome', :action => 'root'

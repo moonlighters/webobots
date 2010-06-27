@@ -9,7 +9,4 @@ class AdminController < ApplicationController
     @fws_count = Firmware.count
     @matches_count = Match.count
   end
-
-  def invites
-  end
 end

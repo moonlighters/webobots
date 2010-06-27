@@ -88,3 +88,8 @@ td.line-numbers {
   text-align: right;
   font-style: italic;
 }
+
+.invite-code {
+  font-family: monospace;
+}
+
