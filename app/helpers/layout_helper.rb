@@ -11,7 +11,7 @@ module LayoutHelper
     }
 
     if text
-      text = content_tag(:p, text)
+      text = content_tag :p, h(text)
     else
       div_options.merge! :style => "display:none;"
     end

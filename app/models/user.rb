@@ -17,6 +17,12 @@ class User < ActiveRecord::Base
   has_many :firmwares
   has_many :matches
 
+  # +code+ используется как код инвайта при регистрации
+  attr_accessor :code
+  validates_presence_of :code, :on => :create
+  validate_on_create :check_invite_code
+  before_create :destroy_invite
+
   attr_writer :rating_points
   def rating_points
     @rating_points ||= firmwares.sum( :rating_points )
@@ -50,6 +56,24 @@ class User < ActiveRecord::Base
       end
       u.rating_position = pos
     end
+  end
+
+  private
+
+  def check_invite_code
+    # хак для тестов
+    return if Rails.env.test? and code == '1234'
+
+    if not code.blank? and Invite.find_by_code( code ).nil?
+      errors.add :code, "недействительный"
+    end
+  end
+
+  def destroy_invite
+    # хак для тестов
+    return if Rails.env.test? and code == '1234'
+
+    Invite.find_by_code( code ).destroy
   end
   
 end

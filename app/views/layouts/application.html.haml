@@ -32,6 +32,9 @@
           = link_to "Матчи", matches_path
           |
           = link_to "Рейтинг", users_rating_path
+          - if current_user.admin?
+            |
+            = link_to "Админка", admin_path
 
       .clear
 

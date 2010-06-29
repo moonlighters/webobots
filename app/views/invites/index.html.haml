@@ -1,0 +1,13 @@
+%h2 Управление инвайтам
+
+- form_for @invite, :url => admin_invites_path do |form|
+  %p
+    = form.text_field :comment, :size => 60
+    = form.submit "Создать инвайт с комментарием"
+
+%table.list
+  %tr
+    %th Код
+    %th Комментарий
+    %th
+  = render :partial => 'invite', :collection => @invites

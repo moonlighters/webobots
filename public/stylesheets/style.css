@@ -88,3 +88,10 @@ td.line-numbers {
   font-style: italic;
   margin-left: 50%;
 }
+
+.invite-code {
+  font-family: monospace;
+}
+#new_user #user_code {
+  font-family: monospace;
+}

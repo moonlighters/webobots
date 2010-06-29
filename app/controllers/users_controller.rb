@@ -9,20 +9,17 @@ class UsersController < ApplicationController
   end
   
   def new
-    redirect_to root_path, :alert => "Регистрация временно закрыта"
     @user = User.new
+    @user.code = params[:code]
   end
   
   def create
-    redirect_to root_path, :alert => "Регистрация временно закрыта"
-    if false
-      @user = User.new params[:user]
-      @user.login = params[:user][:login]
-      if @user.save
-        redirect_back_or_default account_url, :notice => "Пользователь успешно зарегистрирован"
-      else
-        render :action => :new
-      end
+    @user = User.new params[:user]
+    @user.login = params[:user][:login]
+    if @user.save
+      redirect_back_or_default account_url, :notice => "Пользователь успешно зарегистрирован"
+    else
+      render :action => :new
     end
   end
   

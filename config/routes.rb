@@ -24,9 +24,12 @@ ActionController::Routing::Routes.draw do |map|
                           :collection => {:all => :get}, :member => {:play => :get}
 
   # rating
-  map.with_options :controller => 'rating', :conditions => {:method => :get}, :path_prefix => 'rating' do |rating|
-    rating.users_rating 'users', :action => 'show_users'
-    rating.firmwares_rating 'firmwares', :action => 'show_firmwares'
+  map.resource :rating, :controller => 'rating',
+    :only => [], :member => {:users => :get, :firmwares => :get}
+
+  # admin
+  map.resource :admin, :controller => 'admin', :only => :show, :member => {:stats => :get} do |admin|
+    admin.resources :invites, :only => [:index, :create, :destroy]
   end
 
   # root

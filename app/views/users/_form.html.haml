@@ -6,5 +6,8 @@
   = form.input :email
   = form.input :password, :label => new ? "Пароль" : "Новый пароль", :hint => ("Введите, только если хотите сменить пароль" unless new)
   = form.input :password_confirmation
+  - if new
+    = form.input :code, :as => :string, :label => "Код инвайта", :value => '',
+      :hint => "Извините, но пока что регистрация доступна только по инвайтам"
 - form.buttons do
   = form.commit_button new ? :register : :update
