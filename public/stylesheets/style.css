@@ -92,4 +92,6 @@ td.line-numbers {
 .invite-code {
   font-family: monospace;
 }
-
+#new_user #user_code {
+  font-family: monospace;
+}

@@ -11,6 +11,9 @@ Factory.define :user do |u|
   u.email { Factory.next :email }
   u.password "1234"
   u.password_confirmation "1234"
+
+  # 1234 - спец. универсальный код для тестового окружения
+  u.code '1234'
 end
 
 Factory.define :firmware do |fw|

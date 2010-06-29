@@ -5,9 +5,25 @@ describe User do
     Factory.create :user
   end
 
-  [:login, :email].each do |field|
+  [:login, :email, :code].each do |field|
     it "should not create a new instance without '#{field}'" do
       Factory.build(:user, field => nil).should_not be_valid
+    end
+  end
+
+  describe "creating with invite code" do
+    before do
+      Invite.find_or_create_by_code 'DEADBEAF'
+    end
+
+    it "should not be valid given invalid code" do
+      Factory.build(:user, :code => 'not a DEADBEAF').should_not be_valid
+    end
+
+    it "should be valid given valid code" do
+      u = Factory.build(:user, :code => 'DEADBEAF')
+      u.should be_valid
+      u.save.should be_true
     end
   end
 
