@@ -17,6 +17,8 @@ class User < ActiveRecord::Base
   has_many :firmwares
   has_many :matches
 
+  validates_length_of :login, :maximum => 20
+
   # +code+ используется как код инвайта при регистрации
   attr_accessor :code
   validates_presence_of :code, :on => :create

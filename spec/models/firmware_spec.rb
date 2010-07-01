@@ -11,6 +11,10 @@ describe Firmware do
     end
   end
 
+  it "should not be valid with too long name" do
+    Factory.build(:firmware, :name => "a"*100).should_not be_valid
+  end
+
   describe "#versions.last_number" do
     it "should return nil if there are no versions" do
       fw = Factory :firmware

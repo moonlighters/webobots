@@ -14,8 +14,8 @@ class Firmware < ActiveRecord::Base
   cattr_reader :per_page_of_rating
   @@per_page_of_rating = 10
 
-
   validates_presence_of :name, :user_id
+  validates_length_of :name, :maximum => 40
 
   # TODO: может быть стоит занести это в модель?
   # validates :presence_of_at_least_one_version
