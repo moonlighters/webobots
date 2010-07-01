@@ -9,6 +9,7 @@ Rails::Initializer.run do |config|
   config.gem 'russian'
   config.gem 'factory_girl' 
   config.gem 'will_paginate'
+  config.gem 'recaptcha', :lib => 'recaptcha/rails'
 
   config.time_zone = 'Novosibirsk'
 end

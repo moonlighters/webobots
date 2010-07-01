@@ -9,5 +9,6 @@
   - if new
     = form.input :code, :as => :string, :label => "Код инвайта", :value => '',
       :hint => "Извините, но пока что регистрация доступна только по инвайтам"
+    %li= recaptcha_tags :display => { :theme => :clean }
 - form.buttons do
   = form.commit_button new ? :register : :update

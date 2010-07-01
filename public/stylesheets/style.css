@@ -95,3 +95,7 @@ td.line-numbers {
 #new_user #user_code {
   font-family: monospace;
 }
+
+#recaptcha_widget_div {
+  margin-left: 25%;
+}

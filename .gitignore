@@ -11,6 +11,7 @@ db/*.sqlite3
 public/system
 vendor/gems
 config/initializers/paperclip.rb
+config/initializers/recaptcha.rb
 config/database.yml
 config/deploy.rb
 *.pyc

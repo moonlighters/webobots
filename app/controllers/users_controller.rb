@@ -14,9 +14,13 @@ class UsersController < ApplicationController
   end
   
   def create
+    # достаем логин заранее, чтобы избежать warning'а "присваивание protected поля"
+    login = params[:user].delete :login
     @user = User.new params[:user]
-    @user.login = params[:user][:login]
-    if @user.save
+    @user.login = login
+
+    if @user.valid? & verify_recaptcha(:model => @user, :message => "Каптча введена неверно")
+      @user.save!
       redirect_back_or_default account_url, :notice => "Пользователь успешно зарегистрирован"
     else
       render :action => :new
