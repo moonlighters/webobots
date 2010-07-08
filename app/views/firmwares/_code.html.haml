@@ -1,11 +1,11 @@
-- if can_see_code_of? firmware
+- if can_see_code_of? fwv.firmware
   %hr
   %table
     %tr
       %td.line-numbers
-        %pre= (1..code.lines.count).to_a * "\n"
+        %pre= (1..fwv.code.lines.count).to_a * "\n"
       %td
-        %pre= format_code( code )
+        %pre= format_code( fwv.code )
   %hr
 - else
   %i Пользователь предпочел скрыть код этой прошивки

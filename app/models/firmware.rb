@@ -39,8 +39,8 @@ class Firmware < ActiveRecord::Base
     end
   end
 
-  def self.only_available_for(user, firmwares)
-    firmwares.all :conditions => ["available = :true or user_id = :user", {:true => true, :user => user}]
+  def self.select_available_for(user)
+    self.all :conditions => ["available = ? OR user_id = ?", true, user]
   end
   
 end

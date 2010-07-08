@@ -86,20 +86,22 @@ class MatchesController < ApplicationController
     @enemy_id = user.id if user
 
     if user
-      @enemy_fws = Firmware.only_available_for current_user, user.firmwares
+      @enemy_fws = user.firmwares.scoped(:include => :version).select_available_for current_user
       @enemy_collection = @enemy_fws.map do |x|
         [ x.name, x.version.id ]
       end
       @enemy_selection_hint = "одна из прошивок игрока #{render_to_string :inline => "<%= link_to_user u %>", :locals => { :u => user }}"
     else
-      @enemy_fws = Firmware.only_available_for current_user, Firmware.scoped(:order => :user_id, :include => [:user, :version])
+      @enemy_fws = Firmware.scoped(
+        :order => :user_id, :include => [:user, :version]
+      ).select_available_for current_user
       @enemy_collection = @enemy_fws.map do |x|
         [ "#{x.name} (игрока #{x.user.login})", x.version.id ]
       end
       @enemy_selection_hint = "одна из прошивок игроков"
     end
-    
-    @friendly_collection = current_user.firmwares.map do |x|
+
+    @friendly_collection = current_user.firmwares.scoped(:include => :version).map do |x|
       [ x.name, x.version.id ]
     end
   end
