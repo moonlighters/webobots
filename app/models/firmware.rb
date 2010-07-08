@@ -38,5 +38,9 @@ class Firmware < ActiveRecord::Base
       fw.rating_position = pos
     end
   end
+
+  def self.only_available_for(user, firmwares)
+    firmwares.all :conditions => ["available = :true or user_id = :user", {:true => true, :user => user}]
+  end
   
 end

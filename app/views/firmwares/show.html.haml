@@ -14,7 +14,7 @@
   = @fw.shared? ? "открытый" : "закрытый"
 %p
   %b Доступность для сражения:
-  = "не" unless @fw.available
+  = "не" unless @fw.available?
   доступна
   
 
@@ -23,8 +23,7 @@
   %b Последняя версия прошивки:
   = "##{@fwv.number}"
 %p
-  = link_to 'Сразиться!', new_match_path(:enemy_fw => @fw)
-  |
+  = link_to( 'Сразиться!', new_match_path(:enemy_fw => @fw) ) + ' |' if can_fight_with? @fw
   = link_to "История версий", firmware_versions_path(@fw)
   = '| ' + link_to( 'Редактировать', edit_firmware_path(@fw) ) if current_user.owns? @fw
 

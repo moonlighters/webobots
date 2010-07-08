@@ -28,4 +28,8 @@ module FirmwaresHelper
   def can_see_code_of?(fw)
     current_user.owns?(fw) || fw.shared?
   end
+
+  def can_fight_with?(fw)
+    current_user.owns?(fw) || fw.available?
+  end
 end
