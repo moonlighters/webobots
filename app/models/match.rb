@@ -46,15 +46,39 @@ class Match < ActiveRecord::Base
 
   before_validation :generate_parameters
 
-  validates_presence_of :first_version, :second_version, :parameters
+  validates_presence_of :first_version, :second_version, :parameters, :user
 
-  validate do |m|
+  # Проверяет:
+  # * одна из прошивок должна принадлежать +user+
+  # * версии прошивок, не принадлежащих +user+, должны быть последними
+  # * прошивки, не принадлежащие +user+, должны быть доступны для сражения
+  # * версии прошивок не должны содержать синтаксических ошибок
+  # * +parameters+ должны иметь верный формат
+  def validate
+    u = self.user
+    fwvs = %w[ first second ].map {|n| send "#{n}_version" }.compact
+    owned = unless u.nil?
+              fwvs.select {|fwv| u.owns? fwv.firmware }
+            else
+              []
+            end
+    not_owned = fwvs - owned
+    if owned.count == 0 && !u.nil?
+      errors.add_to_base "хотя бы одна из прошивок должна быть ваша"
+    end
+    if not_owned.any? {|fwv| fwv.firmware.versions.last != fwv }
+      errors.add_to_base "нельзя проводить матчи со старыми версиями прошивок соперников"
+    end
+    if not_owned.any? {|fwv| not fwv.firmware.available?}
+      errors.add_to_base "прошивка соперника недоступна для сражения"
+    end
+
     message = "не должна содержать синтаксических ошибок"
-    m.errors.add :first_version, message if ! m.first_version.nil? && ! m.first_version.syntax_errors.empty?
-    m.errors.add :second_version, message if ! m.second_version.nil? && ! m.second_version.syntax_errors.empty?
+    errors.add :first_version, message if ! first_version.nil? && ! first_version.syntax_errors.empty?
+    errors.add :second_version, message if ! second_version.nil? && ! second_version.syntax_errors.empty?
 
-    unless m.parameters.nil?
-      p = m.parameters
+    unless parameters.nil?
+      p = parameters
       unless p.is_a? Hash and
              p[:seed].is_a? Numeric and
              p[:first].is_a? Hash and
@@ -64,7 +88,7 @@ class Match < ActiveRecord::Base
                  p[key][subkey].is_a? Numeric
                end
              end
-        m.errors.add :parameters, "должны иметь правильный формат"
+        errors.add :parameters, "должны иметь правильный формат"
       end
     end
   end

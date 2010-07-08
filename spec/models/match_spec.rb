@@ -3,19 +3,19 @@ require RAILS_ROOT + '/lib/rating'
 
 describe Match do
   it "should create a new instance given valid attributes (no params given, generate automatically)" do
-    Factory :match
+    create_match
   end
   
-  it "should create a new instance given valid attributes (given custom patams)" do
-    Factory :match, :parameters => { :seed => 4,
-                                     :first => {:x => 1, :y => 1, :angle => 225},
-                                     :second => {:x => 0.1, :y => 0.1, :angle => 45}
-                                   }
+  it "should create a new instance given valid attributes (given custom params)" do
+    create_match :parameters => { :seed => 4,
+                                  :first => {:x => 1, :y => 1, :angle => 225},
+                                  :second => {:x => 0.1, :y => 0.1, :angle => 45}
+                                 }
   end
 
-  [:first_version, :second_version].each do |attr|
+  [:first_version, :second_version, :user].each do |attr|
     it "should not create a new instance without '#{attr}'" do
-      m = Factory.build(:match, attr => nil).should_not be_valid
+      m = build_match(attr => nil).should_not be_valid
     end
   end
 
@@ -31,35 +31,60 @@ describe Match do
     [:first, :second, :seed].each do |attr|
       it "should filter hashes without #{attr}" do
         @params.delete attr
-        Factory.build(:match, :parameters => @params).should_not be_valid
+        build_match(:parameters => @params).should_not be_valid
       end
     end
     
     [:x, :y, :angle].each do |attr|
       it "should filter hashes without (first|second)/x#{attr}" do
         @params[:first].delete attr
-        Factory.build(:match, :parameters => @params).should_not be_valid
+        build_match(:parameters => @params).should_not be_valid
       end
     end
   end
 
-  it "should not create a new instance given a firmware version with syntax errors" do
-    fwv = Factory :firmware_version
-    stub(fwv).syntax_errors { %w[ a lot of errors ] }
+  describe "complicated validation" do
+    before do
+      @fw = Factory :firmware
+      @fwv = @fw.versions.create
+    end
 
-    Factory.build(:match, :first_version => fwv).should_not be_valid
-    Factory.build(:match, :second_version => fwv).should_not be_valid
-  end
+    it "should not pass given a firmware version with syntax errors" do
+      stub(@fwv).syntax_errors { %w[ a lot of errors ] }
 
-  it "should create a new instance given user and not user's versions" do
-    fwv = Factory :firmware_version
-    not_owner = Factory :user
-    Factory :match, :first_version => fwv, :second_version => fwv, :user => not_owner
+      build_match(:first_version => @fwv).should_not be_valid
+      build_match(:second_version => @fwv).should_not be_valid
+    end
+
+    it "should not pass given not user's versions" do
+      build_match(:first_version => @fwv, :second_version => @fwv, :user => Factory(:user)).should_not be_valid
+    end
+
+    it "should not pass if version of opponent's firmware is not the last" do
+      5.times { @fw.versions.create }
+      build_match(:first_version => @fw.versions.first).should_not be_valid
+    end
+
+    it "should pass if version of owned firmware is not the last" do
+      5.times { @fw.versions.create }
+      build_match(:first_version => @fw.versions.first, :user => @fw.user).should be_valid
+    end
+
+    it "should not pass if opponent's firmware is not available" do
+      @fw.update_attribute :available, false
+      build_match(:first_version => @fwv).should_not be_valid
+    end
+
+    it "should pass if owned firmware is not available" do
+      @fw.update_attribute :available, false
+      build_match(:first_version => @fwv, :user => @fw.user).should be_valid
+    end
+
   end
 
   describe "#emulate" do
     it "should set result and point values" do
-      m = Factory :match
+      m = create_match
       logger = Object.new
       stub(logger).add_log_record
       mock(EmulationSystem).emulate(m.first_version.code,
@@ -70,5 +95,19 @@ describe Match do
       m.first_points.should_not be_nil
       m.second_points.should_not be_nil
     end
+  end
+
+  private
+
+  # хаки поверх factory_girl
+  def create_match(opts = {})
+    fwv = Factory :firmware_version
+    u = fwv.firmware.user
+    Factory :match, opts.merge(:first_version => fwv, :user => u)
+  end
+  def build_match(opts = {})
+    fwv = Factory.build :firmware_version
+    u = fwv.firmware.user
+    Factory.build :match, {:first_version => fwv, :user => u}.merge(opts)
   end
 end
