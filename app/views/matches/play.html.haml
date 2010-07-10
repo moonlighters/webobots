@@ -1,12 +1,10 @@
-%h2
-  Просмотр повтора матча
-  = link_to_match @match
-
 :javascript
   var config = #{@replay.config};
   var frames = #{@replay.frames};
   var red_name = "#{@match.first_version.firmware.name}";
   var blue_name = "#{@match.second_version.firmware.name}";
+
+  $(function() { replayer(); });
 
 %p
   %i

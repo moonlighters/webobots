@@ -67,6 +67,8 @@ td.line-numbers {
 #replay-canvas {
   float: left;
   margin: 5px 20px;
+  width: 400px;
+  height: 400px;
 }
 
 #replay-logger {

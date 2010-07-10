@@ -76,6 +76,10 @@ class Match < ActiveRecord::Base
   def result
     RESULTS.index( super )
   end
+
+  def draw?
+    result == :draw
+  end
  
   def emulate(logger)
     begin

@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   filter_parameter_logging :password, :password_confirmation
   
+  class NotFound < StandardError; end
+
   private
 
   def current_user_session
@@ -61,7 +63,8 @@ class ApplicationController < ActionController::Base
   # Вывод страниц с ошибкой
   def rescue_action_in_public(e)
     case e
-    when ActiveRecord::RecordNotFound,
+    when NotFound,
+         ActiveRecord::RecordNotFound,
          ActionController::UnknownController,
          ActionController::UnknownAction,
          ActionController::RoutingError

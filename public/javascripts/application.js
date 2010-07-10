@@ -5,6 +5,5 @@ $.fn.scrollToBottom = function() {
 };
 
 $(function() {
-  if( $("#replay-canvas")[0] )
-    replayer();
- })
+  $('.nyroModal#show-replay').nyroModal({ autoSizable: false, minWidth: 700, minHeight: 480 });
+});

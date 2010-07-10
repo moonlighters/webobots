@@ -41,8 +41,11 @@ class MatchesController < ApplicationController
   end
 
   def play
+    raise NotFound unless request.xhr?
+
     @match.emulate( EmulationSystem::Loggers::ReplayLogger.new ) if @match.replay.nil?
     @replay = @match.replay
+    render :layout => false
   end
 
   private
