@@ -19,10 +19,9 @@ class UsersController < ApplicationController
     @user = User.new params[:user]
     @user.login = login
 
-    # проверять каптчу только в production'е
-    captcha = !Rails.env.production? || verify_recaptcha(:model => @user, :message => "Каптча введена неверно")
-
-    if @user.valid? && captcha
+    # проверяем каптчу только в production'е
+    if @user.valid? && ( !Rails.env.production? ||
+                         verify_recaptcha(:model => @user, :message => "Каптча введена неверно") )
       @user.save!
       redirect_back_or_default account_url, :notice => "Пользователь успешно зарегистрирован"
     else
