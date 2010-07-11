@@ -19,13 +19,18 @@ end
 Factory.define :firmware do |fw|
   fw.name "Best WaFfLe fw"
   fw.association :user
+  fw.shared false
+  fw.available true
 end
 
 Factory.define :firmware_version do |fwv|
   fwv.code "a = 2"
   fwv.association :firmware
+  fwv.after_create { |v| v.firmware.reload }
 end
 
+# этот Factory ничерта не работает если добавить ассоциацию user
+# из-за проверки принадлежности одной из прошивок юзеру
 Factory.define :match do |m|
   m.association :first_version, :factory => :firmware_version
   m.association :second_version, :factory => :firmware_version

@@ -13,6 +13,8 @@ ru:
         password_confirmation: "Повтор пароля"
       firmware:
         name: "Название"
+        shared: "Открытый исходный код"
+        available: "Доступна для сражения"
       firmware_version:
         code: "Исходный код"
       match:

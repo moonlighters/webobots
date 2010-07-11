@@ -27,7 +27,7 @@ class MatchesController < ApplicationController
     @match = Match.new params[:match]
     @match.user = current_user
 
-    if prevalidate( @match ) and @match.save
+    if @match.save
       @match.emulate EmulationSystem::Loggers::ReplayLogger.new
 
       redirect_to match_path( @match )
@@ -69,36 +69,23 @@ class MatchesController < ApplicationController
     @enemy_id = user.id if user
 
     if user
-      @enemy_collection = user.firmwares.map do |x|
+      @enemy_fws = user.firmwares.scoped(:include => :version).select_available_for current_user
+      @enemy_collection = @enemy_fws.map do |x|
         [ x.name, x.version.id ]
       end
       @enemy_selection_hint = "одна из прошивок игрока #{render_to_string :inline => "<%= link_to_user u %>", :locals => { :u => user }}"
     else
-      @enemy_collection = Firmware.all(:order => :user_id, :include => [:user, :version]).map do |x|
+      @enemy_fws = Firmware.scoped(
+        :order => :user_id, :include => [:user, :version]
+      ).select_available_for current_user
+      @enemy_collection = @enemy_fws.map do |x|
         [ "#{x.name} (игрока #{x.user.login})", x.version.id ]
       end
       @enemy_selection_hint = "одна из прошивок игроков"
     end
-    @friendly_collection = current_user.firmwares.map do |x|
-      [ x.name, x.version.id ]
-    end
-  end
 
-  # в этом случае одна из прошивок должна принадлежать юзеру,
-  # а те, что не принадлежат ему должны быть последней версии
-  def prevalidate(match)
-    u = match.user
-    fwvs = %w[ first second ].map {|n| match.send "#{n}_version" }.compact
-    owned = fwvs.select {|fwv| u.owns? fwv.firmware }
-    not_owned = fwvs - owned
-    if owned.count == 0
-      match.errors.add_to_base "хотя бы одна из прошивок должна быть ваша"
-      false
-    elsif not_owned.any? {|fwv| fwv.firmware.versions.last != fwv }
-      match.errors.add_to_base "нельзя проводить матчи со старыми версиями прошивок соперников"
-      false
-    else
-      true
+    @friendly_collection = current_user.firmwares.scoped(:include => :version).map do |x|
+      [ x.name, x.version.id ]
     end
   end
 end

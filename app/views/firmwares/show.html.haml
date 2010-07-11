@@ -1,5 +1,7 @@
 %h2= %Q{Прошивка "#{h @fw.name}"}
 
+
+-# общая информация
 %p
   %b Автор:
   = link_to_user @fw.user
@@ -9,18 +11,25 @@
 %p
   %b Позиция в рейтинге:
   = @fw.rating_position.to_s + "-я из " + @fws_count.to_s
-
-- @fwv = @fw.version
 %p
-  %b= "Последняя версия прошивки: ##{@fwv.number}"
+  %b Исходный код:
+  = @fw.shared? ? "открытый" : "закрытый"
 %p
-  = link_to "История версий", firmware_versions_path(@fw)
-
+  %b Доступность для сражения:
+  = @fw.available? ? "доступна" : "не доступна"
+%p
+  %b Последняя версия прошивки:
+  = "##{@fwv.number}"
 = render :partial => 'syntax', :locals => {:fwv => @fwv}
 
-%p= link_to( 'Сразиться!', new_match_path(:enemy_fw => @fw) )
-%p= link_to( 'Редактировать', edit_firmware_path(@fw) ) if current_user.owns? @fw
+-# действия
+%p
+  - if can_fight_with? @fw
+    = link_to "Сразиться!", new_match_path(:enemy_fw => @fw)
+    |
+  = link_to "История версий", firmware_versions_path(@fw)
 
-= render :partial => 'code', :locals => {:code => @fwv.code}
-
-%p= link_to( 'Редактировать', edit_firmware_path(@fw) ) if current_user.owns? @fw
+-# код
+%p= link_to( "Редактировать", edit_firmware_path(@fw) ) if current_user.owns? @fw
+= render :partial => 'code', :locals => {:fwv => @fwv}
+%p= link_to( "Редактировать", edit_firmware_path(@fw) ) if current_user.owns? @fw

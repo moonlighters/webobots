@@ -38,5 +38,9 @@ class Firmware < ActiveRecord::Base
       fw.rating_position = pos
     end
   end
+
+  def self.select_available_for(user)
+    self.all :conditions => ["available = ? OR user_id = ?", true, user]
+  end
   
 end

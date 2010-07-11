@@ -1,4 +1,5 @@
-%p
-  %b= "Синтаксис: #{fwv.syntax_errors.empty? ? '✔' : '✘'}"
-  - unless fwv.syntax_errors.empty?
-    %ul= syntax_errors_list_for fwv
+- if can_see_code_of? fwv.firmware
+  %p
+    %b= "Синтаксис: #{fwv.syntax_errors.empty? ? '✔' : '✘'}"
+    - unless fwv.syntax_errors.empty?
+      %ul= syntax_errors_list_for fwv

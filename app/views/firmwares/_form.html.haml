@@ -1,6 +1,8 @@
 = form.semantic_errors
 - form.inputs do
   = form.input :name
+  = form.input :shared, :hint => "Можно скрывать код прошивки, чтобы оригинальная идея не досталась вашим соперникам"
+  = form.input :available, :hint => "Запрещайте сражения со своей прошивкой, если она не доделана, чтобы не терпеть досадные поражения"
   - form.fields_for :firmware_version, fwv do |version_form|
     = version_form.input :code, :input_html => { :class => :code }
 = form.buttons

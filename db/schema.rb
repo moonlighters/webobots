@@ -25,6 +25,8 @@ ActiveRecord::Schema.define(:version => 20100621181015) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.float    "rating_points", :default => 0.0
+    t.boolean  "available",     :default => true
+    t.boolean  "shared",        :default => false
   end
 
   create_table "invites", :force => true do |t|

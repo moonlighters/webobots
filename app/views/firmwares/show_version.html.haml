@@ -4,12 +4,11 @@
   %b
     Создана:
   = format_datetime @fwv.created_at
+= render :partial => 'syntax', :locals => {:fwv => @fwv}
 
-%p= link_to_firmware @fw, :text => "Перейти к последней версии (##{@fw.versions.last_number})"
 %p
+  = link_to_firmware @fw, :text => "Перейти к последней версии (##{@fw.versions.last_number})"
+  |
   = link_to "История версий", firmware_versions_path(@fw)
 
-= render :partial => 'syntax', :locals => {:fwv => @fwv}
-= render :partial => 'code', :locals => {:code => @fwv.code}
-
-
+= render :partial => 'code', :locals => {:fwv => @fwv}
