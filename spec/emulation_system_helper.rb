@@ -10,7 +10,7 @@ def build(what, *args)
   when :ir
     EmulationSystem::IR.new( args[0] || build(:node) )
   when :bot
-    EmulationSystem::Emulation::Bot.new(args[0] || build(:ir), World::FIELD_SIZE/2, World::FIELD_SIZE/2, 3, :log_func)
+    EmulationSystem::Emulation::Bot.new(args[0] || build(:ir), args[1] || World::FIELD_SIZE/2, args[2] || World::FIELD_SIZE/2, 3, :log_func)
   when :vm
     stub(logger = Object.new).add_frame(anything, anything, anything)
     stub(logger).add_log_record(anything, anything)

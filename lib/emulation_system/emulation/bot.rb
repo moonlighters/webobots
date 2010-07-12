@@ -29,7 +29,7 @@ module EmulationSystem
         end
 
         # Просчитывает шаг физики за время dt
-        def calc_physics_for(dt)
+        def calc_physics_for(dt, other_bots)
           if speed < desired_speed
             self.speed += World::ACCELERATION*dt
             self.speed = desired_speed if speed > desired_speed
@@ -40,12 +40,19 @@ module EmulationSystem
           
           self.pos += Vector[cosa, sina]*speed*dt
 
-          correct_state
+          correct_state(other_bots)
         end
 
         # Корректирует значения координат, скорости и здоровья
         # если они выходят за пределы
-        def correct_state
+        def correct_state(other_bots)
+          other_bots.each do |bot|
+            d = self.pos - bot.state.pos
+            if d.abs < 2*World::BOT_RADIUS
+              d = Vector[0, World::BOT_RADIUS] if d.abs == 0 # выбрать какое-то другое значение вектора, если он равен нулю
+              self.pos = bot.state.pos + d*2*World::BOT_RADIUS/d.abs # вытолкнуть наружу: двойной радиус на нормированное направление
+            end
+          end
           self.pos.x  = correct_value pos.x,  World::BOT_RADIUS, World::FIELD_SIZE - World::BOT_RADIUS
           self.pos.y  = correct_value pos.y,  World::BOT_RADIUS, World::FIELD_SIZE - World::BOT_RADIUS
           self.speed  = correct_value speed,  0, World::MAX_SPEED

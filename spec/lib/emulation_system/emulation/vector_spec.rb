@@ -64,6 +64,14 @@ describe EmulationSystem::Emulation::Vector do
     end
   end
 
+  describe "#/" do
+    it "should divide vector by a scalar" do
+      u = @v/1.5
+      u.x.should == @v.x/1.5
+      u.y.should == @v.y/1.5
+    end
+  end
+
   describe "#abs" do
     it "should return vector norm" do
       Vector.new(3,4).abs.should == 5

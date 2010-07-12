@@ -167,7 +167,7 @@ describe EmulationSystem::Emulation::Bot do
       it "should correct if greater than max" do
         @state.correct_value(5, 3, 4).should == 4
       end
-      it "should not correct if less than min" do
+      it "should not correct if inside interval" do
         @state.correct_value(3.754, 3, 4).should == 3.754
       end
     end
@@ -175,12 +175,13 @@ describe EmulationSystem::Emulation::Bot do
     describe "#calc_physics_for" do
       before do
         @dt = 0.0001
+        @other_bots = [build(:bot, nil, 1.1*World::BOT_RADIUS, 1.1*World::BOT_RADIUS)]
       end
 
       it "should emulate bot that is not moving" do
         @state.speed = 0
         @state.desired_speed = 0
-        lambda{ @state.calc_physics_for @dt }.should_not change { @state }
+        lambda{ @state.calc_physics_for @dt, @other_bots }.should_not change { @state }
       end
 
       it "should emulate uniform motion" do
@@ -189,7 +190,7 @@ describe EmulationSystem::Emulation::Bot do
         x = @state.pos.x
 
         lambda do
-          158.times { @state.calc_physics_for @dt }
+          158.times { @state.calc_physics_for @dt, @other_bots }
         end.should_not change { [@state.speed, @state.pos.y] }
 
         @state.pos.x.should be_approximately_equal_to(x + 158*@dt*@state.speed)
@@ -204,7 +205,7 @@ describe EmulationSystem::Emulation::Bot do
 
         lambda do
           until @state.speed == @state.desired_speed
-            @state.calc_physics_for @dt
+            @state.calc_physics_for @dt, @other_bots
             t += @dt
           end
         end.should_not change { [@state.pos.x, @state.desired_speed] }
@@ -222,13 +223,38 @@ describe EmulationSystem::Emulation::Bot do
 
         lambda do
           until @state.speed == 0
-            @state.calc_physics_for @dt
+            @state.calc_physics_for @dt, @other_bots
             t += @dt
           end
         end.should_not change { [@state.pos.y, @state.desired_speed] }
 
         t.should be_approximately_equal_to 10.0/World::DECELERATION
         @state.pos.x.should be_approximately_equal_to x - World::DECELERATION*t**2/2, 0.01
+      end
+
+      it "should detect collisions between bots" do
+        # Пусть есть два бота, уже пересекающиеся друг с другом, и изо всех сил едущие навстречу друг другу
+        a = Math::PI/3 # угол отрезка соединяющего их центры
+        d = Vector[Math::cos(a), Math::sin(a)] # направление от нас к противнику
+        @other_bots.first.state.pos = @state.pos + d*World::BOT_RADIUS
+        @other_bots.first.state.speed = @state.speed = World::MAX_SPEED
+        @state.radians = a
+        @other_bots.first.state.radians = -a
+
+        10.times { @state.calc_physics_for @dt, @other_bots }
+
+        # Они не должны пересекаться, а должны стоять друг к другу в упор
+        (@state.pos - @other_bots.first.state.pos).abs.should be_approximately_equal_to 2*World::BOT_RADIUS
+      end
+
+      it "should detect collisions between bots even if their states are equal" do
+        @other_bots.first.state.pos = @state.pos
+        @other_bots.first.state.speed = @state.speed
+        @other_bots.first.state.desired_speed = @state.desired_speed
+        
+        10.times { @state.calc_physics_for @dt, @other_bots }
+
+        (@state.pos - @other_bots.first.state.pos).abs.should be_approximately_equal_to 2*World::BOT_RADIUS
       end
     end
   end

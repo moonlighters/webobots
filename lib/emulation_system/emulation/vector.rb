@@ -17,8 +17,8 @@ module EmulationSystem
         return Vector.new x*value, y*value
       end
 
-      def *(value)
-        return Vector.new x*value, y*value
+      def /(value)
+        return Vector.new x/value, y/value
       end
 
       def abs

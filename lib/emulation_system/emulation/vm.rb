@@ -64,7 +64,7 @@ module EmulationSystem
             explosions = []
           end
 
-          @bots.each { |bot| bot.state.calc_physics_for SYNC_PERIOD }
+          @bots.each { |bot| bot.state.calc_physics_for SYNC_PERIOD, @bots - [bot] }
           
           @missiles.each do |missile| 
             missile.calc_physics_for SYNC_PERIOD
