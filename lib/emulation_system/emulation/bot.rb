@@ -5,74 +5,6 @@ module EmulationSystem
     class Bot
       include RuntimeElements
 
-      # === Состояние бота
-      # * +pos+ - позиция бота на поле
-      # * +angle+ - направление движения бота
-      # * +speed+ - модуль мгновенной скорости
-      # * +desired_speed+ - конечное значение модуля скорости при разгоне и торможении
-      # * +health+ - здоровье
-      class State < Struct.new :pos, :angle, :speed, :desired_speed, :health
-        def radians
-          angle * Math::PI / 180
-        end
-        
-        def radians=(value)
-          self.angle = value / Math::PI * 180
-        end
-
-        def cosa
-          Math::cos(radians)
-        end
-
-        def sina
-          Math::sin(radians)
-        end
-
-        # Просчитывает шаг физики за время dt
-        def calc_physics_for(dt, other_bots=[])
-          if speed < desired_speed
-            self.speed += World::ACCELERATION*dt
-            self.speed = desired_speed if speed > desired_speed
-          elsif speed > desired_speed
-            self.speed -= World::DECELERATION*dt
-            self.speed = desired_speed if speed < desired_speed
-          end
-          
-          self.pos += Vector[cosa, sina]*speed*dt
-
-          correct_state(other_bots)
-        end
-
-        # Корректирует значения координат, скорости и здоровья
-        # если они выходят за пределы
-        def correct_state(other_bots)
-          other_bots.each do |bot|
-            dist = self.pos - bot.state.pos
-            if dist.abs < 2*World::BOT_RADIUS
-              # вытолкнуть наружу: двойной радиус на нормированное направление
-              # (если боты в одной точке - выбираем случайное направление)
-              direction = if dist.abs == 0
-                            a = Kernel::rand()*Math::PI
-                            Vector[Math::cos(a), Math::sin(a)]
-                          else
-                            dist/dist.abs
-                          end
-              self.pos = bot.state.pos + direction * 2*World::BOT_RADIUS
-            end
-          end
-          self.pos.x  = correct_value pos.x,  World::BOT_RADIUS, World::FIELD_SIZE - World::BOT_RADIUS
-          self.pos.y  = correct_value pos.y,  World::BOT_RADIUS, World::FIELD_SIZE - World::BOT_RADIUS
-          self.speed  = correct_value speed,  0, World::MAX_SPEED
-          self.health = correct_value health, 0, World::MAX_HEALTH
-        end
-
-        # Возвращает значение +val+, ограниченное
-        # до пределов +min+..+max+
-        def correct_value(val, min, max)
-          val < min ? min : (val > max ? max : val)
-        end
-      end
-      
       attr_reader :state
       attr_accessor :time
 
@@ -82,7 +14,7 @@ module EmulationSystem
       attr_accessor :stack
 
       def initialize(ir, x, y, angle, log_func)
-        @state = State.new Point[x,y], angle, 0.0, 0.0, World::MAX_HEALTH
+        @state = Bot::State.new Point[x,y], angle, 0.0, 0.0, World::MAX_HEALTH
         @log_func = log_func
 
         @time = 0.0
@@ -101,8 +33,55 @@ module EmulationSystem
         @stack.empty? or dead?
       end
 
+      # Жив ли?
       def dead?
         @state.health <= 0
+      end
+
+      # Просчитывает шаг физики за время dt
+      def calc_physics_for(dt, other_bots=[])
+        if @state.speed_mode == :accelerated
+          @state.speed += World::ACCELERATION*dt
+          @state.speed = @state.desired_speed if @state.speed_mode == :decelerated
+        elsif @state.speed_mode == :decelerated
+          @state.speed -= World::DECELERATION*dt
+          @state.speed = @state.desired_speed if @state.speed_mode == :accelerated
+        end
+
+        @state.pos += Vector[@state.cosa, @state.sina]*@state.speed*dt
+
+        collide_with other_bots
+        @state.correct
+      end
+
+      # Проверяет бота на столкновение с другими ботами и
+      # при необходимости корректирует его положение
+      def collide_with(other_bots)
+        other_bots.each do |bot|
+          dist = @state.pos - bot.state.pos
+          if dist.abs < 2*World::BOT_RADIUS
+            # вытолкнуть наружу: двойной радиус на нормированное направление
+            # (если боты в одной точке - выбираем случайное направление)
+            direction = if dist.abs == 0
+                          a = Kernel::rand()*Math::PI
+                          Vector[Math::cos(a), Math::sin(a)]
+                        else
+                          dist/dist.abs
+                        end
+            @state.pos = bot.state.pos + direction * 2*World::BOT_RADIUS
+          end
+        end
+      end
+
+      # Возвращает положение бота
+      def pos; @state.pos; end
+
+      # Возвращает здоровье бота
+      def health; @state.health; end
+
+      # Снимает определенное количество здоровья
+      def injure!(x)
+        @state.health -= x
       end
 
       # Выполняет одно атомарное действие,

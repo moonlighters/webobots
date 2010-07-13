@@ -57,17 +57,35 @@ describe EmulationSystem::Emulation::Missile do
     end
   end
 
-  describe ".damage" do
-    it "should return 0 if distance is too far" do
-      Missile.damage( 2*World::EXPLOSION_RADIUS ).should == 0
+  describe ".injure" do
+    before do
+      @m.pos = Vector[500, 500]
     end
 
-    it "should return MISSILE_DAMAGE for direct hit" do
-      Missile.damage(0).should == World::MISSILE_DAMAGE
+    it "should not change bot's health if it is too far" do
+      target = build_bot_at 1000, 500
+      lambda do
+        @m.injure target
+      end.should_not change { target.state.health }
     end
 
-    it "should calculate linear damage" do
-      Missile.damage( 2*World::EXPLOSION_RADIUS/3 ).should be_approximately_equal_to World::MISSILE_DAMAGE/3
+    it "should change bot's health by MISSILE_DAMAGE if missile hits bot" do
+      target = build_bot_at 500+World::BOT_RADIUS, 500
+      lambda do
+        @m.injure target
+      end.should change { target.state.health }.by (-World::MISSILE_DAMAGE)
+    end
+
+    it "should change bot's health if missile is near bot" do
+      target = build_bot_at 500+World::BOT_RADIUS+World::EXPLOSION_RADIUS/2, 500
+      lambda do
+        @m.injure target
+      end.should change { target.state.health }
+    end
+
+    private
+    def build_bot_at(x,y)
+      build :bot, build(:ir), x, y
     end
   end
 end

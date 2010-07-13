@@ -12,7 +12,7 @@ module EmulationSystem
       # * +desired_distance+ - расстояние до точки, в которую стреляют
       def initialize(bot, radians, desired_distance)
         direction = Vector[ Math::cos(radians), Math::sin(radians) ]
-        self.pos = bot.state.pos + direction*(World::BOT_RADIUS + 1)
+        self.pos = bot.pos + direction*(World::BOT_RADIUS + 1)
         
         self.velocity = direction*World::MISSILE_SPEED
         self.distance = 0
@@ -41,9 +41,20 @@ module EmulationSystem
                     [pos.x, pos.y].any? { |q| (0..World::FIELD_SIZE).exclude? q }
       end
 
-      # Урон от взрыва ракеты в зависимости от расстояния
-      # * +dist+ - расстояние от эпицентра взрыва до поверхности бота
-      def self.damage(dist)
+      # Возвращает врезалась ли ракета в бота
+      def hit?(bot)
+        self.pos.near_to? bot.pos, World::BOT_RADIUS
+      end
+
+      # Наносит ущерб боту в зависимости от расстояния до него
+      def injure(bot)
+        bot.injure! damage( (bot.pos - self.pos).abs - World::BOT_RADIUS )
+      end
+
+      private
+
+      # Возвращает урон обратно пропорциональный расстоянию до бота
+      def damage(dist)
         return World::MISSILE_DAMAGE  if dist <= 0
         return 0                      if dist >= World::EXPLOSION_RADIUS
 

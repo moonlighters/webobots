@@ -66,17 +66,17 @@ module EmulationSystem
             explosions = []
           end
 
-          @bots.each { |bot| bot.state.calc_physics_for SYNC_PERIOD, @bots - [bot] }
+          @bots.each { |bot| bot.calc_physics_for SYNC_PERIOD, @bots - [bot] }
           
           @missiles.each do |missile| 
             missile.calc_physics_for SYNC_PERIOD
-            missile.explode! if @bots.any? { |bot| missile.pos.near_to? bot.state.pos, World::BOT_RADIUS }
+            missile.explode! if @bots.any? { |bot| missile.hit? bot }
           end
 
           @missiles.select(&:exploded?).each do |missile|
             explosions << missile.pos
             @bots.each do |bot|
-              bot.state.health -= Missile.damage( (bot.state.pos - missile.pos).abs - World::BOT_RADIUS )
+              missile.injure bot
             end
             @missiles.delete missile
           end
@@ -95,9 +95,9 @@ module EmulationSystem
         when [false, true]
           :first
         else
-          if @bots.first.state.health > @bots.second.state.health
+          if @bots.first.health > @bots.second.health
             :first
-          elsif @bots.second.state.health > @bots.first.state.health
+          elsif @bots.second.health > @bots.first.health
             :second
           else
             :draw
