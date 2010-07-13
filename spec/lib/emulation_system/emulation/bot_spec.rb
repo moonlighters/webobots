@@ -151,7 +151,7 @@ describe EmulationSystem::Emulation::Bot do
       @bot.push_element node, :arg1, :arg2
     end
   end
-  
+
   describe EmulationSystem::Emulation::Bot::State do
     before do
       @state = @bot.state
@@ -162,19 +162,19 @@ describe EmulationSystem::Emulation::Bot do
         @state.angle = 45
         @state.radians.should == Math::PI/4
       end
-      
+
       it "should assign" do
         @state.radians = 2*Math::PI/3
         @state.angle.should == 120
       end
-      
+
       it "should get and assign" do
         # комплексный на #radians и #radians=
         @state.radians = 2.3
         @state.radians.should == 2.3
       end
     end
-    
+
     describe "#correct_value" do
       it "should correct if less than min" do
         @state.correct_value(2, 3, 4).should == 3
@@ -186,90 +186,96 @@ describe EmulationSystem::Emulation::Bot do
         @state.correct_value(3.754, 3, 4).should == 3.754
       end
     end
-    
+
     describe "#calc_physics_for" do
       before do
         @dt = 0.0001
-        @other_bots = [build(:bot, nil, 1.1*World::BOT_RADIUS, 1.1*World::BOT_RADIUS)]
       end
 
-      it "should emulate bot that is not moving" do
-        @state.speed = 0
-        @state.desired_speed = 0
-        lambda{ @state.calc_physics_for @dt, @other_bots }.should_not change { @state }
+      describe "moving" do
+        it "should emulate bot that is not moving" do
+          @state.speed = 0
+          @state.desired_speed = 0
+          lambda{ @state.calc_physics_for @dt }.should_not change { @state }
+        end
+
+        it "should emulate uniform motion" do
+          @state.desired_speed = @state.speed = 68.0
+          @state.angle = 0
+          x = @state.pos.x
+
+          lambda do
+            158.times { @state.calc_physics_for @dt }
+          end.should_not change { [@state.speed, @state.pos.y] }
+
+          @state.pos.x.should be_approximately_equal_to(x + 158*@dt*@state.speed)
+        end
+
+        it "should emulate uniformly accelerated motion" do
+          @state.speed = 0.0
+          @state.desired_speed = 10.0
+          @state.angle = -90
+          y = @state.pos.y
+          t = 0
+
+          lambda do
+            until @state.speed == @state.desired_speed
+              @state.calc_physics_for @dt
+              t += @dt
+            end
+          end.should_not change { [@state.pos.x, @state.desired_speed] }
+
+          t.should be_approximately_equal_to @state.desired_speed/World::ACCELERATION
+          @state.pos.y.should be_approximately_equal_to y - World::ACCELERATION*t**2/2, 0.001
+        end
+
+        it "should emulate uniformly decelerated motion" do
+          @state.speed = 10.0
+          @state.desired_speed = 0.0
+          @state.angle = 180
+          x = @state.pos.x
+          t = 0
+
+          lambda do
+            until @state.speed == 0
+              @state.calc_physics_for @dt
+              t += @dt
+            end
+          end.should_not change { [@state.pos.y, @state.desired_speed] }
+
+          t.should be_approximately_equal_to 10.0/World::DECELERATION
+          @state.pos.x.should be_approximately_equal_to x - World::DECELERATION*t**2/2, 0.01
+        end
       end
 
-      it "should emulate uniform motion" do
-        @state.desired_speed = @state.speed = 68.0
-        @state.angle = 0
-        x = @state.pos.x
+      describe "collisions" do
+        before do
+          @one = build :bot
+          @two = build :bot
+        end
 
-        lambda do
-          158.times { @state.calc_physics_for @dt, @other_bots }
-        end.should_not change { [@state.speed, @state.pos.y] }
+        it "should prevent collision of two bots into each other" do
+          # Пусть есть два бота, уже пересекающиеся друг с другом, и изо всех сил едущие навстречу друг другу
+          @one.state.pos = Vector[500, 500]
+          @two.state.pos = @one.state.pos + Vector[2*World::BOT_RADIUS, 0]
+          @one.state.speed = @one.state.desired_speed = World::MAX_SPEED
+          @two.state.speed = @two.state.desired_speed = World::MAX_SPEED
+          @one.state.angle = 0
+          @two.state.angle = 180
 
-        @state.pos.x.should be_approximately_equal_to(x + 158*@dt*@state.speed)
-      end
+          100.times { @one.state.calc_physics_for @dt, [@two] }
 
-      it "should emulate uniformly accelerated motion" do
-        @state.speed = 0.0
-        @state.desired_speed = 10.0
-        @state.angle = -90
-        y = @state.pos.y
-        t = 0
+          # Они не должны пересекаться, а должны стоять друг к другу в упор
+          (@one.state.pos - @two.state.pos).abs.should be_approximately_equal_to 2*World::BOT_RADIUS
+        end
 
-        lambda do
-          until @state.speed == @state.desired_speed
-            @state.calc_physics_for @dt, @other_bots
-            t += @dt
-          end
-        end.should_not change { [@state.pos.x, @state.desired_speed] }
+        it "should detect collisions between bots even if their states are equal" do
+          @two.state.pos = @one.state.pos
 
-        t.should be_approximately_equal_to @state.desired_speed/World::ACCELERATION
-        @state.pos.y.should be_approximately_equal_to y - World::ACCELERATION*t**2/2, 0.001
-      end
+          100.times { @one.state.calc_physics_for @dt, [@two] }
 
-      it "should emulate uniformly decelerated motion" do
-        @state.speed = 10.0
-        @state.desired_speed = 0.0
-        @state.angle = 180
-        x = @state.pos.x
-        t = 0
-
-        lambda do
-          until @state.speed == 0
-            @state.calc_physics_for @dt, @other_bots
-            t += @dt
-          end
-        end.should_not change { [@state.pos.y, @state.desired_speed] }
-
-        t.should be_approximately_equal_to 10.0/World::DECELERATION
-        @state.pos.x.should be_approximately_equal_to x - World::DECELERATION*t**2/2, 0.01
-      end
-
-      it "should detect collisions between bots" do
-        # Пусть есть два бота, уже пересекающиеся друг с другом, и изо всех сил едущие навстречу друг другу
-        a = Math::PI/3 # угол отрезка соединяющего их центры
-        d = Vector[Math::cos(a), Math::sin(a)] # направление от нас к противнику
-        @other_bots.first.state.pos = @state.pos + d*World::BOT_RADIUS
-        @other_bots.first.state.speed = @state.speed = World::MAX_SPEED
-        @state.radians = a
-        @other_bots.first.state.radians = -a
-
-        10.times { @state.calc_physics_for @dt, @other_bots }
-
-        # Они не должны пересекаться, а должны стоять друг к другу в упор
-        (@state.pos - @other_bots.first.state.pos).abs.should be_approximately_equal_to 2*World::BOT_RADIUS
-      end
-
-      it "should detect collisions between bots even if their states are equal" do
-        @other_bots.first.state.pos = @state.pos
-        @other_bots.first.state.speed = @state.speed
-        @other_bots.first.state.desired_speed = @state.desired_speed
-        
-        10.times { @state.calc_physics_for @dt, @other_bots }
-
-        (@state.pos - @other_bots.first.state.pos).abs.should be_approximately_equal_to 2*World::BOT_RADIUS
+          (@one.state.pos - @two.state.pos).abs.should be_approximately_equal_to 2*World::BOT_RADIUS
+        end
       end
     end
   end
