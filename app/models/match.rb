@@ -46,7 +46,7 @@ class Match < ActiveRecord::Base
 
   before_validation :generate_parameters
 
-  validates_presence_of :first_version, :second_version, :parameters, :user
+  validates_presence_of :first_version, :second_version, :parameters, :user, :vm_version
 
   # Проверяет:
   # * одна из прошивок должна принадлежать +user+
@@ -179,5 +179,6 @@ class Match < ActiveRecord::Base
 
   def generate_parameters
     self.parameters ||= EmulationSystem.generate_vm_params
+    self.vm_version = EmulationSystem::Emulation::VM::VERSION
   end
 end

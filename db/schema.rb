@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100621181015) do
+ActiveRecord::Schema.define(:version => 20100713132853) do
 
   create_table "firmware_versions", :force => true do |t|
     t.integer  "firmware_id"
@@ -55,6 +55,7 @@ ActiveRecord::Schema.define(:version => 20100621181015) do
     t.float    "first_points",  :default => 0.0
     t.float    "second_points", :default => 0.0
     t.string   "rt_error_msg"
+    t.string   "vm_version",    :default => "0.1.0"
   end
 
   create_table "users", :force => true do |t|

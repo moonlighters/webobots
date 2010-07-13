@@ -4,6 +4,8 @@ module EmulationSystem
     # === Виртуальная машина
     # Интерпретирует матч между прошивками
     class VM
+      VERSION = '0.1.1'
+
       # Каждые SYNC_PERIOD секунд происходит просчет физического мира,
       # и синхронизация ботов
       SYNC_PERIOD = World::VM_TIME/2
