@@ -91,7 +91,11 @@ module EmulationSystem
 
       # Закончено ли выполение?
       def halted?
-        @stack.empty? or @state.health <= 0
+        @stack.empty? or dead?
+      end
+
+      def dead?
+        @state.health <= 0
       end
 
       # Выполняет одно атомарное действие,

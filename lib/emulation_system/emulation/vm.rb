@@ -4,7 +4,7 @@ module EmulationSystem
     # === Виртуальная машина
     # Интерпретирует матч между прошивками
     class VM
-      VERSION = '0.1.1'
+      VERSION = '0.1.2'
 
       # Каждые SYNC_PERIOD секунд происходит просчет физического мира,
       # и синхронизация ботов
@@ -56,7 +56,7 @@ module EmulationSystem
       def emulate
         syncs = 0
         explosions = []
-        while not @bots.any? &:halted?
+        while not @bots.any? &:dead?
           if syncs % FRAME_PERIOD_IN_SYNCS == 0
             @logger.add_frame @bots[0], @bots[1], {
               :missiles => @missiles,
@@ -89,7 +89,7 @@ module EmulationSystem
           break if @time > World::MAX_LIFE_TIME
         end
 
-        case @bots.map &:halted?
+        case @bots.map &:dead?
         when [true, false]
           :second
         when [false, true]

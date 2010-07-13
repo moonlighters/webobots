@@ -10,13 +10,28 @@ describe EmulationSystem::Emulation::Bot do
   end
 
   describe "#halted?" do
-    it "should return true if there are smth to eval" do
+    it "should return false if there is smth to eval" do
       @bot.should_not be_halted
     end
 
-    it "should return false if there is nothing to eval" do
+    it "should return true if there is nothing to eval" do
       @bot.stack = []
       @bot.should be_halted
+    end
+
+    it "should return true if bot is dead" do
+      @bot.state.health = 0
+      @bot.should be_halted
+    end
+  end
+  
+  describe "#dead" do
+    it "should return false if bot is alive" do
+      @bot.should_not be_dead
+    end
+
+    it "should return true if bot is dead" do
+      @bot.state.health = 0
     end
   end
 
