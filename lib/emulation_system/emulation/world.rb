@@ -31,7 +31,7 @@ module EmulationSystem
       BOT_RADIUS = 30.0
       MISSILE_SPEED = 200.0
       MISSILE_DAMAGE = 10.0
-      EXLOSION_RADIUS = 50.0
+      EXPLOSION_RADIUS = 50.0
     end
   end
 end

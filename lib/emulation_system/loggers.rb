@@ -81,7 +81,7 @@ module EmulationSystem
           'bot1' => { 'x' => f['bot1']['x'], 'y' => f['bot1']['y'], 'angle' => f['bot1']['angle'] },
           'bot2' => { 'x' => f['bot2']['x'], 'y' => f['bot2']['y'], 'angle' => f['bot2']['angle'] },
           'bot_radius' => r(Emulation::World::BOT_RADIUS/Emulation::World::FIELD_SIZE),
-          'explosion_radius' => r(Emulation::World::EXLOSION_RADIUS/Emulation::World::FIELD_SIZE),
+          'explosion_radius' => r(Emulation::World::EXPLOSION_RADIUS/Emulation::World::FIELD_SIZE),
           'frame_rate' => r(Emulation::VM::FRAME_RATE)
         }
       end

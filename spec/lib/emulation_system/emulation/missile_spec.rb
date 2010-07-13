@@ -56,4 +56,18 @@ describe EmulationSystem::Emulation::Missile do
       @m.pos.x.should be_approximately_equal_to 0, 0.05
     end
   end
+
+  describe ".damage" do
+    it "should return 0 if distance is too far" do
+      Missile.damage( 2*World::EXPLOSION_RADIUS ).should == 0
+    end
+
+    it "should return MISSILE_DAMAGE for direct hit" do
+      Missile.damage(0).should == World::MISSILE_DAMAGE
+    end
+
+    it "should calculate linear damage" do
+      Missile.damage( 2*World::EXPLOSION_RADIUS/3 ).should be_approximately_equal_to World::MISSILE_DAMAGE/3
+    end
+  end
 end
