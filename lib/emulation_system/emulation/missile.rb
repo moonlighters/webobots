@@ -44,8 +44,9 @@ module EmulationSystem
       # Урон от взрыва ракеты в зависимости от расстояния
       # * +dist+ - расстояние от эпицентра взрыва до поверхности бота
       def self.damage(dist)
-        return World::MISSILE_DAMAGE if dist <= 0
-        return 0 if dist >= World::EXPLOSION_RADIUS
+        return World::MISSILE_DAMAGE  if dist <= 0
+        return 0                      if dist >= World::EXPLOSION_RADIUS
+
         return World::MISSILE_DAMAGE - dist*World::MISSILE_DAMAGE/World::EXPLOSION_RADIUS
       end
     end
