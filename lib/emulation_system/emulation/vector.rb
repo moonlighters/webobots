@@ -2,27 +2,27 @@ module EmulationSystem
   module Emulation
     class Vector < Struct.new :x, :y
       def +(vector)
-        return Vector.new x + vector.x, y + vector.y
+        Vector[x + vector.x, y + vector.y]
       end
 
       def -@
-        return Vector.new -x, -y
+        self * -1
       end
 
       def -(vector)
-        return self + (- vector)
+        self + (- vector)
       end
 
       def *(value)
-        return Vector.new x*value, y*value
+        Vector[x*value, y*value]
       end
 
       def /(value)
-        return Vector.new x/value, y/value
+        self * (1/value)
       end
 
       def abs
-        return Math::sqrt(x**2 + y**2)
+        Math::sqrt(x**2 + y**2)
       end
 
       def near_to?(vector, radius)
