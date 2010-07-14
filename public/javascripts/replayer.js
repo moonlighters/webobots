@@ -81,7 +81,7 @@ function replayer() {
 
       log_entry = $("<div></div>")
                       .html( "[" + frame.time.toFixed(1) + " s] " + bot_name + ": " + msg)
-                      .attr('class', colored_class);
+                      .addClass(colored_class);
       $("#replay-logger").append( log_entry ).scrollToBottom();
     });
   }, delay);
