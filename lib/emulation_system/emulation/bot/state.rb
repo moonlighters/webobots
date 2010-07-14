@@ -11,7 +11,7 @@ module EmulationSystem
         def radians
           angle * Math::PI / 180
         end
-        
+
         def radians=(value)
           self.angle = value / Math::PI * 180
         end

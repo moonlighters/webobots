@@ -73,7 +73,7 @@ describe EmulationSystem::Emulation::Missile do
       target = build_bot_at 500+World::BOT_RADIUS, 500
       lambda do
         @m.injure target
-      end.should change { target.state.health }.by (-World::MISSILE_DAMAGE)
+      end.should change { target.state.health }.by -World::MISSILE_DAMAGE
     end
 
     it "should change bot's health if missile is near bot" do
