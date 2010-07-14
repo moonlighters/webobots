@@ -76,12 +76,12 @@ td.line-numbers {
   overflow: auto;
 }
 
-#red-log-entry {
+.red-log-entry {
   color: #f00;
   font-family: monospace;
 }
 
-#blue-log-entry {
+.blue-log-entry {
   color: #00f;
   font-family: monospace;
 }
