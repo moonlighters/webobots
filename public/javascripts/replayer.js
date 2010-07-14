@@ -73,15 +73,15 @@ function replayer() {
 
       if( bot == "bot1" ) {
         bot_name = red_name;
-        colored_id = "red-log-entry";
+        colored_class = "red-log-entry";
       } else {
         bot_name = blue_name;
-        colored_id = "blue-log-entry";
+        colored_class = "blue-log-entry";
       }
 
       log_entry = $("<div></div>")
                       .html( "[" + frame.time.toFixed(1) + " s] " + bot_name + ": " + msg)
-                      .attr('id', colored_id);
+                      .attr('class', colored_class);
       $("#replay-logger").append( log_entry ).scrollToBottom();
     });
   }, delay);
