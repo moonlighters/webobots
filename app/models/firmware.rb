@@ -16,6 +16,8 @@ class Firmware < ActiveRecord::Base
 
   validates_presence_of :name, :user_id
   validates_length_of :name, :maximum => 40
+  validates_uniqueness_of :name, :scope => :user_id,
+    :message => "у Вас уже есть прошивка с таким именем"
 
   # TODO: может быть стоит занести это в модель?
   # validates :presence_of_at_least_one_version
