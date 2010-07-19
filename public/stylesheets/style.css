@@ -9,6 +9,10 @@ h1 {
   margin-right: 30px;
 }
 
+a img {
+  border: none;
+}
+
 header h1.logo {
   font-size: 2.5em;
   float: left;
