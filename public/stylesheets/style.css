@@ -25,6 +25,10 @@ header h1.logo a {
   background-color: white;
 }
 
+header h1.logo img {
+  vertical-align: middle;
+}
+
 .nav {
   margin-top: 10px;
 }
