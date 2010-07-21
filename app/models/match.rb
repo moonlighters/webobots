@@ -12,6 +12,8 @@ class Match < ActiveRecord::Base
 
   belongs_to :user
 
+  acts_as_commentable
+
   JOINS_FOR_USER = 'JOIN firmware_versions ON firmware_versions.id IN (matches.fwv1_id, matches.fwv2_id)
                     JOIN firmwares ON firmwares.id = firmware_versions.firmware_id
                     JOIN users ON users.id = firmwares.user_id'

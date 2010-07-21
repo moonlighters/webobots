@@ -38,6 +38,7 @@ class MatchesController < ApplicationController
   end
 
   def show
+    @comments = @match.comments
   end
 
   def play
