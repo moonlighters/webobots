@@ -61,6 +61,12 @@ Spec::Rake::SpecTask.new(:spec => spec_prereq) do |t|
 end
 
 namespace :spec do
+  desc "Run all specs with profiling enabled"
+  Spec::Rake::SpecTask.new(:profile => spec_prereq) do |t|
+    t.spec_opts = ['--options', "\"#{RAILS_ROOT}/spec/spec_prof.opts\""]
+    t.spec_files = FileList['spec/**/*_spec.rb']
+  end
+
   desc "Run all specs in spec directory with RCov (excluding plugin specs)"
   Spec::Rake::SpecTask.new(:rcov) do |t|
     t.spec_opts = ['--options', "\"#{RAILS_ROOT}/spec/spec.opts\""]
