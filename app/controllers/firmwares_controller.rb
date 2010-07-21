@@ -35,6 +35,7 @@ class FirmwaresController < ApplicationController
   def show
     @fws_count = Firmware.count
     @fwv = @fw.version
+    @comments = @fw.comments
   end
 
   def index_versions
@@ -52,7 +53,7 @@ class FirmwaresController < ApplicationController
 
   def edit
     # В форму мы отдаем последнюю версию
-    @fwv = @fw.versions.last
+    @fwv = @fw.version
   end
 
   def update

@@ -1,0 +1,5 @@
+.comment_text
+  %b= link_to_user( comment.user ) + ":"
+  =h comment.comment
+.comment_date
+  = format_datetime comment.created_at

@@ -8,6 +8,8 @@ class Firmware < ActiveRecord::Base
   has_one :version, :class_name => 'FirmwareVersion', :order => 'number DESC'
 
   belongs_to :user
+
+  acts_as_commentable
   
   cattr_reader :per_page
   @@per_page = 10

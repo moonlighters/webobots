@@ -32,6 +32,9 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :invites, :only => [:index, :create, :destroy]
   end
 
+  #comments
+  map.resources :comments, :only => :create
+
   # root
   map.root :controller => 'welcome', :action => 'root'
 end

@@ -10,6 +10,7 @@ Rails::Initializer.run do |config|
   config.gem 'factory_girl' 
   config.gem 'will_paginate'
   config.gem 'recaptcha', :lib => 'recaptcha/rails'
+  config.gem 'acts_as_commentable', :version => '<3.0.0'
 
   config.time_zone = 'Novosibirsk'
 end

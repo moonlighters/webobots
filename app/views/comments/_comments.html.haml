@@ -1,0 +1,8 @@
+-# нужны локальнаы переменные:
+-# * +commentable+ - комментируемый объект
+-# * +comments+ - массив комментариев для отображения
+%h3 Комментарии
+.comments
+  = render :partial => 'comments/form', :locals => {:commentable => commentable}
+  = render @comments
+
