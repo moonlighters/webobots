@@ -4,5 +4,6 @@
 %h3 Комментарии
 .comments
   = render :partial => 'comments/form', :locals => {:commentable => commentable}
-  = render @comments
+  - paginated_section comments, :param_name => :comments_page do
+    = render comments
 

@@ -35,7 +35,7 @@ class FirmwaresController < ApplicationController
   def show
     @fws_count = Firmware.count
     @fwv = @fw.version
-    @comments = @fw.comments
+    @comments = @fw.comments.default_paginate params
   end
 
   def index_versions
