@@ -1,6 +1,7 @@
 class InvitesController < ApplicationController
   before_filter :get_invites
   before_filter :build_invite, :except => :destroy
+  before_filter :require_admin
 
   def index
   end
