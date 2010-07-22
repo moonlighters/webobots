@@ -40,7 +40,7 @@ class User < ActiveRecord::Base
   end
 
   def owns?(obj)
-    obj.respond_to? :user and obj.user == self
+    obj.respond_to?(:user) && obj.user == self
   end
 
   def self.all_sorted_by_rating

@@ -1,6 +1,6 @@
 .comment_text
   %b= link_to_user( comment.user ) + ":"
-  = format_comment_text comment.comment
+  = format_comment_text comment
 .comment_date
   = format_datetime comment.created_at
   = button_to "Удалить", comment_path(comment), :method => :delete if current_user.owns? comment

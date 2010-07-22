@@ -47,6 +47,7 @@ ru:
       login: "Войти"
       register: "Зарегистрироваться"
       conduct: "Провести"
+      add_comment: "Добавить комментарий"
   will_paginate:
     previous_label: "« Назад"
     next_label: "Вперед »"

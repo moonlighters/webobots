@@ -153,3 +153,10 @@ td.line-numbers {
   padding-bottom: 15px;
 }
 
+.comment_text p {
+  width: 500px;
+  overflow: auto;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+

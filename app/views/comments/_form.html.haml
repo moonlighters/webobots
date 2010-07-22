@@ -1,5 +1,5 @@
 -# нужна локальная переменная +commentable+: комментируемый объект
-- comment = Comment.new :commentable_type => commentable.class, :commentable_id => commentable.id
+- comment = commentable.comments.new
 
 - semantic_form_for comment do |f|
   - f.inputs do
@@ -7,5 +7,5 @@
     = f.input :commentable_type, :as => :hidden
     = f.input :commentable_id, :as => :hidden
   - f.buttons do
-    = f.commit_button "Добавить комментарий"
+    = f.commit_button :add_comment
       
