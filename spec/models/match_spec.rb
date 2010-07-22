@@ -5,7 +5,7 @@ describe Match do
   it "should create a new instance given valid attributes (no params given, generate automatically)" do
     create_match
   end
-  
+
   it "should create a new instance given valid attributes (given custom params)" do
     create_match :parameters => { :seed => 4,
                                   :first => {:x => 1, :y => 1, :angle => 225},
@@ -27,14 +27,14 @@ describe Match do
         :seed => 4
       }
     end
-    
+
     [:first, :second, :seed].each do |attr|
       it "should filter hashes without #{attr}" do
         @params.delete attr
         build_match(:parameters => @params).should_not be_valid
       end
     end
-    
+
     [:x, :y, :angle].each do |attr|
       it "should filter hashes without (first|second)/x#{attr}" do
         @params[:first].delete attr

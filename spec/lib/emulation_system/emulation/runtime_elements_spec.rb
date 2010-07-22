@@ -30,7 +30,7 @@ describe EmulationSystem::Emulation::RuntimeElements do
     end
 
     describe "#scope_blocks" do
-      # комплексный на 
+      # комплексный на
       # Block#new, Bot#push_element, Bot#upper_block_for
       it "should correctly set scope blocks for global block" do
         @bot.stack.last.scope_block.should == nil
@@ -65,10 +65,10 @@ describe EmulationSystem::Emulation::RuntimeElements do
           node2 = build :node
 
           @bot.push_element build(:node, 'block', [ node1,node2 ])
-          
+
           mock(@bot).push_element(node1)
           @bot.step.should be_a Numeric
-          
+
           mock(@bot).push_element(node2)
           @bot.step.should be_a Numeric
 
@@ -181,7 +181,7 @@ describe EmulationSystem::Emulation::RuntimeElements do
         lambda do
           expr = build :node
           @bot.push_element build(:node, '=', [ build(:node, 'foo'), expr ])
-          
+
           mock(@bot).push_element(expr)
           @bot.step.should be_a Numeric
 
@@ -278,7 +278,7 @@ describe EmulationSystem::Emulation::RuntimeElements do
         lambda do
           expr = build :node
           @bot.push_element build(:node, 'while', [expr, build(:node)])
-          
+
           mock(@bot).push_element(expr)
           @bot.step.should be_a Numeric
 
@@ -292,7 +292,7 @@ describe EmulationSystem::Emulation::RuntimeElements do
           expr = build :node
           block = build :block
           @bot.push_element build(:node, 'while', [expr, block])
-          
+
           3.times do
             mock(@bot).push_element(expr)
             @bot.step.should be_a Numeric
@@ -486,7 +486,7 @@ describe EmulationSystem::Emulation::RuntimeElements do
           block = build(:node, 'block')
           @bot.push_element build(:node, 'funcdef',
             [ build(:node, 'foo'), build(:node, 'params', [build(:node,'a'),build(:node,'b')]), block ])
-          
+
           mock(@bot).upper_block_from(anything) { mock!.set_function('foo', ['a','b'], block) }
           @bot.step.should be_a Numeric
         end.should_not change { @bot.stack.size }
@@ -511,8 +511,8 @@ describe EmulationSystem::Emulation::RuntimeElements do
           mock(@bot).upper_block_from(anything) { mock!.get_function('foo') { func } }
           @bot.push_element build(:node, 'funccall',
             [ build(:node, 'foo'), build(:node, 'params', [p1,p2]) ])
-          
-          mock(@bot).push_element p1 
+
+          mock(@bot).push_element p1
           @bot.step.should be_a Numeric
 
           mock(@bot).pop_var { 37 }
@@ -534,8 +534,8 @@ describe EmulationSystem::Emulation::RuntimeElements do
           mock(@bot).rtlib.times(any_times) { rtlib }
           @bot.push_element build(:node, 'funccall',
             [ build(:node, 'posx'), build(:node, 'params', [p1,p2]) ])
-          
-          mock(@bot).push_element p1 
+
+          mock(@bot).push_element p1
           @bot.step.should be_a Numeric
 
           mock(@bot).pop_var { 37 }
@@ -566,7 +566,7 @@ describe EmulationSystem::Emulation::RuntimeElements do
           @bot.step.should be_a Numeric
         end.should_not change { @bot.stack.size }
       end
-      
+
       it "should clean stack including last function block and push expr if expr given" do
         lambda do
           @bot.push_element build(:node, 'block'), :function => true
@@ -581,7 +581,7 @@ describe EmulationSystem::Emulation::RuntimeElements do
           @bot.step.should be_a Numeric
         end.should_not change { @bot.stack.size }
       end
-      
+
       it "should raise error if there are no upper function block" do
         lambda do
           @bot.push_element build(:node, 'block')
@@ -594,7 +594,7 @@ describe EmulationSystem::Emulation::RuntimeElements do
       end
     end
   end
-   
+
   describe EmulationSystem::Emulation::RuntimeElements::Log do
     it "should be creatable" do
       RuntimeElements::Log.new @bot, build(:node, 'log', [])
@@ -607,7 +607,7 @@ describe EmulationSystem::Emulation::RuntimeElements do
           p2 = build(:node, 'block')
           p3 = build(:node, 'block')
           @bot.push_element build(:node, 'log', [p1,p2,p3])
-          
+
           mock(@bot).push_element p1
           @bot.step.should be_a Numeric
 

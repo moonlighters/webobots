@@ -1,0 +1,11 @@
+-# нужна локальная переменная +commentable+: комментируемый объект
+- comment = commentable.comments.new
+
+- semantic_form_for comment do |f|
+  - f.inputs do
+    = f.input :comment, :label => false
+    = f.input :commentable_type, :as => :hidden
+    = f.input :commentable_id, :as => :hidden
+  - f.buttons do
+    = f.commit_button :add_comment
+      

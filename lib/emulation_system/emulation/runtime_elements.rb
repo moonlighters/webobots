@@ -99,7 +99,7 @@ module EmulationSystem
           end
         end
 
-        # Если <tt>options[:safe]</tt> равно +true+, в случае неудачи возвращает +nil+, 
+        # Если <tt>options[:safe]</tt> равно +true+, в случае неудачи возвращает +nil+,
         # иначе возбуждает ошибку
         def get_variable(id, options = {})
           if global?
@@ -159,7 +159,7 @@ module EmulationSystem
       class Literal
         def initialize(bot, node)
           @bot = bot
-          
+
           @value = node
         end
 
@@ -176,7 +176,7 @@ module EmulationSystem
           Timing.for self
         end
       end
-     
+
       # === Класс для элемента if
       # <tt>^('if' expr $ifblock $elseblock?)</tt>
       class If
@@ -186,7 +186,7 @@ module EmulationSystem
 
           @expr_evaluated = false
         end
-      
+
         def run
           unless @expr_evaluated
             @bot.push_element @expr
@@ -238,7 +238,7 @@ module EmulationSystem
           @bot = bot
           @id = node.children.first
         end
-      
+
         def run
           var = @bot.upper_block_from(self).get_variable @id.data
           @bot.pop_element
@@ -259,7 +259,7 @@ module EmulationSystem
           @exprL_evaluated = false
           @exprR_evaluated = false
         end
-      
+
         def run
           if !@exprL_evaluated
             @bot.push_element @exprL
@@ -279,10 +279,10 @@ module EmulationSystem
 
             # hack for division
             if @op.data == '/'
-              @varL = @varL.to_f 
+              @varL = @varL.to_f
               raise Errors::WFLRuntimeError, "деление на ноль" if @varR == 0
             end
-            
+
             # real calculation
             res = case @op.data
                   when '!='
@@ -330,7 +330,7 @@ module EmulationSystem
 
           @expr_evaluated = false
         end
-      
+
         def run
           unless @expr_evaluated
             @bot.push_element @expr
@@ -369,7 +369,7 @@ module EmulationSystem
           end
         end
       end
- 
+
       # === Класс для элемента funcdef
       # <tt>^(NODE["funcdef"] $name ^(NODE["params"] $p*) block)</tt>
       class FuncDef
@@ -384,7 +384,7 @@ module EmulationSystem
           Timing.for self
         end
       end
- 
+
       # === Класс для элемента funccall
       # <tt>^(NODE["funccall"] ID ^(NODE["params"] $arg*))</tt>
       class FuncCall
@@ -398,7 +398,7 @@ module EmulationSystem
         def run
           @evaluated_params << @bot.pop_var if @next_param > 0
 
-          if @next_param < @params.children.count 
+          if @next_param < @params.children.count
             @bot.push_element @params.children[@next_param]
             @next_param += 1
             Timing.for self, :evaluation
@@ -418,7 +418,7 @@ module EmulationSystem
           end
         end
       end
- 
+
       # === Класс для элемента return
       # <tt>'return'^ expr?</tt>
       class Return
@@ -458,7 +458,7 @@ module EmulationSystem
         def run
           @evaluated_items << @bot.pop_var if @next_item > 0
 
-          if @next_item < @items.count 
+          if @next_item < @items.count
             @bot.push_element @items[@next_item]
             @next_item += 1
             Timing.for self, :evaluation
@@ -471,7 +471,7 @@ module EmulationSystem
           end
         end
       end
- 
+
     end
   end
 end

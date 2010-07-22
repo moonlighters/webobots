@@ -17,7 +17,7 @@ module EmulationSystem
     class RecordListLogger
       # Список записей в формате "<tt>1: ...</tt>"
       attr_reader :records
-      
+
       def initialize
         @records = []
       end
@@ -35,7 +35,7 @@ module EmulationSystem
     # Логгер, сохраняющий кадры и записи
     class ReplayLogger
       attr_reader :frames
-      
+
       def initialize
         @frames = []
       end
@@ -87,7 +87,7 @@ module EmulationSystem
       end
 
       private
-      
+
       def r(value)
         value.is_a?( Float ) ? value.round_with_precision(3) : value
       end

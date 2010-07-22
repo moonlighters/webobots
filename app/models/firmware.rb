@@ -8,7 +8,7 @@ class Firmware < ActiveRecord::Base
   has_one :version, :class_name => 'FirmwareVersion', :order => 'number DESC'
 
   belongs_to :user
-  
+
   cattr_reader :per_page
   @@per_page = 10
   cattr_reader :per_page_of_rating
@@ -26,7 +26,7 @@ class Firmware < ActiveRecord::Base
   def rating_position
     @rating_position ||= 1 + Firmware.count( :conditions => ['rating_points > ?', self.rating_points] )
   end
-  
+
   def self.all_sorted_by_rating
     firmwares = Firmware.scoped :order => 'rating_points DESC',
                                 :include => :user
@@ -44,5 +44,5 @@ class Firmware < ActiveRecord::Base
   def self.select_available_for(user)
     self.all :conditions => ["available = ? OR user_id = ?", true, user]
   end
-  
+
 end

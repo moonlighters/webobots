@@ -6,7 +6,7 @@ module EmulationSystem
     # полученое дерево преобразует в IR
     class Parser
       LP,RP = '(', ')' # :nodoc:
-      
+
       # +code+ - исходный код прошивки
       # +parser+ - класс, реализующий вызов внешнего парсера
       def initialize(code, parser = ANTLRParser)
@@ -28,7 +28,7 @@ module EmulationSystem
         # разбивает строку на токены по пробельным символам и скобкам,
         # при этом сохраняя скобки
         @tokens = text.split( /([\s#{LP}#{RP}])(?=(?:[^"]*"[^"]*")*[^"]*$)/ ).reject(&:blank?)
-        
+
         # текущий токен
         @cur = 0
 

@@ -56,10 +56,10 @@ def getErrorMessage(self, e, tokenNames):
 }
 
 prog    : block EOF!;
-        
+
 block   : stat*                 -> ^(NODE["block"] stat*) ;
 
-stat    :  assig^                
+stat    :  assig^
         | ifelse^
         | loop^
         | funcdef^
@@ -142,7 +142,7 @@ CMP_OP  : ('>'|'<'|'=='|'!='|'<='|'>=') ;
 fragment
 DIGIT   : '0'..'9' ;
 
-fragment 
+fragment
 LETTER  : ('a'..'z'|'A'..'Z'|'_') ;
 
 COMMENT : '#' (~ NEWLINE)* {self.skip()} ;

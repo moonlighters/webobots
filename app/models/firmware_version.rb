@@ -6,7 +6,7 @@ class FirmwareVersion < ActiveRecord::Base
 
   validates_presence_of :firmware_id, :number
   validates_uniqueness_of :number, :scope => :firmware_id
-  
+
   before_validation :correct_code
   # NB! Номера могут быть не уникальны в течении времени
   before_validation :generate_number
@@ -14,7 +14,7 @@ class FirmwareVersion < ActiveRecord::Base
   def syntax_errors
     @syntax_errors ||= check_syntax_errors
   end
-  
+
   private
 
   # Чтобы пустые версии тоже могли существовать,

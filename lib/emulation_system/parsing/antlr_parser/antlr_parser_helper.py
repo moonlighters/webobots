@@ -2,7 +2,7 @@
 ##
 #
 # Antlr parser helper
-# 
+#
 # Some methods, that are used by both parser and lexer classes
 
 from antlr3 import *
@@ -114,7 +114,7 @@ def getParserErrorMessage(parser, e, tokenNames):
 
 def getLexerErrorMessage(lexer, e, tokenNames):
     msg = None
-    
+
     if isinstance(e, MismatchedTokenException):
         msg = u"неожиданный символ " \
               + lexer.getCharErrorDisplay(e.c) \
@@ -128,7 +128,7 @@ def getLexerErrorMessage(lexer, e, tokenNames):
     elif isinstance(e, EarlyExitException):
         msg = u"недостаточно символов около " \
               + lexer.getCharErrorDisplay(e.c)
-        
+
     elif isinstance(e, MismatchedNotSetException):
         msg = u"неожиданный символ " \
               + lexer.getCharErrorDisplay(e.c) \

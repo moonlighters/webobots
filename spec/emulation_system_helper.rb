@@ -6,7 +6,7 @@ Dir[File.expand_path(File.join(File.dirname(__FILE__),'..','lib','emulation_syst
 def build(what, *args)
   case what
   when :node
-    EmulationSystem::IR::Node.new( args[0] || 'block', args[1] || [] ) 
+    EmulationSystem::IR::Node.new( args[0] || 'block', args[1] || [] )
   when :ir
     EmulationSystem::IR.new( args[0] || build(:node) )
   when :bot

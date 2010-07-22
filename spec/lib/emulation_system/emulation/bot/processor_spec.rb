@@ -15,7 +15,7 @@ describe EmulationSystem::Emulation::Bot::Engine do
       @bot.should be_halted
     end
   end
-  
+
   describe "#step" do
     it "should raise internal error if nothing to run" do
       @bot.stack = []

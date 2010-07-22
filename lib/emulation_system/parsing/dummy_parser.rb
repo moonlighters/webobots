@@ -23,7 +23,7 @@ module EmulationSystem::Parsing
 
   (= a 3)
   (= b
-    (/ 
+    (/
       (call some (params a a))
       2
     )

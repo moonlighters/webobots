@@ -29,7 +29,7 @@ class User < ActiveRecord::Base
   def rating_points
     @rating_points ||= firmwares.sum( :rating_points )
   end
-  
+
   attr_writer :rating_position
   def rating_position
     @rating_position ||=
@@ -77,5 +77,5 @@ class User < ActiveRecord::Base
 
     Invite.find_by_code( code ).destroy
   end
-  
+
 end

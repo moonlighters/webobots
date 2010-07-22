@@ -47,7 +47,7 @@ describe EmulationSystem::Parsing::ANTLRParser do
       call("x = a + b * (c)").should == "(block (= x (+ (var a) (* (var b) (var c)))))"
       call("x = a + b(c)").should == "(block (= x (+ (var a) (funccall b (params (var c))))))"
     end
-    
+
     it "should parse function calls with different number of params" do
       call("f(a,b,c,d)\ng()").should == "(block (funccall f (params (var a) (var b) (var c) (var d))) (funccall g params))"
     end
@@ -114,7 +114,7 @@ describe EmulationSystem::Parsing::ANTLRParser do
     call("return 5").should == "(block (return 5))"
     call("return").should == "(block return)"
   end
-  
+
   private
   def call(code)
     EmulationSystem::Parsing::ANTLRParser.call code
