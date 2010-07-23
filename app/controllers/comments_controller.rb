@@ -7,11 +7,12 @@ class CommentsController < ApplicationController
   def create
     commentable_type = params[:comment][:commentable_type]
     commentable_id = params[:comment][:commentable_id]
-
     @commentable = Comment.find_commentable(commentable_type, commentable_id)
-    @comment = Comment.new(:comment => params[:comment][:comment], :user => current_user)
-    
-    if @commentable.comments << @comment
+
+    @comment = @commentable.comments.new params[:comment]
+    @comment.user = current_user
+
+    if @comment.save
       redirect_to @commentable, :notice => "Комментарий успешно добавлен"
     else
       render :action => :new

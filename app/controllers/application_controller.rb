@@ -75,6 +75,6 @@ class ApplicationController < ActionController::Base
   end
 
   def comments_page
-    return params[:comments_page]
+    params[:comments_page]
   end
 end

@@ -43,4 +43,5 @@ end
 Factory.define :comment do |c|
   c.comment "Let's start a holywar!"
   c.association :user
+  c.association :commentable, :factory => :firmware
 end

@@ -117,7 +117,7 @@ td.line-numbers {
 
 /* override formtastic default big textarea */
 .comments form.formtastic fieldset > ol > li.text textarea {
-  width: 100%; 
+  width: 100%;
   height: 60px;
   border: solid 1px;
 }
