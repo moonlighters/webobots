@@ -39,3 +39,8 @@ end
 Factory.define :invite do |i|
   i.comment "for Mr.Smith"
 end
+
+Factory.define :comment do |c|
+  c.comment "Let's start a holywar!"
+  c.association :user
+end

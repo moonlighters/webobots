@@ -1,7 +1,9 @@
 -# нужна локальная переменная +commentable+: комментируемый объект
-- comment = commentable.comments.new
+-# необязательна локальная переменная +comment+: комментарий (используется при рендеринге формы с ошибками)
+- comment ||= commentable.comments.new
 
 - semantic_form_for comment do |f|
+  = f.semantic_errors
   - f.inputs do
     = f.input :comment, :label => false
     = f.input :commentable_type, :as => :hidden

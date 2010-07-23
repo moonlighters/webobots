@@ -1,0 +1,4 @@
+%h2 Добавить комментарий
+
+.comments
+  = render :partial => 'form', :locals => {:commentable => @commentable, :comment => @comment}

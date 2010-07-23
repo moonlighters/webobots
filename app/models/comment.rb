@@ -9,4 +9,7 @@ class Comment < ActiveRecord::Base
   @@per_page = 10
 
   named_scope :sorted, :include => :user, :order => 'created_at DESC'
+
+  validates_presence_of :comment, :user
+  validates_length_of :comment, :maximum => 1000
 end
