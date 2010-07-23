@@ -22,6 +22,10 @@ class Firmware < ActiveRecord::Base
   # TODO: может быть стоит занести это в модель?
   # validates :presence_of_at_least_one_version
 
+  named_scope :available_for, lambda { |user|
+    { :conditions => ["available = ? OR user_id = ?", true, user] }
+  }
+
   attr_writer :rating_position
   def rating_position
     @rating_position ||= 1 + Firmware.count( :conditions => ['rating_points > ?', self.rating_points] )
@@ -40,9 +44,4 @@ class Firmware < ActiveRecord::Base
       fw.rating_position = pos
     end
   end
-
-  def self.select_available_for(user)
-    self.all :conditions => ["available = ? OR user_id = ?", true, user]
-  end
-
 end
