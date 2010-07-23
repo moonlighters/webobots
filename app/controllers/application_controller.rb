@@ -73,4 +73,8 @@ class ApplicationController < ActionController::Base
       render 'application/500', :status => 500
     end
   end
+
+  def comments_page
+    return params[:comments_page]
+  end
 end

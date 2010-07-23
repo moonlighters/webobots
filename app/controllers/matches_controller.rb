@@ -38,7 +38,7 @@ class MatchesController < ApplicationController
   end
 
   def show
-    @comments = @match.comments.default_paginate params
+    @comments = @match.comments.sorted.paginate :page => comments_page
   end
 
   def play
