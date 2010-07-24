@@ -23,6 +23,9 @@
   %p
     %b Ничья!
 
-%p= link_to "Повтор матча", play_match_path( @match ), :id => 'show-replay', :class => 'nyroModal'
+%p
+  = link_to "Комментарии", "#comments"
+  |
+  = link_to "Повтор матча", play_match_path( @match ), :id => 'show-replay', :class => 'nyroModal'
 
 = render :partial => 'comments/comments', :locals => {:commentable => @match, :comments => @comments}

@@ -13,7 +13,7 @@ class CommentsController < ApplicationController
     @comment.user = current_user
 
     if @comment.save
-      redirect_to @commentable, :notice => "Комментарий успешно добавлен"
+      redirect_to comments_url(@commentable), :notice => "Комментарий успешно добавлен"
     else
       render :action => :new
     end
@@ -21,7 +21,7 @@ class CommentsController < ApplicationController
 
   def destroy
     @comment.destroy
-    redirect_to @comment.commentable, :notice => "Комментарий успешно удален"
+    redirect_to comments_url(@comment.commentable), :notice => "Комментарий успешно удален"
   end
 
   private
@@ -31,5 +31,9 @@ class CommentsController < ApplicationController
 
   def require_owner
     generalized_require_owner @comment
+  end
+
+  def comments_url(commentable)
+    polymorphic_url(commentable, :anchor => 'comments')
   end
 end

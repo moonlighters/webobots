@@ -24,6 +24,8 @@
 
 -# действия
 %p
+  = link_to "Комментарии", "#comments"
+  |
   - if can_fight_with? @fw
     = link_to "Сразиться!", new_match_path(:enemy_fw => @fw)
     |

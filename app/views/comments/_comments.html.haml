@@ -1,9 +1,10 @@
 -# нужны локальнаы переменные:
 -# * +commentable+ - комментируемый объект
 -# * +comments+ - массив комментариев для отображения
+%a{:name => 'comments'}
 %h3 Комментарии
 .comments
   = render :partial => 'comments/form', :locals => {:commentable => commentable}
-  - paginated_section comments, :param_name => :comments_page do
+  - paginated_section comments, :param_name => :comments_page, :params => {:anchor => 'comments'} do
     = render comments
 
