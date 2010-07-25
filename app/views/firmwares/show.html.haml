@@ -14,26 +14,22 @@
 %p
   %b Исходный код:
   = @fw.shared? ? "открытый" : "закрытый"
+  = '(' + link_to( "просмотреть", code_firmware_path( @fw ), :class => 'nyroModal' ) + ')' if can_see_code_of? @fw
 %p
   %b Доступность для сражения:
   = @fw.available? ? "доступна" : "не доступна"
 %p
   %b Последняя версия прошивки:
   = "##{@fwv.number}"
-= render :partial => 'syntax', :locals => {:fwv => @fwv}
 
 -# действия
 %p
-  = link_to "Комментарии", "#comments"
-  |
   - if can_fight_with? @fw
     = link_to "Сразиться!", new_match_path(:enemy_fw => @fw)
     |
   = link_to "История версий", firmware_versions_path(@fw)
 
 -# код
-%p= link_to( "Редактировать", edit_firmware_path(@fw) ) if current_user.owns? @fw
-= render :partial => 'code', :locals => {:fwv => @fwv}
 %p= link_to( "Редактировать", edit_firmware_path(@fw) ) if current_user.owns? @fw
 
 -# комментарии

@@ -1,5 +1,5 @@
 class FirmwaresController < ApplicationController
-  before_filter :find_firmware, :only => [:show, :edit, :update, :show_version, :index_versions]
+  before_filter :find_firmware, :only => [:show, :code, :edit, :update, :show_version, :index_versions]
 
   before_filter :require_user
   before_filter :require_owner, :only => [:edit, :update]
@@ -34,8 +34,15 @@ class FirmwaresController < ApplicationController
 
   def show
     @fws_count = Firmware.count
-    @fwv = @fw.version
     @comments = @fw.comments.sorted.paginate :page => comments_page
+  end
+
+  def code
+    if request.xhr?
+      render :layout => false
+    else
+      redirect_to firmware_path(@fw)
+    end
   end
 
   def index_versions
@@ -53,7 +60,6 @@ class FirmwaresController < ApplicationController
 
   def edit
     # В форму мы отдаем последнюю версию
-    @fwv = @fw.version
   end
 
   def update
@@ -76,6 +82,7 @@ class FirmwaresController < ApplicationController
   private
   def find_firmware
     @fw = Firmware.find params[:id]
+    @fwv = @fw.version
   end
 
   def require_owner
