@@ -120,18 +120,20 @@ td.line-numbers {
 
 .avatar_normal, .avatar_big {
   margin: 5px;
+  padding: 2px;
+  border: 1px solid #aaa;
 }
 
 .vs_block .vs_left, .vs_block .vs_right {
   float: left;
-  line-height: 32px;
+  line-height: 35px;
 }
 
 .vs_block .vs_middle {
   float: left;
   margin: 0 20px;
-  height: 64px;
-  line-height: 64px;
+  height: 70px;
+  line-height: 70px;
 }
 
 .vs_block .avatar_normal {
