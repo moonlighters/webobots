@@ -17,6 +17,8 @@ class User < ActiveRecord::Base
   has_many :firmwares
   has_many :matches
 
+  acts_as_commentable
+
   validates_length_of :login, :maximum => 20
 
   # +code+ используется как код инвайта при регистрации

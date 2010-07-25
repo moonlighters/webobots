@@ -37,6 +37,7 @@ class UsersController < ApplicationController
             end
     @fws = @user.firmwares
     @users_count = User.count
+    @comments = @user.comments.sorted.paginate :page => comments_page
   end
 
   def edit

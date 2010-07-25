@@ -29,3 +29,5 @@
   - else
     %p
       %i Пользователь ещё не создал ни одной прошивки
+
+= render :partial => 'comments/comments', :locals => {:commentable => @user, :comments => @comments}
