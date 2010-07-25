@@ -110,53 +110,67 @@ td.line-numbers {
   margin-left: 25%;
 }
 
-.comments {
+#comments {
   width: 500px;
   padding: 5px;
 }
 
 /* override formtastic default big textarea */
-.comments form.formtastic fieldset > ol > li.text textarea {
+#comments form.formtastic fieldset > ol > li.text textarea {
   width: 100%;
   height: 60px;
   border: solid 1px;
 }
 
 /* fix overflow of textarea with 100% width */
-.comments form.formtastic fieldset > ol > li.text {
+#comments form.formtastic fieldset > ol > li.text {
   padding-right: 2px;
 }
 
 /* override formtastic default button padding and alignment */
-.comments form.formtastic fieldset.buttons {
+#comments form.formtastic fieldset.buttons {
   padding-left: 0;
   text-align: right;
 }
 
 /* helper for override formtastic default button padding and alignment */
-.comments form.formtastic fieldset.buttons li {
+#comments form.formtastic fieldset.buttons li {
   float: none
 }
 
 /* override strange formtastic button padding */
-.comments form.formtastic fieldset.buttons li {
+#comments form.formtastic fieldset.buttons li {
   padding-right: 0;
 }
 
 /* override formtastic default field margin */
-.comments form.formtastic fieldset > ol > li.text {
+#comments form.formtastic fieldset > ol > li.text {
   margin-bottom: 10px;
 }
 
 .comment_date {
   color: #888;
-  padding-bottom: 15px;
+  float: right
 }
 
 .comment_text p {
   width: 500px;
   overflow: auto;
   margin-top: 5px;
-  margin-bottom: 5px;
+}
+
+.comment_author {
+  font-weight: bold;
+}
+
+.comment_button {
+  float: right;
+  margin-left: 15px;
+  margin-top: -5px;
+}
+
+.comment_header {
+  border-bottom: solid 1px #aaa;
+  margin-top: 20px;
 }
 
