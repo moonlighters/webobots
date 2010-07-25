@@ -1,5 +1,6 @@
 class FirmwareVersion < ActiveRecord::Base
   belongs_to :firmware, :touch => true
+  has_one :user, :through => :firmware
 
   cattr_reader :per_page
   @@per_page = 10

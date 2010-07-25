@@ -109,3 +109,32 @@ td.line-numbers {
 #recaptcha_widget_div {
   margin-left: 25%;
 }
+
+.profile_avatar p {
+  font-size: 80%;
+}
+
+.avatar_small, .avatar_normal, .avatar_big {
+  vertical-align: middle;
+}
+
+.avatar_normal, .avatar_big {
+  margin: 5px;
+}
+
+.vs_block .vs_left, .vs_block .vs_right {
+  float: left;
+  line-height: 32px;
+}
+
+.vs_block .vs_middle {
+  float: left;
+  margin: 0 20px;
+  height: 64px;
+  line-height: 64px;
+}
+
+.vs_block .avatar_normal {
+  margin: 0 5px 0 0;
+  float:left;
+}

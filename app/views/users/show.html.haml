@@ -1,4 +1,14 @@
+- self_profile = @user == current_user
 %h2 Просмотр профиля
+
+.profile_avatar
+  - if self_profile
+    = link_to avatar_for(@user, :size => :big), "http://gravatar.com"
+    %p
+      Для работы с аватарами используется сервис <a href="http://gravatar.com/site/signup">Gravatar</a>
+  - else
+    = avatar_for @user, :size => :big
+
 %p
   %b Логин:
   =h @user.login
@@ -9,7 +19,7 @@
   %b Позиция в рейтинге:
   = @user.rating_position.to_s + "-й из " + @users_count.to_s
 
-- if @user == current_user
+- if self_profile
   %p
     %b Email:
     =h @user.email
@@ -22,7 +32,7 @@
 - unless @fws.empty?
   %p= link_to( 'Сразиться!', new_match_path(:enemy => @user) )
 
-- if @user != current_user
+- unless self_profile
   - unless @fws.empty?
     %h3 Список прошивок
     %ul= render @fws

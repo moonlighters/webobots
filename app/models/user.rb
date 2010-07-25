@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
     }
   end
 
+  is_gravtastic :default => :mm
+
   attr_protected :login
 
   cattr_reader :per_page
