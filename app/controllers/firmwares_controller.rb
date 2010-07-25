@@ -3,7 +3,7 @@ class FirmwaresController < ApplicationController
 
   before_filter :require_user
   before_filter :require_owner, :only => [:edit, :update]
-  
+
   def index
     @fws = current_user.firmwares.paginate :page => params[:page], :order => 'id DESC'
   end

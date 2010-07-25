@@ -15,9 +15,9 @@ describe EmulationSystem::Emulation::Vector do
       u = Vector[@v.x, @v.y]
       u.x.should == @v.x
       u.y.should == @v.y
-    end 
+    end
   end
-  
+
   describe "#+" do
     it "should add vectors" do
       u = @v + Vector.new(-0.5, +0.5)

@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_user_session, :current_user
   protect_from_forgery
   filter_parameter_logging :password, :password_confirmation
-  
+
   class NotFound < StandardError; end
 
   private
@@ -12,12 +12,12 @@ class ApplicationController < ActionController::Base
     return @current_user_session if defined?(@current_user_session)
     @current_user_session = UserSession.find
   end
-  
+
   def current_user
     return @current_user if defined?(@current_user)
     @current_user = current_user_session && current_user_session.record
   end
-  
+
   def require_user
     unless current_user
       store_location
@@ -43,11 +43,11 @@ class ApplicationController < ActionController::Base
       false
     end
   end
-  
+
   def store_location
     session[:return_to] = request.request_uri
   end
-  
+
   def redirect_back_or_default(default, opts={})
     redirect_to(session[:return_to] || default, opts)
     session[:return_to] = nil

@@ -5,7 +5,7 @@ module LayoutHelper
 
   def flash_section(sec)
     text = flash[sec.to_sym]
-    div_options = { 
+    div_options = {
       :class => "flash-messages #{sec}",
       :id => "flash-#{sec}"
     }

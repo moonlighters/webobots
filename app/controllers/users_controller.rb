@@ -7,12 +7,12 @@ class UsersController < ApplicationController
   def index
     @users = User.paginate :page => params[:page], :order => 'lower(login)'
   end
-  
+
   def new
     @user = User.new
     @user.code = params[:code]
   end
-  
+
   def create
     # достаем логин заранее, чтобы избежать warning'а "присваивание protected поля"
     login = params[:user].delete :login
@@ -28,7 +28,7 @@ class UsersController < ApplicationController
       render :action => :new
     end
   end
-  
+
   def show
     @user = if params[:id]
               User.find params[:id]
@@ -42,7 +42,7 @@ class UsersController < ApplicationController
 
   def edit
   end
-  
+
   def update
     params[:user].delete :login
     if @user.update_attributes params[:user]

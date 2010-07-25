@@ -46,7 +46,7 @@ module EmulationSystem
       def launch_missile(*args)
         @missiles << Missile.new(*args)
       end
-    
+
       # Производит эмуляцию матча
       #
       # Возвращает результат матча:
@@ -67,8 +67,8 @@ module EmulationSystem
           end
 
           @bots.each { |bot| bot.calc_physics_for SYNC_PERIOD, @bots - [bot] }
-          
-          @missiles.each do |missile| 
+
+          @missiles.each do |missile|
             missile.calc_physics_for SYNC_PERIOD
             missile.explode! if @bots.any? { |bot| missile.hit? bot }
           end
@@ -82,7 +82,7 @@ module EmulationSystem
           end
 
           @bots.each { |bot| bot.step while bot.time < @time and not bot.halted? }
-          
+
           @time += SYNC_PERIOD
           syncs += 1
 

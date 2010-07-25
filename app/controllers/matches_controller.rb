@@ -70,7 +70,7 @@ class MatchesController < ApplicationController
     @enemy_id = user.id if user
 
     if user
-      @enemy_fws = user.firmwares.scoped(:include => :version).select_available_for current_user
+      @enemy_fws = user.firmwares.scoped(:include => :version).available_for current_user
       @enemy_collection = @enemy_fws.map do |x|
         [ x.name, x.version.id ]
       end
@@ -78,7 +78,7 @@ class MatchesController < ApplicationController
     else
       @enemy_fws = Firmware.scoped(
         :order => :user_id, :include => [:user, :version]
-      ).select_available_for current_user
+      ).available_for current_user
       @enemy_collection = @enemy_fws.map do |x|
         [ "#{x.name} (игрока #{x.user.login})", x.version.id ]
       end

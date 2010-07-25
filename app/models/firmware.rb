@@ -10,7 +10,7 @@ class Firmware < ActiveRecord::Base
   belongs_to :user
 
   acts_as_commentable
-  
+
   cattr_reader :per_page
   @@per_page = 10
   cattr_reader :per_page_of_rating
@@ -24,11 +24,15 @@ class Firmware < ActiveRecord::Base
   # TODO: может быть стоит занести это в модель?
   # validates :presence_of_at_least_one_version
 
+  named_scope :available_for, lambda { |user|
+    { :conditions => ["available = ? OR user_id = ?", true, user] }
+  }
+
   attr_writer :rating_position
   def rating_position
     @rating_position ||= 1 + Firmware.count( :conditions => ['rating_points > ?', self.rating_points] )
   end
-  
+
   def self.all_sorted_by_rating
     firmwares = Firmware.scoped :order => 'rating_points DESC',
                                 :include => :user
@@ -42,9 +46,4 @@ class Firmware < ActiveRecord::Base
       fw.rating_position = pos
     end
   end
-
-  def self.select_available_for(user)
-    self.all :conditions => ["available = ? OR user_id = ?", true, user]
-  end
-  
 end

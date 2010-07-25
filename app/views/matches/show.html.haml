@@ -1,9 +1,26 @@
 %h2 Просмотр информации о матче
 
 %h3
-  = link_to_firmware_version @match.first_version
-  VS
-  = link_to_firmware_version @match.second_version
+  .vs_block
+    .vs_left
+      - fwv = @match.first_version
+      = avatar_for fwv.user
+      = link_to_firmware_version fwv
+      <br/>
+      автор
+      = link_to_user fwv.user, :avatar => :none
+
+    .vs_middle
+      VS
+
+    .vs_right
+      - fwv = @match.second_version
+      = avatar_for fwv.user
+      = link_to_firmware_version fwv
+      <br/>
+      автор
+      = link_to_user fwv.user, :avatar => :none
+  .clear
 
 - unless @match.user.nil?
   %p

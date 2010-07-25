@@ -13,7 +13,7 @@ module EmulationSystem
       def initialize(bot, radians, desired_distance)
         direction = Vector[ Math::cos(radians), Math::sin(radians) ]
         self.pos = bot.pos + direction*(World::BOT_RADIUS + 1)
-        
+
         self.velocity = direction*World::MISSILE_SPEED
         self.distance = 0
         self.desired_distance = desired_distance
@@ -23,17 +23,17 @@ module EmulationSystem
       def explode!
         @exploded = true
       end
-      
+
       def exploded?
         @exploded
       end
-      
+
       def calc_physics_for(dt)
         return if exploded?
 
         dr = velocity*dt
         ds = dr.abs
-        
+
         self.pos += dr
         self.distance += ds
 

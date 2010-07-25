@@ -18,7 +18,7 @@ module Rating
     # Максимальное превосходство победителя над проигравшим по очкам
     # при котором победитель ещё получает дополнительные очки
     MAX_NEGATIVE_DIFF = 20
-    
+
     # Коэффициент экспоненциального спада, вычисляемый так,
     # чтобы удовлетворить условию на MAX_NEGATIVE_DIFF
     FALL_COEFF = Math.log(WITH_SAME)/MAX_NEGATIVE_DIFF
@@ -34,7 +34,7 @@ module Rating
   def points_for(winner_points, loser_points)
     # очки победителя
     points_for_winner = Winner::ALWAYS
-    
+
     # победитель получает больше, когда у проигравшего рейтинг выше!
     diff = (loser_points - winner_points).to_f
     if diff < 0
@@ -44,7 +44,7 @@ module Rating
     else
       points_for_winner += Winner::WITH_SAME + diff/Winner::RISE_COEFF
     end
-    
+
     [points_for_winner, 0]
   end
 

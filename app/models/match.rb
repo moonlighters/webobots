@@ -106,7 +106,7 @@ class Match < ActiveRecord::Base
   def draw?
     result == :draw
   end
- 
+
   def emulate(logger)
     begin
       res = EmulationSystem.emulate first_version.code,
@@ -116,7 +116,7 @@ class Match < ActiveRecord::Base
     rescue EmulationSystem::Errors::WFLRuntimeError => e
       self.rt_error_msg = e.message
     end
-    
+
     set_result!(res) unless result
 
     if logger.is_a? EmulationSystem::Loggers::ReplayLogger and replay.nil?
