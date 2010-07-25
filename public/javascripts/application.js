@@ -5,5 +5,6 @@ $.fn.scrollToBottom = function() {
 };
 
 $(function() {
-  $('.nyroModal#show-replay').nyroModal({ autoSizable: false, minWidth: 700, minHeight: 480 });
+  $('.nyroModal#show-replay').nyroModal({ autoSizable: false, minWidth: 800, minHeight: 480 });
+  $('.nyroModal#show-code').nyroModal({ minWidth: 600 });
 });

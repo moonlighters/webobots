@@ -140,11 +140,20 @@ td.line-numbers {
 /* override strange formtastic button padding */
 #comments form.formtastic fieldset.buttons li {
   padding-right: 0;
+  margin-bottom: 0;
 }
 
 /* override formtastic default field margin */
 #comments form.formtastic fieldset > ol > li.text {
   margin-bottom: 10px;
+}
+
+.comment_avatar {
+  float: left;
+}
+
+.comment_body {
+  margin-left: 70px;
 }
 
 .comment_date {
@@ -171,17 +180,18 @@ td.line-numbers {
 .comment_header {
   border-bottom: solid 1px #aaa;
   margin-top: 20px;
+  padding-bottom: 2px;
 }
 
 .profile_avatar p {
   font-size: 80%;
 }
 
-.avatar_small, .avatar_normal, .avatar_big {
+.avatar_tiny, .avatar_small, .avatar_medium, .avatar_big {
   vertical-align: middle;
 }
 
-.avatar_normal, .avatar_big {
+.avatar_small, .avatar_medium, .avatar_big {
   margin: 5px;
   padding: 2px;
   border: 1px solid #aaa;
@@ -199,7 +209,7 @@ td.line-numbers {
   line-height: 70px;
 }
 
-.vs_block .avatar_normal {
+.vs_block .avatar_medium {
   margin: 0 5px 0 0;
   float:left;
 }

@@ -14,7 +14,7 @@
 %p
   %b Исходный код:
   = @fw.shared? ? "открытый" : "закрытый"
-  = '(' + link_to( "просмотреть", code_firmware_path( @fw ), :class => 'nyroModal' ) + ')' if can_see_code_of? @fw
+  = '(' + link_to( "просмотреть", code_firmware_path( @fw ), :id => "show-code", :class => 'nyroModal' ) + ')' if can_see_code_of? @fw
 %p
   %b Доступность для сражения:
   = @fw.available? ? "доступна" : "не доступна"

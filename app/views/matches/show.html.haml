@@ -4,7 +4,7 @@
   .vs_block
     .vs_left
       - fwv = @match.first_version
-      = avatar_for fwv.user
+      = link_to_user fwv.user, :login => false, :avatar => :medium
       = link_to_firmware_version fwv
       <br/>
       автор
@@ -15,7 +15,7 @@
 
     .vs_right
       - fwv = @match.second_version
-      = avatar_for fwv.user
+      = link_to_user fwv.user, :login => false, :avatar => :medium
       = link_to_firmware_version fwv
       <br/>
       автор

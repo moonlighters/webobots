@@ -1,41 +1,54 @@
 module UsersHelper
+  # Доступные размеры аватарки
+  AVATAR_SIZES = {
+    :tiny => 16,
+    :small => 48,
+    :medium => 64,
+    :big => 120
+  }
+
   # Ссылка на профиль пользователя
   #
   # * +u+: собственно пользователь
   # * +opts+:
-  #   * <tt>:avatar</tt>: либо просто +true+ (для отображения маленькой аватарки),
-  #     либо один из размеров (<tt>:small</tt>, <tt>:normal</tt>, <tt>:big</tt>),
-  #     либо +:none+
+  #   * <tt>:avatar</tt>: либо просто +true+ (для отображения крошечной аватарки, по умолчанию),
+  #     либо один из размеров, либо +:none+
+  #   * <tt>:login</tt>: показывать ли логин пользователя (по умолчанию +true+)
   def link_to_user(u, opts = {})
     avatar = opts.delete(:avatar) || true
+    login = opts.delete(:login)
+    login = true if login.nil?
 
-    if avatar && avatar != :none
-      size = if [:small, :big, :normal].include? avatar
-               avatar
-             else
-               :small
-             end
-      link_to(avatar_for(u, :size => size), user_path(u)) + " "
-    else
-      ""
-    end + link_to(h(u.login), user_path(u))
+    raise ArgumentError unless avatar || login
+
+    avatar_part = if avatar && avatar != :none
+                    size = if AVATAR_SIZES.include? avatar
+                             avatar
+                           else
+                             :tiny
+                           end
+                    link_to(avatar_for(u, :size => size), user_path(u)) + " "
+                  else
+                    ""
+                  end
+
+    login_part = if login
+                   link_to(h(u.login), user_path(u))
+                 else
+                   ""
+                 end
+
+    avatar_part + login_part
   end
 
   # Аватар пользователя
   #
   # * +u+: собственно пользователь
   # * +opts+:
-  #   * <tt>:size</tt>: один из размеров (<tt>:small</tt>, <tt>:normal</tt>, <tt>:big</tt>)
+  #   * <tt>:size</tt>: один из размеров
   def avatar_for(u, opts = {})
-    size = opts.delete(:size) || :normal
-    case size
-    when :small
-      av_size = 16
-    when :big
-      av_size = 120
-    when :normal
-      av_size = 64
-    end
+    size = opts.delete(:size) || :tiny
+    av_size = AVATAR_SIZES[size] or raise ArgumentError, "unknown size #{size.to_s}"
 
     image_tag u.gravatar_url(:size => av_size), :alt => "аватар", :class => "avatar_" + size.to_s
   end
