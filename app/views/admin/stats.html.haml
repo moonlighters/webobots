@@ -14,3 +14,7 @@
     = "проведен#{Russian.p @matches_count, '', *%w[о о]}"
     = @matches_count
     = "матч#{Russian.p @matches_count, '', *%w[а ей]}"
+  %li
+    = "оставлен#{Russian.p @comments_count, '', *%w[о о]}"
+    = @comments_count
+    = "комментар#{Russian.p @comments_count, *%w[ий ия иев]}"

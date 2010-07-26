@@ -8,5 +8,6 @@ class AdminController < ApplicationController
     @users_count = User.count
     @fws_count = Firmware.count
     @matches_count = Match.count
+    @comments_count = Comment.count
   end
 end
