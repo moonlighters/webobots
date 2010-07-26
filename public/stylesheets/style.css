@@ -72,6 +72,10 @@ td.line-numbers {
   clear: both;
 }
 
+.hide {
+  display: none;
+}
+
 #replay-canvas {
   float: left;
   margin: 5px 20px;
@@ -110,42 +114,46 @@ td.line-numbers {
   margin-left: 25%;
 }
 
-#comments {
+.comments {
   width: 500px;
 }
 
 /* override formtastic default big textarea */
-#comments form.formtastic fieldset > ol > li.text textarea {
+.comments form.formtastic fieldset > ol > li.text textarea {
   width: 100%;
   height: 60px;
   border: solid 1px;
 }
 
 /* fix overflow of textarea with 100% width */
-#comments form.formtastic fieldset > ol > li.text {
+.comments form.formtastic fieldset > ol > li.text {
   padding-right: 2px;
 }
 
 /* override formtastic default button padding and alignment */
-#comments form.formtastic fieldset.buttons {
+.comments form.formtastic fieldset.buttons {
   padding-left: 0;
   text-align: right;
 }
 
 /* helper for override formtastic default button padding and alignment */
-#comments form.formtastic fieldset.buttons li {
+.comments form.formtastic fieldset.buttons li {
   float: none
 }
 
 /* override strange formtastic button padding */
-#comments form.formtastic fieldset.buttons li {
+.comments form.formtastic fieldset.buttons li {
   padding-right: 0;
   margin-bottom: 0;
 }
 
 /* override formtastic default field margin */
-#comments form.formtastic fieldset > ol > li.text {
+.comments form.formtastic fieldset > ol > li.text {
   margin-bottom: 10px;
+}
+
+.comments h3 {
+  margin-bottom: 5px;
 }
 
 .comment_avatar {
@@ -173,14 +181,18 @@ td.line-numbers {
 
 .comment_button {
   float: right;
-  margin-left: 15px;
-  margin-top: -5px;
+  /*margin-left: 5px;*/
+  margin-right: -19px;
 }
 
 .comment_header {
   border-bottom: solid 1px #aaa;
   margin-top: 20px;
   padding-bottom: 2px;
+}
+
+.comments .pagination {
+  text-align: middle;
 }
 
 .profile_avatar p {
@@ -212,4 +224,19 @@ td.line-numbers {
 .vs_block .avatar_medium {
   margin: 0 5px 0 0;
   float:left;
+}
+
+.ico_but {
+  margin: 2px 2px -3px;
+  height:16px;
+  width:16px;
+  display:block;
+  text-decoration:none;
+}
+.ico_but:hover {
+  background-color: transparent !important;
+}
+
+.comment_entity:hover .remove_link {
+  background: url(/images/delete.png) no-repeat left center;
 }

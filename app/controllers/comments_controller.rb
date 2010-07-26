@@ -13,9 +13,17 @@ class CommentsController < ApplicationController
     @comment.user = current_user
 
     if @comment.save
-      redirect_to comments_url(@commentable), :notice => "Комментарий успешно добавлен"
+      if request.xhr?
+        render :partial => 'comments/comment', :object => @comment
+      else
+        redirect_to comments_url(@commentable), :notice => "Комментарий успешно добавлен"
+      end
     else
-      render :action => :new
+      if request.xhr?
+        render :text => 'ERROR'
+      else
+        render :action => :new
+      end
     end
   end
 

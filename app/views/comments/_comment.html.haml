@@ -1,9 +1,10 @@
-.comment
+.comment_entity
   .comment_avatar
     = link_to_user comment.user, :login => false, :avatar => :small
   .comment_body
     .comment_header
-      .comment_button= button_to "x", comment_path(comment), :method => :delete if current_user.owns? comment
+      .comment_button
+        = link_to "&nbsp;", comment_path(comment), :class => "remove_link ico_but" if current_user.owns? comment
       .comment_date= format_datetime comment.created_at
       %span.comment_author= link_to_user( comment.user, :avatar => :none )
       пишет:
