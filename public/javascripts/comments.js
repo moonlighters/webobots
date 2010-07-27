@@ -1,3 +1,5 @@
+var COMMENT_MAX_LENGTH = 1000;
+
 $(function() {
   $('.comment_entity .remove_link').live('click', function(e) {
     link = this;
@@ -29,6 +31,10 @@ $(function() {
       text = $form.find('textarea').val();
       if(text.replace(/\s/g,'') == '') {
         alert("Нельзя добавить пустой комментарий");
+        return false;
+      }
+      if(text.length > COMMENT_MAX_LENGTH) {
+        alert("Слишком длинный комментарий, максимум" + COMMENT_MAX_LENGTH + " символов");
         return false;
       }
     },
