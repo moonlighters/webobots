@@ -51,15 +51,12 @@ class FirmwaresController < ApplicationController
 
   def show_version
     @fwv = @fw.versions.find_by_number! params[:number]
-    if @fwv == @fw.version
-      redirect_to firmware_path @fw
-    else
-      render
-    end
+    @last_fwv = @fw.version
   end
 
   def edit
-    # В форму мы отдаем последнюю версию
+    # В форму мы отдаем последнюю версию, удалив старый комментарий к версии
+    @fwv.message = ""
   end
 
   def update
@@ -70,6 +67,7 @@ class FirmwaresController < ApplicationController
       if @fwv.code != @fw.version.code
         @fwv.firmware = @fw
         # Модель FirmwareVersion сделана так, что ошибок быть не может
+        # TODO: надо ограничить длинну поля FirmwareVersion#message, но как это сочетается с высказыванием выше??
         @fwv.save!
       end
 

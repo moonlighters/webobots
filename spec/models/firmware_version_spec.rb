@@ -11,6 +11,12 @@ describe FirmwareVersion do
     end
   end
 
+  [:message].each do |field|
+    it "should create a new instance without '#{field}'" do
+      Factory.build(:firmware_version, field => nil).should be_valid
+    end
+  end
+
   it "should not create a new instance with not unique version number" do
     fw = Factory :firmware
     Factory :firmware_version, :firmware => fw, :number => 7

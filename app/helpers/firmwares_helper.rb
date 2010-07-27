@@ -33,4 +33,19 @@ module FirmwaresHelper
   def can_fight_with?(fw)
     current_user.owns?(fw) || fw.available?
   end
+
+  def format_firmware_version_short_message(fwv)
+    number_part = "##{fwv.number}"
+    first_line = (fwv.message || "").lines.first
+    message_part = first_line.blank? ? "" : ": " + h(first_line.chomp)
+    number_part + message_part
+  end
+
+  def format_firmware_version_message(fwv)
+    simple_format( fwv.message.blank? ? "(отсутствует)" : h(fwv.message) )
+  end
+
+  def link_to_firmware_version_with_message(fwv)
+    link_to_firmware_version fwv, :text => format_firmware_version_short_message(fwv)
+  end
 end

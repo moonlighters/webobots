@@ -20,7 +20,7 @@
   = @fw.available? ? "доступна" : "не доступна"
 %p
   %b Последняя версия прошивки:
-  = "##{@fwv.number}"
+  = link_to_firmware_version_with_message @fwv
 
 -# действия
 %p

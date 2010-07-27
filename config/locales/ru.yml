@@ -17,6 +17,7 @@ ru:
         available: "Доступна для сражения"
       firmware_version:
         code: "Исходный код"
+        message: "Комментарий к версии"
       match:
         first_version: "Первая прошивка"
         second_version: "Вторая прошивка"

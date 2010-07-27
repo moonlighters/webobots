@@ -1,4 +1,4 @@
 %li
-  = link_to_firmware_version firmware_version, :text => "версия ##{firmware_version.number}"
+  = link_to_firmware_version_with_message firmware_version
   %br
   %small= format_datetime firmware_version.created_at

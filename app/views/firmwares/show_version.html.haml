@@ -4,10 +4,20 @@
   %b
     Создана:
   = format_datetime @fwv.created_at
+%p
+  %b
+    Комментарий к версии:
+= format_firmware_version_message @fwv
+
 = render :partial => 'syntax', :locals => {:fwv => @fwv}
 
 %p
-  = link_to_firmware @fw, :text => "Перейти к последней версии (##{@fw.versions.last_number})"
+  - if @fwv.number == @last_fwv.number
+    Это последняя версия прошивки
+    = link_to_firmware @fw
+  - else
+    Перейти к последней версии:
+    = link_to_firmware_version_with_message @last_fwv
   |
   = link_to "История версий", firmware_versions_path(@fw)
 

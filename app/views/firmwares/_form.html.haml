@@ -5,4 +5,5 @@
   = form.input :available, :hint => "Запрещайте сражения со своей прошивкой, если она не доделана, чтобы не терпеть досадные поражения"
   - form.fields_for :firmware_version, fwv do |version_form|
     = version_form.input :code, :input_html => { :class => :code }
+    = version_form.input :message, :input_html => { :rows => 5 }, :hint => "Необязателен, сохраняется только при изменении кода"
 = form.buttons

@@ -25,6 +25,7 @@ end
 
 Factory.define :firmware_version do |fwv|
   fwv.code "a = 2"
+  fwv.message "Some bug fixed"
   fwv.association :firmware
   fwv.after_create { |v| v.firmware.reload }
 end
