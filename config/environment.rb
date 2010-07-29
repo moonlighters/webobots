@@ -12,6 +12,7 @@ Rails::Initializer.run do |config|
   config.gem 'recaptcha', :lib => 'recaptcha/rails'
   config.gem 'acts_as_commentable', :version => '<3.0.0'
   config.gem 'gravtastic'
+  config.gem 'log_buddy'
 
   config.time_zone = 'Novosibirsk'
 end
