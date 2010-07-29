@@ -114,10 +114,6 @@ td.line-numbers {
   margin-left: 25%;
 }
 
-.comments {
-  width: 500px;
-}
-
 /* override formtastic default big textarea */
 .comments form.formtastic fieldset > ol > li.text textarea {
   width: 100%;
@@ -162,6 +158,7 @@ td.line-numbers {
 
 .comment_body {
   margin-left: 70px;
+  width: 500px;
 }
 
 .comment_date {
