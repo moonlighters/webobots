@@ -7,7 +7,11 @@
         = link_to "&nbsp;", comment_path(comment), :class => "remove_link ico_but" if current_user.owns? comment
       .comment_date= format_datetime comment.created_at
       %span.comment_author= link_to_user( comment.user, :avatar => :none )
-      пишет:
+      - if @show_commentable
+        пишет о
+        = render( :partial => 'commentable', :locals => {:commentable => comment.commentable} ).chomp + ':'
+      - else
+        пишет:
     .comment_text
       = format_comment_text comment
   .clear

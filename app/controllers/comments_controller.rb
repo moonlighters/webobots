@@ -4,6 +4,10 @@ class CommentsController < ApplicationController
   before_filter :require_user
   before_filter :require_owner, :only => :destroy
 
+  def index
+    @comments = Comment.sorted.paginate :page => params[:page], :per_page => Comment.per_index_page
+  end
+
   def create
     commentable_type = params[:comment][:commentable_type]
     commentable_id = params[:comment][:commentable_id]

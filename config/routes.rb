@@ -33,7 +33,7 @@ ActionController::Routing::Routes.draw do |map|
   end
 
   #comments
-  map.resources :comments, :only => [:create, :destroy]
+  map.resources :comments, :only => [:index, :create, :destroy]
 
   # root
   map.root :controller => 'welcome', :action => 'root'
