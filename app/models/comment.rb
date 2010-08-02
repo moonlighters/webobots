@@ -7,6 +7,8 @@ class Comment < ActiveRecord::Base
 
   cattr_reader :per_page
   @@per_page = 10
+  cattr_reader :per_index_page
+  @@per_index_page = 15
 
   named_scope :sorted, :include => :user, :order => 'created_at DESC'
 
