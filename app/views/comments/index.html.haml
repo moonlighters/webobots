@@ -1,6 +1,5 @@
 %h2 Список всех комментариев
 
 .comments
-  - @show_commentable = true
   - paginated_section @comments do
-    = render @comments
+    = render :partial => 'comment', :collection => @comments, :locals => {:show_commentable => true}
