@@ -30,7 +30,17 @@ class User < ActiveRecord::Base
   has_many :matches, :finder_sql  => 'SELECT DISTINCT matches.* FROM matches' + MATCHES_SQL,
                      :counter_sql => 'SELECT COUNT(DISTINCT matches.id) FROM matches' + MATCHES_SQL
 
+  # Хелпер собирающий id'шники объектов в строчку для подстановки в IN (...)
   def sql_ids(ids); ids.empty? ? 'NULL' : ids.uniq.join(',') end
+
+  # "Интересные" коментарии для пользователя:
+  # * его комментарии
+  # * комментарии о нем
+  # * комментарии о его прошивках
+  # * комментарии о матчах, которые он провел
+  # * комментарии о матчах, в которых участвовали его прошивки
+  #
+  # TODO: * все комментарии о объектах, которые пользователь комментировал
   has_many :relevant_comments, :class_name => 'Comment', :finder_sql => %q|
     SELECT * FROM comments
     WHERE (
@@ -51,6 +61,8 @@ class User < ActiveRecord::Base
       Comment.find_by_sql(sql)
     end
   end
+
+  has_many :owned_comments, :class_name => 'Comment'
 
 
   acts_as_commentable
