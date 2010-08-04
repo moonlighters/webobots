@@ -51,4 +51,17 @@ describe FirmwareVersion do
 
     fw.reload.versions.should == [fwv1, fwv3, fwv4]
   end
+
+  describe ".matches" do
+    it "should work" do
+      fwv = Factory :firmware_version
+      4.times { Factory :match }
+      m1 = Factory :match, :first_version => fwv
+      1.times { Factory :match }
+      m2 = Factory :match, :first_version => fwv, :second_version => fwv
+      3.times { Factory :match }
+
+      fwv.matches.sort_by(&:id).should == [m1, m2].sort_by(&:id)
+    end
+  end
 end
