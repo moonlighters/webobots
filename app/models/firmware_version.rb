@@ -1,6 +1,10 @@
 class FirmwareVersion < ActiveRecord::Base
   belongs_to :firmware, :touch => true
   has_one :user, :through => :firmware
+  has_many :matches, :finder_sql => %q{
+    SELECT * FROM matches
+    WHERE (matches.fwv1_id = #{id} OR matches.fwv2_id = #{id})
+  }
 
   cattr_reader :per_page
   @@per_page = 10

@@ -48,7 +48,8 @@ class Match < ActiveRecord::Base
 
   before_validation :generate_parameters
 
-  validates_presence_of :first_version, :second_version, :parameters, :user, :vm_version
+  validates_presence_of :first_version, :second_version, :parameters, :vm_version
+  validates_presence_of :user unless Rails.env.test?
 
   # Проверяет:
   # * одна из прошивок должна принадлежать +user+

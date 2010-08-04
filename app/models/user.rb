@@ -17,7 +17,30 @@ class User < ActiveRecord::Base
   @@per_page_of_rating = 10
 
   has_many :firmwares
-  has_many :matches
+
+  has_many :conducted_matches, :class_name => 'Match'
+
+  # has_many :matches, :through => :firmwares
+  MATCHES_SQL = %q{
+    INNER JOIN firmware_versions ON
+      ( matches.fwv1_id = firmware_versions.id OR matches.fwv2_id = firmware_versions.id )
+    INNER JOIN firmwares ON firmware_versions.firmware_id = firmwares.id
+    WHERE (firmwares.user_id = #{id})
+  }
+  has_many :matches, :finder_sql  => 'SELECT DISTINCT matches.* FROM matches' + MATCHES_SQL,
+                     :counter_sql => 'SELECT COUNT(DISTINCT matches.id) FROM matches' + MATCHES_SQL
+
+  def ids(objs); objs.uniq.map(&:id).join(',') end
+
+  has_many :relevant_comments, :class_name => 'Comment', :finder_sql => %q{
+    SELECT * FROM comments
+    WHERE (
+      user_id = #{id} OR
+      commentable_type = 'User'     AND commentable_id = #{id} OR
+      commentable_type = 'Firmware' AND commentable_id IN (#{ids firmwares}) OR
+      commentable_type = 'Match'    AND commentable_id IN (#{ids matches + conducted_matches})
+    )
+  }
 
   acts_as_commentable
 

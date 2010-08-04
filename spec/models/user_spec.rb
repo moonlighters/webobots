@@ -48,4 +48,46 @@ describe User do
       u.owns?(obj).should be_true
     end
   end
+
+  describe ".matches" do
+    it "should work" do
+      fwv = Factory :firmware_version
+      4.times { Factory :match }
+      m1 = Factory :match, :first_version => fwv
+      1.times { Factory :match }
+      m2 = Factory :match, :first_version => fwv, :second_version => fwv
+      3.times { Factory :match }
+
+      fwv.firmware.user.matches.sort_by(&:id).should == [m1, m2].sort_by(&:id)
+    end
+  end
+
+  describe ".relevant_comments" do
+    it "should work" do
+      fwv = Factory :firmware_version
+      fw = fwv.firmware
+      u = fw.user
+
+      4.times { Factory(:comment, :commentable => Factory(:match)) }
+      m1 = Factory :match, :first_version => fwv
+      1.times { Factory(:comment, :commentable => Factory(:match)) }
+      m2 = Factory :match, :first_version => fwv, :second_version => fwv
+      m3 = Factory :match, :first_version => fwv, :user => u
+      3.times { Factory(:comment, :commentable => Factory(:match)) }
+
+
+      comments = [
+        Factory( :comment, :user => u ),
+        Factory( :comment, :user => u ),
+        Factory( :comment, :commentable => fw ),
+        Factory( :comment, :commentable => m1 ),
+        Factory( :comment, :commentable => m1 ),
+        Factory( :comment, :commentable => m1 ),
+        Factory( :comment, :commentable => m2 ),
+        Factory( :comment, :commentable => u ),
+      ]
+
+      u.relevant_comments.sort_by(&:id).should == comments.sort_by(&:id)
+    end
+  end
 end
