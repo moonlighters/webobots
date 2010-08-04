@@ -1,0 +1,7 @@
+%h2 Список всех комментариев
+
+%p= link_to 'Перейти к списку интересных комментариев', comments_path
+
+.comments
+  - paginated_section @comments do
+    = render :partial => 'comment', :collection => @comments, :locals => {:show_commentable => true}

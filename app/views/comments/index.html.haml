@@ -1,4 +1,6 @@
-%h2 Список всех комментариев
+%h2 Список интересных комментариев
+
+%p= link_to 'Перейти к списку всех комментариев', all_comments_path
 
 .comments
   - paginated_section @comments do

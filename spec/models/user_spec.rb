@@ -63,7 +63,14 @@ describe User do
   end
 
   describe ".relevant_comments" do
-    it "should work" do
+    it "should work if there are no comments, fws, matches at all" do
+      [Comment, Match, Firmware].map(&:delete_all)
+
+      u = Factory :user
+      u.relevant_comments.should be_blank
+    end
+
+    it "should work and be sorted by creation time" do
       fwv = Factory :firmware_version
       fw = fwv.firmware
       u = fw.user
@@ -87,7 +94,7 @@ describe User do
         Factory( :comment, :commentable => u ),
       ]
 
-      u.relevant_comments.sort_by(&:id).should == comments.sort_by(&:id)
+      u.relevant_comments.should == comments
     end
   end
 end

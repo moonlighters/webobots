@@ -30,17 +30,28 @@ class User < ActiveRecord::Base
   has_many :matches, :finder_sql  => 'SELECT DISTINCT matches.* FROM matches' + MATCHES_SQL,
                      :counter_sql => 'SELECT COUNT(DISTINCT matches.id) FROM matches' + MATCHES_SQL
 
-  def ids(objs); objs.uniq.map(&:id).join(',') end
-
-  has_many :relevant_comments, :class_name => 'Comment', :finder_sql => %q{
+  def sql_ids(ids); ids.empty? ? 'NULL' : ids.uniq.join(',') end
+  has_many :relevant_comments, :class_name => 'Comment', :finder_sql => %q|
     SELECT * FROM comments
     WHERE (
       user_id = #{id} OR
       commentable_type = 'User'     AND commentable_id = #{id} OR
-      commentable_type = 'Firmware' AND commentable_id IN (#{ids firmwares}) OR
-      commentable_type = 'Match'    AND commentable_id IN (#{ids matches + conducted_matches})
+      commentable_type = 'Firmware' AND commentable_id IN (#{sql_ids firmware_ids}) OR
+      commentable_type = 'Match'    AND commentable_id IN (#{sql_ids match_ids + conducted_match_ids})
     )
-  }
+    ORDER BY created_at DESC
+  | do
+    def find(*args)
+      options = args.extract_options!
+      sql = @finder_sql
+
+      sql += sanitize_sql [" LIMIT ?", options[:limit]] if options[:limit]
+      sql += sanitize_sql [" OFFSET ?", options[:offset]] if options[:offset]
+
+      Comment.find_by_sql(sql)
+    end
+  end
+
 
   acts_as_commentable
 
