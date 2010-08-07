@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Firmware do
   it "should create a new instance given valid attributes" do
-    Factory.create :firmware
+    Factory :firmware
   end
 
   [:name, :user_id].each do |field|
@@ -15,28 +15,46 @@ describe Firmware do
     Factory.build(:firmware, :name => "a"*100).should_not be_valid
   end
 
-  describe "#versions.last_number" do
-    it "should return nil if there are no versions" do
-      fw = Factory :firmware
-      fw.versions.last_number.should be_nil
+  describe "nested building" do
+    it "should be creatable with version" do
+      fw = Firmware.new :name => "Blah", :user => Factory(:user)
+      fw.versions.build :code => "#foo"
+
+      fw.save!
+
+      fw.reload
+      fw.versions.count.should == 1
+      fw.version.code.should == "#foo"
+      fw.version.number.should == 1
     end
 
-    it "should return nil if there were versions being deleted" do
+    it "should not be creatable without version" do
+      fw = Firmware.new :name => "Blah", :user => Factory(:user)
+
+      fw.save
+      fw.should have(1).error_on(:versions)
+    end
+  end
+
+  describe "#versions.last_number" do
+    it "should return nil if there are is only one versions" do
       fw = Factory :firmware
-      fwv = Factory :firmware_version, :firmware => fw
-      fwv.destroy
-      fw.reload
-      fw.versions.last_number.should be_nil
+      fw.versions.last_number.should == 1
     end
 
     it "should return number of last version correctly" do
       fw = Factory :firmware
-      Factory :firmware_version, :firmware => fw
-      Factory :firmware_version, :firmware => fw.reload
-      fwv = Factory :firmware_version, :firmware => fw.reload
-      fwv.destroy
-      Factory :firmware_version, :firmware => fw.reload
-      fw.reload.versions.last_number.should == 3
+
+      4.times { fw.versions.build; fw.save; fw.reload }
+      fw.versions.last_number.should == 5
+
+      2.times { fw.versions.last.destroy;   fw.reload }
+      2.times { fw.versions.build; fw.save; fw.reload }
+      fw.versions.last_number.should == 5
+
+      2.times { fw.versions.first.destroy;  fw.reload }
+      2.times { fw.versions.build; fw.save; fw.reload }
+      fw.versions.last_number.should == 7
     end
   end
 

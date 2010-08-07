@@ -21,6 +21,9 @@ Factory.define :firmware do |fw|
   fw.association :user
   fw.shared false
   fw.available true
+  fw.after_build do |fw|
+    fw.versions.build :code => "rand()"
+  end
 end
 
 Factory.define :firmware_version do |fwv|

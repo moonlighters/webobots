@@ -9,7 +9,10 @@ class FirmwareVersion < ActiveRecord::Base
   cattr_reader :per_page
   @@per_page = 10
 
-  validates_presence_of :firmware_id, :number
+  # this is validated by sql (needed for nested building)
+  #validates_presence_of :firmware
+
+  validates_presence_of :number
   validates_uniqueness_of :number, :scope => :firmware_id
 
   before_validation :correct_code
@@ -30,7 +33,9 @@ class FirmwareVersion < ActiveRecord::Base
 
   # Задать версии номер
   def generate_number
-    self.number = (self.firmware.versions.last_number || 0) + 1 if not self.number and self.firmware
+    unless number
+      self.number = firmware ? (firmware.versions.last_number || 0) + 1 : 1
+    end
   end
 
   # Возвращает массив синтаксических ошибок

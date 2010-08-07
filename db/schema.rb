@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100727160703) do
+ActiveRecord::Schema.define(:version => 20100807185209) do
 
   create_table "comments", :force => true do |t|
     t.string   "title",            :limit => 50, :default => ""
@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(:version => 20100727160703) do
   add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
 
   create_table "firmware_versions", :force => true do |t|
-    t.integer  "firmware_id"
+    t.integer  "firmware_id", :null => false
     t.integer  "number"
     t.text     "code"
     t.datetime "created_at"

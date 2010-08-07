@@ -17,7 +17,7 @@ class CommentsController < ApplicationController
     commentable_id = params[:comment][:commentable_id]
     @commentable = Comment.find_commentable(commentable_type, commentable_id)
 
-    @comment = @commentable.comments.new params[:comment]
+    @comment = @commentable.comments.build params[:comment]
     @comment.user = current_user
 
     if @comment.save

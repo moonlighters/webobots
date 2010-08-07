@@ -1,5 +1,6 @@
 class Firmware < ActiveRecord::Base
-  has_many :versions, :class_name => 'FirmwareVersion', :order => 'number', :dependent => :destroy do
+  has_many :versions, :class_name => 'FirmwareVersion', :order => 'number',
+                      :dependent => :destroy, :autosave => true do
     # Номер последней прошивки (+nil+, если версий нет)
     def last_number
       last.number unless empty?
@@ -24,13 +25,12 @@ class Firmware < ActiveRecord::Base
   cattr_reader :per_page_of_rating
   @@per_page_of_rating = 10
 
-  validates_presence_of :name, :user_id
+  validates_presence_of :name, :user
   validates_length_of :name, :maximum => 40
   validates_uniqueness_of :name, :scope => :user_id,
     :message => "у Вас уже есть прошивка с таким именем"
 
-  # TODO: может быть стоит занести это в модель?
-  # validates :presence_of_at_least_one_version
+  validate :presence_of_at_least_one_version
 
   named_scope :available_for, lambda { |user|
     { :conditions => ["available = ? OR user_id = ?", true, user] }
@@ -53,5 +53,11 @@ class Firmware < ActiveRecord::Base
       end
       fw.rating_position = pos
     end
+  end
+
+  private
+
+  def presence_of_at_least_one_version
+    errors.add(:versions, :blank) if versions.blank?
   end
 end
