@@ -14,6 +14,8 @@ class FirmwareVersion < ActiveRecord::Base
 
   validates_presence_of :number
   validates_uniqueness_of :number, :scope => :firmware_id
+  validates_length_of :code, :maximum => 64.kilobytes - 1
+  validates_length_of :message, :maximum => 500, :allow_nil => true
 
   before_validation :correct_code
   # NB! Номера могут быть не уникальны в течении времени
@@ -25,8 +27,7 @@ class FirmwareVersion < ActiveRecord::Base
 
   private
 
-  # Чтобы пустые версии тоже могли существовать,
-  # но +code+ все равно всегда != nil
+  # Гарантия <tt>code != nil</tt>
   def correct_code
     self.code ||= ""
   end

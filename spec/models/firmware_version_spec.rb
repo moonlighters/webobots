@@ -17,6 +17,12 @@ describe FirmwareVersion do
     end
   end
 
+  [:code, :message].each do |field|
+    it "should not be valid with long #{field}" do
+      Factory.build(:firmware_version, field => "x"*100_000).should_not be_valid
+    end
+  end
+
   it "should not create a new instance with not unique version number" do
     fw = Factory :firmware
     Factory :firmware_version, :firmware => fw, :number => 7
