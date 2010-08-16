@@ -241,3 +241,13 @@ td.line-numbers {
 .comment_entity:hover .remove_link {
   background: url(/images/delete.png) no-repeat left center;
 }
+
+.tour {
+  width: 700px;
+}
+
+.tour h3 {
+  color: #666666;
+  margin-bottom: 8px;
+  margin-top: 15px;
+}

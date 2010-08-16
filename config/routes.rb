@@ -35,6 +35,9 @@ ActionController::Routing::Routes.draw do |map|
   #comments
   map.resources :comments, :only => [:index, :create, :destroy], :collection => { :all => :get }
 
+  # quick tour
+  map.resource :tour, :controller => 'tour', :only => :show
+
   # root
   map.root :controller => 'welcome', :action => 'root'
 end
