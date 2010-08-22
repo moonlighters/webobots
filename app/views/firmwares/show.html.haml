@@ -27,10 +27,12 @@
   - if can_fight_with? @fw
     = link_to "Сразиться!", new_match_path(:enemy_fw => @fw)
     |
+  - if current_user.owns? @fw
+    = link_to( "Редактировать", edit_firmware_path(@fw) )
+    |
   = link_to "История версий", firmware_versions_path(@fw)
-
--# код
-%p= link_to( "Редактировать", edit_firmware_path(@fw) ) if current_user.owns? @fw
+  |
+  = link_to "Список матчей", firmware_matches_path(@fw)
 
 -# комментарии
 = render :partial => 'comments/comments', :locals => {:commentable => @fw, :comments => @comments}

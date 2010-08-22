@@ -97,6 +97,29 @@ describe Match do
     end
   end
 
+  describe "named scope" do
+    before do
+      @fwv = Factory :firmware_version
+      4.times { Factory :match }
+      @m1 = Factory :match, :first_version => @fwv
+      1.times { Factory :match }
+      @m2 = Factory :match, :first_version => @fwv, :second_version => @fwv
+      3.times { Factory :match }
+    end
+    
+    describe "Match.all_for" do
+      it "should return all matches for given user" do
+        Match.all_for(@fwv.firmware.user).sort_by(&:id).should == [@m1, @m2].sort_by(&:id)
+      end
+    end
+
+    describe "Match.all_with" do
+      it "shoulc return all matches with given firmware" do
+        Match.all_with(@fwv.firmware).sort_by(&:id).should == [@m1, @m2].sort_by(&:id)
+      end
+    end
+  end
+
   private
 
   # хаки поверх factory_girl

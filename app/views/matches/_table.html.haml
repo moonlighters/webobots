@@ -1,10 +1,13 @@
-%table.list
-  %tr
-    %th Матч
-    %th Прошивка
-    %th Автор
-    %th
-    %th Прошивка
-    %th Автор
-    %th Результат
-  = render matches
+- unless matches.empty?
+  %table.list
+    %tr
+      %th Матч
+      %th Прошивка
+      %th Автор
+      %th
+      %th Прошивка
+      %th Автор
+      %th Результат
+    = render matches
+- else
+  %i Матчи не найдены

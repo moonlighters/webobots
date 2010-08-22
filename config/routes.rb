@@ -8,14 +8,18 @@ ActionController::Routing::Routes.draw do |map|
 
   # users
   map.resource :account, :controller => 'users', :only => [:show, :edit, :update]
-  map.resources :users, :controller => 'users', :only => [:show, :index]
+  map.resources :users, :only => [:show, :index] do |user|
+    user.matches 'matches', :controller => 'matches', :action => 'all_for_user', :conditions => {:method => :get}
+  end
   map.with_options :controller => 'users' do |users|
     users.signup  'signup', :action => 'new', :conditions => {:method => :get}
     users.connect 'signup', :action => 'create', :conditions => {:method => :post}
   end
 
   # firmwares
-  map.resources :firmwares, :controller => 'firmwares', :except => :destroy, :collection => { :all => :get }, :member => {:code => :get}
+  map.resources :firmwares, :except => :destroy, :collection => { :all => :get }, :member => {:code => :get} do |fw|
+    fw.matches 'matches', :controller => 'matches', :action => 'all_with_firmware', :conditions => {:method => :get}
+  end
   map.firmware_version 'firmwares/:id/versions/:number', :controller => 'firmwares', :action => 'show_version', :conditions => {:method => :get}
   map.firmware_versions 'firmwares/:id/versions', :controller => 'firmwares', :action => 'index_versions', :conditions => {:method => :get}
 

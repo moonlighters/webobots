@@ -27,10 +27,14 @@
   - if @user.last_login_at
     %p= "Последний раз заходил #{time_ago_in_words @user.last_login_at} назад"
 
-  = link_to 'Редактировать', edit_account_path
-
-- unless @fws.empty?
-  %p= link_to( 'Сразиться!', new_match_path(:enemy => @user) )
+%p
+  - if self_profile
+    = link_to 'Редактировать', edit_account_path
+    |
+  - unless @fws.empty?
+    = link_to( 'Сразиться!', new_match_path(:enemy => @user) )
+    |
+  = link_to "Список матчей", user_matches_path(@user)
 
 - unless self_profile
   - unless @fws.empty?
