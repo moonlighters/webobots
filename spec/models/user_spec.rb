@@ -94,7 +94,7 @@ describe User do
         Factory( :comment, :commentable => u ),
       ]
 
-      u.relevant_comments.should == comments
+      u.relevant_comments.sort_by(&:id).should == comments.sort_by(&:id)
     end
   end
 end
