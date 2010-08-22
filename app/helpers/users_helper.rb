@@ -27,7 +27,7 @@ module UsersHelper
                            else
                              :tiny
                            end
-                    link_to(avatar_for(u, :size => size), user_path(u)) + " "
+                    link_to(avatar_for(u, :size => size), user_path(u), :class => "avatar_link") + " "
                   else
                     ""
                   end
@@ -49,7 +49,8 @@ module UsersHelper
   def avatar_for(u, opts = {})
     size = opts.delete(:size) || :tiny
     av_size = AVATAR_SIZES[size] or raise ArgumentError, "unknown size #{size.to_s}"
+    alt = size == :tiny ? "" : h(u.login)
 
-    image_tag u.gravatar_url(:size => av_size), :alt => "аватар", :class => "avatar_" + size.to_s
+    image_tag u.gravatar_url(:size => av_size), :alt => alt, :class => "avatar_" + size.to_s
   end
 end

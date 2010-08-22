@@ -3,7 +3,7 @@
 
 .profile_avatar
   - if self_profile
-    = link_to avatar_for(@user, :size => :big), "http://gravatar.com"
+    = link_to avatar_for(@user, :size => :big), "http://gravatar.com", :class => "avatar_link"
     %p
       Сменить аватар можно на <a href="http://gravatar.com/">gravatar.com</a>
   - else

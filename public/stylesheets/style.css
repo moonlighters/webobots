@@ -204,6 +204,10 @@ td.line-numbers {
   vertical-align: middle;
 }
 
+a.avatar_link{
+  text-decoration: none;
+}
+
 .avatar_small, .avatar_medium, .avatar_big {
   margin: 5px;
   padding: 2px;
