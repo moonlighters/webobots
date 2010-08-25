@@ -18,20 +18,14 @@ class Match < ActiveRecord::Base
                         JOIN firmwares ON firmwares.id = firmware_versions.firmware_id'
   JOINS_FOR_USER = JOINS_FOR_FIRMWARE + ' JOIN users ON users.id = firmwares.user_id'
 
-  named_scope :all_for, lambda { |user|
-     {
-        :select => 'DISTINCT matches.*',
-        :joins => JOINS_FOR_USER,
-        :conditions => {'users.id' => user}
-     }
-  }
-
-  named_scope :all_with, lambda { |firmware|
-     {
-        :select => 'DISTINCT matches.*',
-        :joins => JOINS_FOR_FIRMWARE,
-        :conditions => {'firmwares.id' => firmware}
-     }
+  # obj is a User or Firmware
+  named_scope :all_for, lambda { |obj|
+    klass = obj.class
+    {
+      :select => 'DISTINCT matches.*',
+      :joins => "Match::JOINS_FOR_#{klass.class_name.upcase}".constantize,
+      :conditions => {"#{klass.table_name}.id" => obj}
+    }
   }
 
   named_scope :including_stuff, :order => 'id DESC',
@@ -39,6 +33,10 @@ class Match < ActiveRecord::Base
                                   :first_version => {:firmware => :user},
                                   :second_version => {:firmware => :user}
                                 }
+
+  def self.paginate_including_stuff(opts)
+    self.including_stuff.paginate opts.reverse_merge(:total_entries => self.count)
+  end
 
   cattr_reader :per_page
   @@per_page = 10

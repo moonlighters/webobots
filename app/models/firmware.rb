@@ -8,13 +8,8 @@ class Firmware < ActiveRecord::Base
   end
   has_one :version, :class_name => 'FirmwareVersion', :order => 'number DESC'
 
-  MATCHES_SQL = %q{
-    INNER JOIN firmware_versions ON
-      ( matches.fwv1_id = firmware_versions.id OR matches.fwv2_id = firmware_versions.id )
-    WHERE ((firmware_versions.firmware_id = #{id}))
-  }
-  has_many :matches, :finder_sql  => 'SELECT DISTINCT matches.* FROM matches' + MATCHES_SQL,
-                     :counter_sql => 'SELECT COUNT(DISTINCT matches.id) FROM matches' + MATCHES_SQL
+  # has_many :matches
+  def matches; Match.all_for self end
 
   belongs_to :user
 

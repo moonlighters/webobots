@@ -3,26 +3,23 @@ class MatchesController < ApplicationController
   before_filter :find_match, :only => [:show, :play]
 
   def index
-    @matches = Match.all_for(current_user).including_stuff.paginate :page => params[:page],
-                                                                    :total_entries => Match.all_for(current_user).count
+    @matches = current_user.matches.paginate_including_stuff :page => params[:page]
   end
 
   def all
-    @matches = Match.including_stuff.paginate :page => params[:page],
-                                              :total_entries => Match.count
+    @matches = Match.paginate_including_stuff :page => params[:page]
   end
 
   def all_for_user
     @user = User.find params[:user_id]
-    @matches = Match.all_for(@user).including_stuff.paginate :page => params[:page],
-                                                             :total_entries => Match.all_for(@user).count
+    @matches = @user.matches.paginate_including_stuff :page => params[:page]
+
     @has_firmwares = @user.firmwares.count > 0
   end
 
-  def all_with_firmware
+  def all_for_firmware
     @fw = Firmware.find params[:firmware_id]
-    @matches = Match.all_with(@fw).including_stuff.paginate :page => params[:page],
-                                                            :total_entries => Match.all_with(@fw).count
+    @matches = @fw.matches.paginate_including_stuff :page => params[:page]
   end
 
   def new

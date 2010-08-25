@@ -106,16 +106,14 @@ describe Match do
       @m2 = Factory :match, :first_version => @fwv, :second_version => @fwv
       3.times { Factory :match }
     end
-    
+
     describe "Match.all_for" do
       it "should return all matches for given user" do
         Match.all_for(@fwv.firmware.user).sort_by(&:id).should == [@m1, @m2].sort_by(&:id)
       end
-    end
 
-    describe "Match.all_with" do
       it "shoulc return all matches with given firmware" do
-        Match.all_with(@fwv.firmware).sort_by(&:id).should == [@m1, @m2].sort_by(&:id)
+        Match.all_for(@fwv.firmware).sort_by(&:id).should == [@m1, @m2].sort_by(&:id)
       end
     end
   end
