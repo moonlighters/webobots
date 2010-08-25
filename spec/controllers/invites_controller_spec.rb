@@ -33,7 +33,7 @@ describe InvitesController do
 
   describe "#create" do
     it "should create good ones" do
-      any_instance_of(Invite, :valid? => true)
+      any_instance_of Invite, :valid? => true
 
       post 'create'
       response.should be_redirect
@@ -41,7 +41,7 @@ describe InvitesController do
     end
 
     it "should not create bad ones" do
-      any_instance_of(Invite, :valid? => false)
+      any_instance_of Invite, :valid? => false
 
       post 'create'
       response.should be_redirect
@@ -53,7 +53,7 @@ describe InvitesController do
     it "should destroy" do
       stub(Invite).find('37') { mock(Invite.new).destroy.subject }
       
-      post 'destroy', :id => 37
+      delete 'destroy', :id => 37
       response.should be_redirect
       flash[:notice].should_not be_nil
     end
