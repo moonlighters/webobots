@@ -7,7 +7,7 @@ module AuthlogicSpecHelpers
   def login
     current_user
     unless @current_session
-      @current_session = stub!.record { current_user }
+      @current_session = stub!.record { current_user }.subject
       stub(UserSession).find() { @current_session }
     end
   end

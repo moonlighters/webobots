@@ -126,7 +126,7 @@ describe EmulationSystem::Emulation::RuntimeElements do
       end
 
       it "should get functions from lower blocks" do
-        upper = mock!.get_function('foo') { :func }
+        upper = mock!.get_function('foo') { :func }.subject
         stub(upper).scope_blocks { [] }
         mock(@bot).upper_block_from(anything) { upper }
         block = RuntimeElements::Block.new @bot, build(:node, 'block')
