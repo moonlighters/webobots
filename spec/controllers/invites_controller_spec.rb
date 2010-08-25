@@ -9,23 +9,25 @@ describe InvitesController do
   describe "#index" do
     before { logout }
 
-    it "should work logged as admin" do
+    it "should work when logged in as admin" do
       login_as_admin
 
       get 'index'
       response.should be_success
     end
 
-    it "should not work logged as user" do
+    it "should not work when logged in usual user" do
       login
       
       get 'index'
       response.should_not be_success
+      flash[:alert].should_not be_nil
     end
 
-    it "should not work not logged" do
+    it "should not work when not logged in" do
       get 'index'
       response.should_not be_success
+      flash[:alert].should_not be_nil
     end
   end
 
