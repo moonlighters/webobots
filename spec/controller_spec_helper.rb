@@ -1,5 +1,4 @@
-require 'spec_helper'
-
+# Хелперы для тестирования аутентификации в контроллерах.
 module AuthlogicSpecHelpers
   def current_user
     @current_user ||= Factory :user

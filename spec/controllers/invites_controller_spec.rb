@@ -1,4 +1,4 @@
-require 'controller_spec_helper'
+require 'spec_helper'
 
 describe InvitesController do
   include AuthlogicSpecHelpers
