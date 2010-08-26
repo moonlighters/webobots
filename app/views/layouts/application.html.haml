@@ -13,38 +13,39 @@
     %link{:rel => 'shortcut icon', :href => '/favicon.ico', :type => 'image/x-icon'}
 
   %body
-    %header
-      .account-panel
-        - if current_user
-          Вы вошли как
-          = link_to_user(current_user) + "."
-          = link_to "Выйти", logout_path
-        - else
-          = link_to "Регистрация", signup_path
-          |
-          = link_to "Войти", login_path
+    .wrapper
+      %header
+        %h1.logo
+          = link_to image_tag('webobots_logo.png', :alt => '', :width => 70, :height => 70), root_path
+          = link_to "Webobots", root_path
 
-      %h1.logo
-        = link_to image_tag('webobots_logo.png', :alt => ''), root_path
-        = link_to "Webobots", root_path
+        .account-panel
+          - if current_user
+            Вы вошли как
+            = link_to_user(current_user) + "."
+            = link_to "Выйти", logout_path
+          - else
+            = link_to "Регистрация", signup_path
+            |
+            = link_to "Войти", login_path
+
+        .clear
 
       - if current_user
         %nav
-          = link_to "Пользователи", users_path
-          |
-          = link_to "Прошивки", firmwares_path
-          |
-          = link_to "Матчи", matches_path
-          |
-          = link_to "Комментарии", comments_path
-          |
-          = link_to "Рейтинг", users_rating_path
-          - if current_user.admin?
-            |
-            = link_to "Админка", admin_path
+          .nav_item
+            = link_to "Пользователи", users_path
+          .nav_item
+            = link_to "Прошивки", firmwares_path
+          .nav_item
+            = link_to "Матчи", matches_path
+          .nav_item
+            = link_to "Комментарии", comments_path
+          .nav_item
+            = link_to "Рейтинг", users_rating_path
+          .clear
 
-      .clear
 
-    %section
-      = flash_sections
-      = yield
+      %section
+        = flash_sections
+        = yield
