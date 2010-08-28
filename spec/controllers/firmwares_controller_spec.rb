@@ -119,7 +119,7 @@ describe FirmwaresController do
   describe "show_version" do
     it "should work" do
         mock(Firmware).find('37') { @fw }
-        stub(@fw).versions { mock([@fwv]).find_by_number!('11') { @fwv } }
+        stub(@fw).versions { mock([@fwv]).find_by_number!('11') { @fwv }.subject }
 
         get 'show_version', :id => 37, :number => 11
     end

@@ -38,7 +38,7 @@ describe CommentsController do
 
   describe "#destroy" do
     it "should not work when not logged in" do
-      stub(Comment).find('37') { stub! }
+      stub(Comment).find('37') { stub!.subject }
       logout
 
       delete 'destroy', :id => 37

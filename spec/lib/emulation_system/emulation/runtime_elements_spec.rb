@@ -186,7 +186,7 @@ describe EmulationSystem::Emulation::RuntimeElements do
           @bot.step.should be_a Numeric
 
           mock(@bot).pop_var { 37 }
-          mock(@bot).upper_block_from(anything) { mock!.set_variable('foo',37) }
+          mock(@bot).upper_block_from(anything) { mock!.set_variable('foo',37).subject }
           @bot.step.should be_a Numeric
         end.should_not change { @bot.stack.size }
       end
@@ -322,7 +322,7 @@ describe EmulationSystem::Emulation::RuntimeElements do
         lambda do
           @bot.push_element build(:node, 'var', [build(:node, 'foo')])
 
-          mock(@bot).upper_block_from(anything) { mock!.get_variable('foo') { 37 } }
+          mock(@bot).upper_block_from(anything) { mock!.get_variable('foo') { 37 }.subject }
           mock(@bot).push_var(37)
           @bot.step.should be_a Numeric
         end.should_not change { @bot.stack.size }
@@ -487,7 +487,7 @@ describe EmulationSystem::Emulation::RuntimeElements do
           @bot.push_element build(:node, 'funcdef',
             [ build(:node, 'foo'), build(:node, 'params', [build(:node,'a'),build(:node,'b')]), block ])
 
-          mock(@bot).upper_block_from(anything) { mock!.set_function('foo', ['a','b'], block) }
+          mock(@bot).upper_block_from(anything) { mock!.set_function('foo', ['a','b'], block).subject }
           @bot.step.should be_a Numeric
         end.should_not change { @bot.stack.size }
       end
@@ -507,8 +507,8 @@ describe EmulationSystem::Emulation::RuntimeElements do
           func = Object.new
           mock(func).variables_hash_for([37,42]) { :func_vars_hash }
           mock(func).block { :func_block }
-          mock(@bot).rtlib { mock!.has_function?('foo') { false } }
-          mock(@bot).upper_block_from(anything) { mock!.get_function('foo') { func } }
+          mock(@bot).rtlib { mock!.has_function?('foo') { false }.subject }
+          mock(@bot).upper_block_from(anything) { mock!.get_function('foo') { func }.subject }
           @bot.push_element build(:node, 'funccall',
             [ build(:node, 'foo'), build(:node, 'params', [p1,p2]) ])
 
