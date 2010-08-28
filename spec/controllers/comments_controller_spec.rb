@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe CommentsController do
   include AuthlogicSpecHelpers
+  integrate_views
 
   before { login }
 

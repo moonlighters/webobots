@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe FirmwaresController do
   include AuthlogicSpecHelpers
+  integrate_views
 
   before do
     login
@@ -23,7 +24,7 @@ describe FirmwaresController do
   %w{show index_versions}.each do |action|
     describe "##{action}" do
       it "should work" do
-        mock(Firmware).find('37') { @fw }
+        stub(Firmware).find.with_any_args { |*args| @fw }
 
         get action, :id => 37
         response.should be_success

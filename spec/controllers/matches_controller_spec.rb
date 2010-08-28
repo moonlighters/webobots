@@ -2,6 +2,8 @@ require 'spec_helper'
 
 describe MatchesController do
   include AuthlogicSpecHelpers
+  integrate_views
+
   before { login }
 
   %w{index all}.each do |action|
@@ -77,6 +79,7 @@ describe MatchesController do
   describe "#show" do
     it "should work" do
       m = Factory :match
+      stub(m).result { :draw }
       mock(Match).find('37') { m }
       
       get 'show', :id => 37
@@ -87,8 +90,9 @@ describe MatchesController do
   describe "#play" do
     before do
       m = Factory :match
-      mock(Match).find('37') { m }
       stub(m).emulate { :draw }
+      stub(m).replay { MatchReplay.new }
+      mock(Match).find('37') { m }
     end
 
     it "should play match if request.xhr?" do
