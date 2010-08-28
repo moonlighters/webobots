@@ -22,24 +22,23 @@ describe CommentsController do
 
     it "should create good comments" do
       any_instance_of Comment, :valid? => true
-      mock(controller).polymorphic_url.with_any_args {|*args| "http://example.com" }
 
-      post 'create', :comment => {:commentable_type => 'Firmware', :commentable_id => 37, :comment => 'lol'}
-      response.should redirect_to "http://example.com"
+      post 'create', :comment => {:commentable_type => 'Firmware', :commentable_id => 37}
+      response.should be_redirect
       flash[:notice].should_not be_nil
     end
 
     it "should not create bad comments" do
       any_instance_of Comment, :valid? => false
 
-      post 'create', :comment => {:commentable_type => 'Firmware', :commentable_id => 37, :comment => 'lol'}
+      post 'create', :comment => {:commentable_type => 'Firmware', :commentable_id => 37}
       response.should render_template 'new'
     end
   end
 
   describe "#destroy" do
     it "should not work when not logged in" do
-      mock(Comment).find('37') { stub! }
+      stub(Comment).find('37') { stub! }
       logout
 
       delete 'destroy', :id => 37
@@ -57,12 +56,12 @@ describe CommentsController do
 
     it "should work when logged in as owner" do
       comment = mock(Comment.new).destroy.subject
+      stub(comment).commentable { Factory :firmware }
       mock(current_user).owns?(comment) { true }
       stub(Comment).find('37') { comment }
-      mock(controller).polymorphic_url.with_any_args {|*args| "http://example.com" }
 
       delete 'destroy', :id => 37
-      response.should redirect_to "http://example.com"
+      response.should be_redirect
       flash[:notice].should_not be_nil
     end
   end
