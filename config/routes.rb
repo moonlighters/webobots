@@ -32,8 +32,13 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :invites, :only => [:index, :create, :destroy]
   end
 
-  #comments
+  # comments
   map.resources :comments, :only => [:index, :create, :destroy], :collection => { :all => :get }
+
+  # doc
+  map.with_options :controller => 'doc', :path_prefix => 'doc' do |doc|
+    doc.waffle_language_doc 'waffle_language', :action => 'waffle_language', :conditions => {:method => :get}
+  end
 
   # root
   map.root :controller => 'welcome', :action => 'root'
