@@ -75,6 +75,36 @@ describe EmulationSystem::Emulation::RuntimeElements do
           @bot.step.should be_a Numeric
         end.should_not change { @bot.stack.size }
       end
+
+      describe "functional" do
+        it "should push children to stack, pop and push 0 if last element was not 'return'" do
+          lambda do
+            node = build :node
+
+            @bot.push_element build(:node, 'block', [ node ]), :function => true
+
+            mock(@bot).push_element(node)
+            @bot.step.should be_a Numeric
+
+            mock(@bot).push_var(0)
+            @bot.step.should be_a Numeric
+          end.should_not change { @bot.stack.size }
+        end
+
+        it "should push children to stack and pop if last element was 'return'" do
+          lambda do
+            ret_node = build :node, 'return'
+
+            @bot.push_element build(:node, 'block', [ ret_node ]), :function => true
+
+            mock(@bot).push_element(ret_node)
+            @bot.step.should be_a Numeric
+
+            dont_allow(@bot).push_var(anything)
+            @bot.step.should be_a Numeric
+          end.should_not change { @bot.stack.size }
+        end
+      end
     end
 
     describe "#(set|get)_variable" do
@@ -556,13 +586,14 @@ describe EmulationSystem::Emulation::RuntimeElements do
     end
 
     describe "#run" do
-      it "should clean stack including last function block if no expr given" do
+      it "should clean stack including last function block and push 0 if no expr given" do
         lambda do
           @bot.push_element build(:node, 'block'), :function => true
           @bot.push_element build(:node, 'if')
           @bot.push_element build(:node, 'block')
           @bot.push_element build(:node, 'return')
 
+          mock(@bot).push_var(0)
           @bot.step.should be_a Numeric
         end.should_not change { @bot.stack.size }
       end
