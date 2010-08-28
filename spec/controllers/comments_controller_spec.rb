@@ -5,7 +5,7 @@ describe CommentsController do
 
   before { login }
 
-  ['index', 'all'].each do |action|
+  %w{index all}.each do |action|
     describe "##{action}" do
       it "should list items" do
         get action

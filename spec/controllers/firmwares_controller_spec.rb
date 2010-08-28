@@ -11,7 +11,7 @@ describe FirmwaresController do
     stub(@fwv).firmware { @fw }
   end
 
-  ['index', 'all', 'new'].each do |action|
+  %w{index all new}.each do |action|
     describe "##{action}" do
       it "should work" do
         get action
@@ -20,7 +20,7 @@ describe FirmwaresController do
     end
   end
 
-  ['show', 'index_versions'].each do |action|
+  %w{show index_versions}.each do |action|
     describe "##{action}" do
       it "should work" do
         mock(Firmware).find('37') { @fw }
