@@ -1,8 +1,14 @@
 require 'emulation_system_helper'
 
-describe EmulationSystem::Emulation::Bot::Engine do
+describe EmulationSystem::Emulation::Bot::Processor do
   before do
     @bot = build :bot
+  end
+
+  it "should define World-constants as variables at global block of bot's engine" do
+    block = @bot.upper_block_from(nil, :global => true)
+    # test only one constant, I think it is ok
+    block.get_variable("FIELD_SIZE").should == EmulationSystem::Emulation::World::FIELD_SIZE
   end
 
   describe "#halted?" do
