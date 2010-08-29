@@ -61,12 +61,12 @@ describe Match do
     end
 
     it "should not pass if version of opponent's firmware is not the last" do
-      5.times { @fw.versions.create }
+      @fw.versions.create
       build_match(:first_version => @fw.versions.first).should_not be_valid
     end
 
     it "should pass if version of owned firmware is not the last" do
-      5.times { @fw.versions.create }
+      @fw.versions.create
       build_match(:first_version => @fw.versions.first, :user => @fw.user).should be_valid
     end
 
@@ -100,11 +100,11 @@ describe Match do
   describe "named scope" do
     before do
       @fwv = Factory :firmware_version
-      4.times { Factory :match }
+      Factory :match
       @m1 = Factory :match, :first_version => @fwv
-      1.times { Factory :match }
+      Factory :match
       @m2 = Factory :match, :first_version => @fwv, :second_version => @fwv
-      3.times { Factory :match }
+      Factory :match
     end
 
     describe "Match.all_for" do

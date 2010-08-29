@@ -45,29 +45,16 @@ describe Firmware do
     it "should return number of last version correctly" do
       fw = Factory :firmware
 
-      4.times { fw.versions.build; fw.save; fw.reload }
-      fw.versions.last_number.should == 5
+      2.times { fw.versions.build; fw.save; fw.reload }
+      fw.versions.last_number.should == 3
 
       2.times { fw.versions.last.destroy;   fw.reload }
       2.times { fw.versions.build; fw.save; fw.reload }
-      fw.versions.last_number.should == 5
+      fw.versions.last_number.should == 3
 
       2.times { fw.versions.first.destroy;  fw.reload }
       2.times { fw.versions.build; fw.save; fw.reload }
-      fw.versions.last_number.should == 7
-    end
-  end
-
-  describe ".matches" do
-    it "should work" do
-      fwv = Factory :firmware_version
-      4.times { Factory :match }
-      m1 = Factory :match, :first_version => fwv
-      1.times { Factory :match }
-      m2 = Factory :match, :first_version => fwv, :second_version => fwv
-      3.times { Factory :match }
-
-      fwv.firmware.matches.sort_by(&:id).should == [m1, m2].sort_by(&:id)
+      fw.versions.last_number.should == 5
     end
   end
 end

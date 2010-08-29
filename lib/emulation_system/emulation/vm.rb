@@ -53,7 +53,7 @@ module EmulationSystem
       # * <tt>:first</tt>
       # * <tt>:second</tt>
       # * <tt>:draw</tt>
-      def emulate
+      def emulate(max_life_time = World::MAX_LIFE_TIME)
         syncs = 0
         explosions = []
         while not @bots.any? &:dead?
@@ -86,7 +86,7 @@ module EmulationSystem
           @time += SYNC_PERIOD
           syncs += 1
 
-          break if @time > World::MAX_LIFE_TIME
+          break if @time > max_life_time
         end
 
         case @bots.map &:dead?

@@ -21,7 +21,7 @@ describe EmulationSystem::Emulation::Missile do
     end
   end
 
-  describe "calc_physics_for" do
+  describe "#calc_physics_for" do
     before do
       @dt = 0.0001
     end
@@ -46,6 +46,7 @@ describe EmulationSystem::Emulation::Missile do
     end
 
     it "should hit the border of battlefield" do
+      @bot.state.pos.x = 5 + World::BOT_RADIUS
       @m = Missile.new @bot, Math::PI, 6000
       x = @m.pos.x
       lambda do
