@@ -8,6 +8,7 @@ module AuthlogicSpecHelpers
     current_user
     unless @current_session
       @current_session = stub!.record { current_user }.subject
+      stub(@current_session).destroy { logout }
       stub(UserSession).find() { @current_session }
     end
   end
