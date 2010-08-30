@@ -5,6 +5,10 @@ describe EmulationSystem::Parsing::ANTLRParser do
     call("").should == "block"
   end
 
+  it "should be case sensetive" do
+    call("AaA = 3").should == "(block (= AaA 3))"
+  end
+
   it "should parse unary operations" do
     call("r = -r").should == "(block (= r (uminus (var r))))"
     call("r = +r").should == "(block (= r (uplus (var r))))"

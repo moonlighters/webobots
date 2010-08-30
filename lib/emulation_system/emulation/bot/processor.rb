@@ -103,8 +103,20 @@ module EmulationSystem
           @stack = []
           push_element( ir.root )
 
+          define_global_constants
+
           # стековая переменная, через которую можно передовать значения между элементами
           @stack_var = nil
+        end
+
+        # Добавляет константы из модуля EmulationSystem::Emulation::World в виде переменных
+        # в глобальный блок прошивки
+        def define_global_constants
+          block = @stack.last
+
+          World.constants.each do |name|
+            block.set_variable name, World.const_get( name )
+          end
         end
       end
     end
