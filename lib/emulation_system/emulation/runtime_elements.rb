@@ -33,11 +33,11 @@ module EmulationSystem
               raise Errors::WFLRuntimeError,
                 "неверное количество аргументов (#{params.count} вместо #{@param_names.count}) для функции '#{@id}'"
             end
-            hash = {}
-            params.each_index do |i|
-              hash[@param_names[i]] = params[i]
+            {}.tap do |hash|
+              params.each_index do |i|
+                hash[@param_names[i]] = params[i]
+              end
             end
-            hash
           end
         end
 
@@ -78,6 +78,11 @@ module EmulationSystem
             Timing.for self, :step
           else
             # мы обязаны делать pop только после (!)всех(!) детей
+
+            # а если это функциональный блок и не было return'а,
+            # то необходимо имитировать 'return 0'
+            @bot.push_var(0) if function? and @children.last.data != 'return'
+
             @bot.pop_element
             Timing.for self, :finish
           end
@@ -429,12 +434,15 @@ module EmulationSystem
         end
 
         def run
-          if @expr != nil and not @expr_evaluated
+          if not @expr.nil? and not @expr_evaluated
             @bot.push_element @expr
             @expr_evaluated = true
             Timing.for self, :evaluation
           else
-            # нужное возращаемое значение уже на стеке
+            # если было дано выражение, то нужное возращаемое значение уже на стеке
+            # иначе мы должны пушнуть ноль
+            @bot.push_var(0) if @expr.nil?
+
             func_block = @bot.upper_block_from( self, :function => true ) or raise Errors::WFLRuntimeError,
               "недопустимо использование 'return' вне функции"
 
