@@ -15,35 +15,30 @@
   %body
     .wrapper
       %header
-        %h1.logo
-          = link_to image_tag('webobots_logo.png', :alt => '', :width => 70, :height => 70), root_path
-          = link_to "Webobots", root_path
+        .logo= link_to image_tag('webobots_logo.png', :alt => '', :width => 70, :height => 70), root_path
+        .header_wrapper
+          %h1= link_to "Webobots", root_path
 
-        .account-panel
-          - if current_user
-            Вы вошли как
-            = link_to_user(current_user) + "."
-            = link_to "Выйти", logout_path
-          - else
-            = link_to "Регистрация", signup_path
-            |
-            = link_to "Войти", login_path
+          .account-panel
+            - if current_user
+              Вы вошли как
+              = link_to_user(current_user) + "."
+              = link_to "Выйти", logout_path
+            - else
+              = link_to "Регистрация", signup_path
+              |
+              = link_to "Войти", login_path
 
-        .clear
 
-      - if current_user
-        %nav
-          .nav_item
-            = link_to "Пользователи", users_path
-          .nav_item
-            = link_to "Прошивки", firmwares_path
-          .nav_item
-            = link_to "Матчи", matches_path
-          .nav_item
-            = link_to "Комментарии", comments_path
-          .nav_item
-            = link_to "Рейтинг", users_rating_path
-          .clear
+          %nav
+            - if current_user
+              %span.nav_item= link_to "Пользователи", users_path
+              %span.nav_item= link_to "Прошивки", firmwares_path
+              %span.nav_item= link_to "Матчи", matches_path
+              %span.nav_item= link_to "Комментарии", comments_path
+              %span.nav_item= link_to "Рейтинг", users_rating_path
+            - else
+              %span.nav_item
 
 
       %section

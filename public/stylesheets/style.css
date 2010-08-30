@@ -12,12 +12,22 @@ body {
   position: relative;
   margin: 10px auto;
   width: 750px;
-  padding: 30px 35px;
   background: #FFFFFF;
   -webkit-border-radius: 20px;
   -moz-border-radius: 20px;
   border-radius: 20px;
   border: solid #999999 1px;
+}
+
+header {
+  -webkit-border-top-left-radius: 20px;
+  -webkit-border-top-right-radius: 20px;
+  -moz-border-radius-topleft: 20px;
+  -moz-border-radius-topright: 20px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  padding: 20px 30px 15px 30px;
+  border-bottom: solid #999999 1px;
 }
 
 h1 {
@@ -33,49 +43,49 @@ a img {
 
 header, nav, section, footer { display: block; }
 
-header {
-  margin-bottom: 15px;
+header .logo img {
 }
 
-header h1.logo {
+header .logo {
+  margin: 8px;
+  height: 70px;
+  float: left;
+}
+
+.header_wrapper h1 {
   font-size: 2.5em;
-  margin: 0px 30px 0px 10px;
-  line-height: 70px;
+  line-height: 44px;
+  margin-left: 15px; /*connected with nav_item margin*/
 }
 
-header h1.logo a {
+.header_wrapper h1 a {
   text-decoration: none;
   color: black;
 }
 
-header h1.logo img {
-  vertical-align: middle;
-}
-
 .account-panel {
   float: right;
+  line-height: 44px;
+  margin-right: 15px;
 }
 
 nav {
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
+  text-align: center;
+  margin-top: 14px;
 }
 
 nav .nav_item {
-  float: left;
-  width: 150px;
-  line-height: 25px;
-  height: 25px;
+  margin: 0 16px;
   font-size: 1.2em;
   text-align: center;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
 }
 nav .nav_item a         { text-decoration: none; }
-nav .nav_item:hover     { background-color: #EEEEEE; }
-/*nav .nav_item:hover a   { color: #FFFFFF; }*/
+nav .nav_item:hover     { border-bottom: solid #EB1D1D 2px; }
+/*nav .nav_item:hover a   { color: #EB7676; }*/
+
+section {
+  padding: 5px 30px 30px 30px;
+}
 
 textarea.code {
   font-family: monospace !important;
