@@ -1,9 +1,8 @@
 class FirmwaresController < ApplicationController
-  before_filter :find_firmware, :only => [:show, :code, :edit, :update, :show_version, :index_versions]
-  before_filter :prepare_fwv_params, :only => [:create, :update]
-
   before_filter :require_user
+  before_filter :find_firmware, :only => [:show, :code, :edit, :update, :show_version, :index_versions]
   before_filter :require_owner, :only => [:edit, :update]
+  before_filter :prepare_fwv_params, :only => [:create, :update]
 
   def index
     @fws = current_user.firmwares.paginate :page => params[:page], :order => 'id DESC'
@@ -81,6 +80,6 @@ class FirmwaresController < ApplicationController
   end
 
   def prepare_fwv_params
-    @fwv_params = params[:firmware].delete :firmware_version
+    @fwv_params = (params[:firmware] || {}).delete(:firmware_version) || {}
   end
 end
