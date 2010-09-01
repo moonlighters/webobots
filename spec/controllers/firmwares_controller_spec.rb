@@ -6,10 +6,9 @@ describe FirmwaresController do
 
   before do
     login
-    @fw = stub(Factory :firmware).id { 37 }.subject
-    @fwv = Factory :firmware_version
+    @fw = Factory.build :firmware, :id => 37
+    @fwv = Factory.build :firmware_version, :number => 13, :firmware => @fw, :created_at => Time.now
     stub(@fw).version { @fwv }
-    stub(@fwv).firmware { @fw }
   end
 
   %w{index all new}.each do |action|
@@ -24,7 +23,7 @@ describe FirmwaresController do
   %w{show index_versions}.each do |action|
     describe "##{action}" do
       it "should work" do
-        stub(Firmware).find.with_any_args { |*args| @fw }
+        mock_find
 
         get action, :id => 37
         response.should be_success
@@ -34,23 +33,22 @@ describe FirmwaresController do
 
   describe '#create' do
     it "should create good firmware" do
-      any_instance_of Firmware, :valid? => true
+      any_instance_of Firmware, :save => true, :id => 37
 
-      lambda{ post 'create', :firmware => {} }.should change { FirmwareVersion.count }.by 1
+      post 'create'
       response.should be_redirect
     end
 
     it "should not create bad firmware" do
-      any_instance_of Firmware, :valid? => false
+      any_instance_of Firmware, :save => false
 
-      lambda{ post 'create', :firmware => {} }.should_not change { FirmwareVersion.count }
+      post 'create'
       response.should render_template 'new'
     end
   end
 
   describe '#edit' do
     it "should not work when not logged in" do
-      stub(Firmware).find('37') { @fw }
       logout
 
       get 'edit', :id => 37
@@ -59,16 +57,16 @@ describe FirmwaresController do
     end
 
     it "should not work when not owner" do
-      mock(Firmware).find('37') { @fw }
+      mock_find
       mock(current_user).owns?(@fw) { false }
 
       get 'edit', :id => 37
       response.should be_redirect
       flash[:alert].should_not be_nil
     end
-    
-    it "should work whtn logged in as owner" do
-      mock(Firmware).find('37') { @fw }
+
+    it "should work when logged in as owner" do
+      mock_find
       mock(current_user).owns?(@fw) { true }
 
       get 'edit', :id => 37
@@ -77,31 +75,31 @@ describe FirmwaresController do
   end
 
   describe '#update' do
-    before { mock(current_user).owns?(@fw) { true } }
+    before do
+      mock_find
+      mock(current_user).owns?(@fw) { true }
+    end
 
     it "should save good update" do
-      stub(Firmware).find.with_any_args { |*args| @fw }
-      # тут проще повесить mock на save, а не valid? из-за :autosave => true
       mock(@fw).save { true }
-      
-      put 'update', :id => '37', :firmware => { :firmware_version => {} }
+
+      put 'update', :id => '37'
       response.should be_redirect
       flash[:notice].should_not be_nil
     end
 
     it "should not save bad update" do
-      mock(Firmware).find('37') { @fw }
-      # тут проще повесить mock на save, а не valid? из-за :autosave => true
       mock(@fw).save { false }
 
-      put 'update', :id => '37', :firmware => { :firmware_version => {} }
+      put 'update', :id => '37'
       response.should render_template 'edit'
     end
   end
 
   describe "code" do
+    before { mock_find }
+
     it "should give code when request.xhr?" do
-      mock(Firmware).find('37') { @fw }
       stub(request).xhr? { true }
 
       get 'code', :id => '37'
@@ -109,7 +107,6 @@ describe FirmwaresController do
     end
 
     it "should redirect to firmware path when not request.xhr?" do
-      mock(Firmware).find('37') { @fw }
       stub(request).xhr? { false }
 
       get 'code', :id => '37'
@@ -119,10 +116,14 @@ describe FirmwaresController do
 
   describe "show_version" do
     it "should work" do
-        mock(Firmware).find('37') { @fw }
-        stub(@fw).versions { mock([@fwv]).find_by_number!('11') { @fwv }.subject }
+      mock_find
+      mock(FirmwareVersion).find(:first, {:conditions => { :number => '42' }}) { @fwv }
 
-        get 'show_version', :id => 37, :number => 11
+      get 'show_version', :id => 37, :number => 42
     end
+  end
+
+  def mock_find
+    mock(Firmware).find('37') { @fw }
   end
 end

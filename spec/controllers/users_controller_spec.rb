@@ -16,7 +16,7 @@ describe UsersController do
   describe "#new" do
     it "should work" do
       logout
-      
+
       get 'new'
       response.should be_success
     end
@@ -26,21 +26,21 @@ describe UsersController do
     before { logout }
 
     it "should register valid user" do
-      any_instance_of User, :valid? => true
       # mock на save!, а не только на valid?, потому что без вызова
       # before_validation сохранение юзера падает (Authlogic)
-      any_instance_of User, :save! => true
-      
-      # код '1234': используем глобальный хак для инвайтов...
-      post 'create', :user => {:code => '1234'}
+      any_instance_of User, :valid? => true, :save! => true
+
+      post 'create', :user => { :login => 'John', :email => 'john@com' }
+      assigns[:user].login.should == 'John'
+      assigns[:user].email.should == 'john@com'
       response.should be_redirect
       flash[:notice].should_not be_nil
     end
 
     it "should not register invalid user" do
       any_instance_of User, :valid? => false
-      
-      post 'create', :user => {}
+
+      post 'create'
       response.should render_template 'new'
     end
   end
@@ -48,8 +48,7 @@ describe UsersController do
   %w{show edit}.each do |action|
     describe "##{action}" do
       it "should work" do
-        u = Factory :user
-        mock(User).find('37') { u }
+        mock(User).find('37') { Factory.build :user }
 
         get 'show', :id => 37
         response.should be_success
@@ -59,15 +58,17 @@ describe UsersController do
 
   describe "#update" do |action|
     it "should apply good update" do
-      mock(current_user).valid?.times(any_times) { true }
+      mock(current_user).valid? { true }
 
-      put 'update', :user => {}
+      put 'update', :user => { :login => 'John', :email => 'john@com' }
+      assigns[:user].login.should_not == 'John'
+      assigns[:user].email.should == 'john@com'
       response.should be_redirect
       flash[:notice].should_not be_nil
     end
 
     it "should not apply bad update" do
-      mock(current_user).valid?.times(any_times) { false }
+      mock(current_user).valid? { false }
 
       put 'update', :user => {}
       response.should render_template 'edit'

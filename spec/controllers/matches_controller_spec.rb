@@ -17,7 +17,7 @@ describe MatchesController do
 
   describe "#all_for_user" do
     it "should list items" do
-      mock(User).find('37') { Factory :user }
+      mock(User).find('37') { Factory.build :user, :id => 37 }
 
       get 'all_for_user', :user_id => 37
       response.should be_success
@@ -26,8 +26,7 @@ describe MatchesController do
 
   describe "#all_for_firmware" do
     it "should list items" do
-      fw = Factory :firmware
-      stub(Firmware).find.with_any_args { |*args| fw }
+      mock(Firmware).find('37') { Factory.build :firmware, :id => 37 }
 
       get 'all_for_firmware', :firmware_id => 37
       response.should be_success
@@ -61,15 +60,14 @@ describe MatchesController do
 
   describe "#create" do
     it "should create good match" do
-      any_instance_of Match, :valid? => true
-      any_instance_of Match, :emulate => :draw
+      any_instance_of Match, :save => true, :id => 37, :emulate => :draw
 
       post 'create'
       response.should be_redirect
     end
 
     it "should not create bad match" do
-      any_instance_of Match, :valid? => false
+      any_instance_of Match, :save => false
 
       post 'create'
       response.should render_template 'new'
@@ -81,7 +79,7 @@ describe MatchesController do
       m = Factory :match
       stub(m).result { :draw }
       mock(Match).find('37') { m }
-      
+
       get 'show', :id => 37
       response.should be_success
     end
@@ -89,9 +87,8 @@ describe MatchesController do
 
   describe "#play" do
     before do
-      m = Factory :match
-      stub(m).emulate { :draw }
-      stub(m).replay { MatchReplay.new }
+      m = Factory.build :match, :id => 37, :result => :draw
+      m.build_replay
       mock(Match).find('37') { m }
     end
 

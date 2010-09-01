@@ -16,9 +16,8 @@ describe UserSessionsController do
   describe "#create" do
     it "should login user with correct login & pass" do
       logout
-      current_user # init user to prevent recursion
-      any_instance_of UserSession, :save => lambda { login; true }
-      
+      any_instance_of UserSession, :save => true
+
       post 'create'
       response.should be_redirect
       flash[:notice].should_not be_nil
@@ -26,8 +25,8 @@ describe UserSessionsController do
 
     it "should not login user with incorrect login & pass" do
       logout
-      any_instance_of UserSession, :valid? => false
-      
+      any_instance_of UserSession, :save => false
+
       post 'create'
       response.should render_template 'new'
     end

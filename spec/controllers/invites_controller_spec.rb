@@ -18,7 +18,7 @@ describe InvitesController do
 
     it "should not work when logged in usual user" do
       login
-      
+
       get 'index'
       response.should_not be_success
       flash[:alert].should_not be_nil
@@ -33,7 +33,7 @@ describe InvitesController do
 
   describe "#create" do
     it "should create good ones" do
-      any_instance_of Invite, :valid? => true
+      any_instance_of Invite, :save => true
 
       post 'create'
       response.should be_redirect
@@ -41,7 +41,7 @@ describe InvitesController do
     end
 
     it "should not create bad ones" do
-      any_instance_of Invite, :valid? => false
+      any_instance_of Invite, :save => false
 
       post 'create'
       response.should be_redirect
@@ -51,8 +51,8 @@ describe InvitesController do
 
   describe "#destroy" do
     it "should destroy" do
-      stub(Invite).find('37') { mock(Invite.new).destroy.subject }
-      
+      mock(Invite).find('37') { mock(Invite.new).destroy.subject }
+
       delete 'destroy', :id => 37
       response.should be_redirect
       flash[:notice].should_not be_nil

@@ -17,12 +17,12 @@ describe CommentsController do
 
   describe "#create" do
     before do
-      @commentable = Factory :firmware
+      @commentable = Factory.build :firmware
       mock(Firmware).find(37) { @commentable }
     end
 
     it "should create good comments" do
-      any_instance_of Comment, :valid? => true
+      any_instance_of Comment, :save => true
 
       post 'create', :comment => {:commentable_type => 'Firmware', :commentable_id => 37}
       response.should be_redirect
@@ -30,7 +30,7 @@ describe CommentsController do
     end
 
     it "should not create bad comments" do
-      any_instance_of Comment, :valid? => false
+      any_instance_of Comment, :save => false
 
       post 'create', :comment => {:commentable_type => 'Firmware', :commentable_id => 37}
       response.should render_template 'new'
@@ -39,7 +39,6 @@ describe CommentsController do
 
   describe "#destroy" do
     it "should not work when not logged in" do
-      stub(Comment).find('37') { stub!.subject }
       logout
 
       delete 'destroy', :id => 37
@@ -48,18 +47,21 @@ describe CommentsController do
     end
 
     it "should not work when not owner" do
-      stub(Comment).find('37') { mock(Comment.new).user{ Factory :user }.subject }
-      
+      c = Comment.new
+      mock(Comment).find('37') { c }
+      mock(current_user).owns?(c) { false }
+
       delete 'destroy', :id => 37
       response.should_not be_success
       flash[:alert].should_not be_nil
     end
 
     it "should work when logged in as owner" do
-      comment = mock(Comment.new).destroy.subject
-      stub(comment).commentable { Factory :firmware }
-      mock(current_user).owns?(comment) { true }
-      stub(Comment).find('37') { comment }
+      c = Comment.new
+      mock(Comment).find('37') { c }
+      mock(current_user).owns?(c) { true }
+      mock(c).destroy
+      mock(c).commentable { Factory.build :firmware }
 
       delete 'destroy', :id => 37
       response.should be_redirect
