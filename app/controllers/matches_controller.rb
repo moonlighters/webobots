@@ -84,7 +84,7 @@ class MatchesController < ApplicationController
       @enemy_collection = @enemy_fws.map do |x|
         [ x.name, x.version.id ]
       end
-      @enemy_selection_hint = "одна из прошивок игрока #{render_to_string :inline => "<%= link_to_user u %>", :locals => { :u => user }}"
+      @enemy_selection_hint = "одна из прошивок игрока #{render_to_string :inline => "<%= link_to_user u %>", :locals => { :u => user }}".html_safe
     else
       @enemy_fws = Firmware.scoped(
         :order => :user_id, :include => [:user, :version]
