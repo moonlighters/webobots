@@ -242,17 +242,18 @@ td.line-numbers {
   background: url(/images/delete.png) no-repeat left center;
 }
 
-.tour {
+.tour, .tutorial {
   width: 700px;
+  text-align: justify;
 }
 
-.tour h3 {
-  color: #666666;
+.tour h3, .tutorial h3 {
+  color: #444466;
   margin-bottom: 8px;
   margin-top: 15px;
 }
 
-.tour .illustration {
+.illustration {
   text-align: center;
 }
 
