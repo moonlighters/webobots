@@ -36,11 +36,13 @@ class UsersController < ApplicationController
               current_user
             end
     @fws = @user.firmwares
+    @has_firmwares = ! @fws.empty?
     @users_count = User.count
     @comments = @user.comments.sorted.paginate :page => comments_page
   end
 
   def edit
+    @has_firmwares = @user.firmwares.count > 0
   end
 
   def update

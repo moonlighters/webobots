@@ -2,7 +2,11 @@
 %html
   %head
     %meta{'http-equiv' => 'content-type', :content => 'text/html; charset=utf-8'}
-    %title= "Webobots"
+    %title
+      - unless @title.blank?
+        =h(@title) + " — Webobots"
+      - else
+        = "Webobots"
     = stylesheet_link_tag *%w{style nyroModal.full}
     = formtastic_stylesheet_link_tag
     = javascript_include_tag *%w{libraries/jquery-1.4.2.min libraries/underscore-min libraries/raphael}
@@ -40,7 +44,21 @@
             - else
               %span.nav_item
 
-
+      - unless @title.blank?
+        %h2=h @title
       %section
         = flash_sections
-        = yield
+        - if has_actions_or_links?
+          .left_column
+            %nav
+              %ul
+                = actions_list
+                - if has_both_actions_and_links?
+                  %hr
+                = links_list
+          .right_column
+            = yield
+          .clear
+        - else
+          .single_column
+            = yield

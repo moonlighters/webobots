@@ -1,13 +1,6 @@
-%h2
-  Список матчей с участием прошивки
-  = link_to_firmware @fw
+- title %Q{Список матчей с участием прошивки "#{@fw.name}"}
 
-%p
-  = link_to "Перейти к списку матчей с участием ваших прошивок", matches_path
-  |
-  = link_to "Перейти к списку всех матчей", all_matches_path
-
-%p= link_to( "Сразиться с #{h @fw.name}!", new_match_path(:enemy_fw => @fw) )
+- actions_for_firmware(@fw)
 
 - paginated_section do
   = render :partial => 'table', :locals => {:matches => @matches}

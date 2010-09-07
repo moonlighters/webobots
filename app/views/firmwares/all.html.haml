@@ -1,8 +1,6 @@
-%h2 Список всех прошивок
+- title "Все прошивки"
 
-%p= link_to "Перейти к списку ваших прошивок", firmwares_path
-
-%p= link_to "Создать", new_firmware_path
+- actions_for_firmwares
 
 - paginated_section @fws do
   %ul= render :partial => 'firmware_with_author', :collection => @fws

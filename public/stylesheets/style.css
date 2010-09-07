@@ -85,7 +85,7 @@ section {
 }
 
 .left_column {
-  width: 115px;
+  width: 120px;
   float: left;
   margin: 0 25px 0 50px;
 }
@@ -102,11 +102,25 @@ section {
 
 .right_column {
   width: 500px;
-  margin: 0 50px 0 200px;
+  margin: 0 50px 0 195px;
 }
 
-h2 { margin-top: 0; }
-h2, h3 { color: #000066; }
+.single_column {
+  width: 500px;
+  margin: 0 125px;
+}
+
+h2 {
+  margin: 0;
+  padding: 10px 0;
+  text-align: center;
+  border-bottom: solid #999999 1px;
+}
+
+h2, h3, h2 a:link, h2 a:hover, h2 a:visited { color: #000066; }
+
+h2 a { text-decoration: none; }
+h2 a:hover { text-decoration: underline; }
 
 dl { margin: 3px 0; }
 
@@ -114,6 +128,10 @@ dt {
   color: #666688;
   width: 170px;
   float: left;
+}
+
+ul {
+  margin: 0;
 }
 
 textarea.code {
@@ -298,6 +316,8 @@ a.avatar_link{
 .vs_block .vs_left, .vs_block .vs_right {
   float: left;
   line-height: 35px;
+  font-size: 1.1em;
+  margin-bottom: 15px;
 }
 
 .vs_block .vs_middle {
@@ -305,6 +325,7 @@ a.avatar_link{
   margin: 0 20px;
   height: 70px;
   line-height: 70px;
+  font-weight: bold;
 }
 
 .vs_block .avatar_medium {

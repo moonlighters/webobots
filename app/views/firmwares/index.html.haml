@@ -1,8 +1,6 @@
-%h2 Список ваших прошивок
+- title "Ваши прошивки"
 
-%p= link_to "Перейти к списку всех прошивок", all_firmwares_path
-
-%p= link_to "Создать", new_firmware_path
+- actions_for_firmwares
 
 - unless @fws.empty?
   - paginated_section @fws do

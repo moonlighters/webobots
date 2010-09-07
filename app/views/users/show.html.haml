@@ -1,5 +1,7 @@
 - self_profile = @user == current_user
-%h2 Просмотр профиля
+- title %Q{Пользователь #{@user.login}}
+
+- actions_for_user(@user, @has_firmwares)
 
 .profile_avatar
   - if self_profile
@@ -9,32 +11,27 @@
   - else
     = avatar_for @user, :size => :big
 
-%p
-  %b Логин:
-  =h @user.login
-%p
-  %b Очки рейтинга:
-  = format_points(@user.rating_points)
-%p
-  %b Позиция в рейтинге:
-  = @user.rating_position.to_s + "-й из " + @users_count.to_s
+%dl
+  %dt Логин
+  %dd=h @user.login
+%dl
+  %dt Очки рейтинга
+  %dd= format_points(@user.rating_points)
+%dl
+  %dt Позиция в рейтинге
+  %dd= @user.rating_position.to_s + "-й из " + @users_count.to_s
 
 - if self_profile
-  %p
-    %b Email:
-    =h @user.email
+  %dl
+    %dt E-mail
+    %dd
+      =h @user.email
+      %i (Виден только тебе)
 
   - if @user.last_login_at
-    %p= "Последний раз заходил #{time_ago_in_words @user.last_login_at} назад"
-
-%p
-  - if self_profile
-    = link_to 'Редактировать', edit_account_path
-    |
-  - unless @fws.empty?
-    = link_to( 'Сразиться!', new_match_path(:enemy => @user) )
-    |
-  = link_to "Список матчей", user_matches_path(@user)
+    %dl
+      %dt Заходил
+      %dd= "последний раз #{time_ago_in_words @user.last_login_at} назад"
 
 - unless self_profile
   - unless @fws.empty?
