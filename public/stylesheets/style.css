@@ -1,6 +1,6 @@
 body {
   font: 14px Tahoma, Verdana, Arial, sans-serif;
-  color: black;
+  color: #222244;
   background: #DDDDDD;
   margin: 0;
   padding: 0;
@@ -30,11 +30,6 @@ header {
   border-bottom: solid #999999 1px;
 }
 
-h1 {
-  display: inline;
-  margin-right: 30px;
-}
-
 a, a:hover, a:visited { color: #EB1D1D; }
 
 a img {
@@ -53,14 +48,16 @@ header .logo {
 }
 
 .header_wrapper h1 {
+  display: inline;
   font-size: 2.5em;
   line-height: 44px;
   margin-left: 15px; /*connected with nav_item margin*/
+  margin-right: 30px;
 }
 
 .header_wrapper h1 a {
   text-decoration: none;
-  color: black;
+  color: #000099;
 }
 
 .account-panel {
@@ -69,22 +66,54 @@ header .logo {
   margin-right: 15px;
 }
 
-nav {
+.header_wrapper nav {
   text-align: center;
   margin-top: 14px;
 }
 
-nav .nav_item {
+.header_wrapper nav .nav_item {
   margin: 0 13px;
   font-size: 1.2em;
   text-align: center;
 }
-nav .nav_item a         { text-decoration: none; }
-nav .nav_item:hover     { border-bottom: solid #EB1D1D 2px; }
+.header_wrapper nav .nav_item a         { text-decoration: none; }
+.header_wrapper nav .nav_item:hover     { border-bottom: solid #EB1D1D 2px; }
 /*nav .nav_item:hover a   { color: #EB7676; }*/
 
 section {
-  padding: 5px 30px 30px 30px;
+  padding: 15px 0 30px 0;
+}
+
+.left_column {
+  width: 115px;
+  float: left;
+  margin: 0 25px 0 50px;
+}
+
+.left_column nav ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.left_column nav ul li {
+  padding-bottom: 5px;
+}
+
+.right_column {
+  width: 500px;
+  margin: 0 50px 0 200px;
+}
+
+h2 { margin-top: 0; }
+h2, h3 { color: #000066; }
+
+dl { margin: 3px 0; }
+
+dt {
+  color: #666688;
+  width: 170px;
+  float: left;
 }
 
 textarea.code {

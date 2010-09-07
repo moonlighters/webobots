@@ -1,39 +1,46 @@
-%h2= %Q{Прошивка "#{h @fw.name}"}
+.left_column
+  %nav
+    %ul
+      %li= link_to "Прошивка", firmware_path(@fw)
+      - if current_user.owns? @fw
+        %li= link_to( "Редактировать", edit_firmware_path(@fw) )
+      %li= link_to "История версий", firmware_versions_path(@fw)
+      %hr
+      - if can_fight_with? @fw
+        %li= link_to "Сразиться!", new_match_path(:enemy_fw => @fw)
+      %li= link_to "Список матчей", firmware_matches_path(@fw)
 
+.right_column
+  %h2= %Q{Прошивка "#{h @fw.name}"}
 
--# общая информация
-%p
-  %b Автор:
-  = link_to_user @fw.user
-%p
-  %b Очки рейтинга:
-  = format_points(@fw.rating_points)
-%p
-  %b Позиция в рейтинге:
-  = @fw.rating_position.to_s + "-я из " + @fws_count.to_s
-%p
-  %b Исходный код:
-  = @fw.shared? ? "открытый" : "закрытый"
-  = '(' + link_to( "просмотреть", code_firmware_path( @fw ), :id => "show-code", :class => 'nyroModal' ) + ')' if can_see_code_of? @fw
-%p
-  %b Доступность для сражения:
-  = @fw.available? ? "доступна" : "не доступна"
-%p
-  %b Последняя версия прошивки:
-  = link_to_firmware_version_with_message @fwv
+  -# общая информация
+  %dl
+    %dt Автор
+    %dd= link_to_user @fw.user
 
--# действия
-%p
-  - if can_fight_with? @fw
-    = link_to "Сразиться!", new_match_path(:enemy_fw => @fw)
-    |
-  - if current_user.owns? @fw
-    = link_to( "Редактировать", edit_firmware_path(@fw) )
-    |
-  = link_to "История версий", firmware_versions_path(@fw)
-  |
-  = link_to "Список матчей", firmware_matches_path(@fw)
+  %dl
+    %dt Очки рейтинга
+    %dd= format_points(@fw.rating_points)
 
--# комментарии
-= render :partial => 'comments/comments', :locals => {:commentable => @fw, :comments => @comments}
+  %dl
+    %dt Позиция в рейтинге
+    %dd= @fw.rating_position.to_s + "-я из " + @fws_count.to_s
+
+  %dl
+    %dt Исходный код
+    %dd
+      = @fw.shared? ? "открытый" : "закрытый"
+      = '(' + link_to( "просмотреть", code_firmware_path( @fw ), :id => "show-code", :class => 'nyroModal' ) + ')' if can_see_code_of? @fw
+
+  %dl
+    %dt Сражения
+    %dd= @fw.available? ? "разрешены" : "запрещены"
+
+  %dl
+    %dt Последняя версия
+    %dd= link_to_firmware_version_with_message @fwv
+
+  -# комментарии
+  = render :partial => 'comments/comments', :locals => {:commentable => @fw, :comments => @comments}
+.clear
 
