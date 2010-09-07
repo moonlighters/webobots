@@ -14,7 +14,10 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.47 r22583"
-   sodipodi:docname="angles.svg">
+   sodipodi:docname="angles.svg"
+   inkscape:export-filename="/Users/cypok/code/rails/webobots/public/images/angles.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
   <defs
      id="defs4">
     <marker
@@ -393,16 +396,16 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.70710678"
-     inkscape:cx="280.6213"
+     inkscape:cx="-2.2214129"
      inkscape:cy="177.12159"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1280"
-     inkscape:window-height="707"
-     inkscape:window-x="-4"
-     inkscape:window-y="47"
-     inkscape:window-maximized="1" />
+     inkscape:window-width="1440"
+     inkscape:window-height="782"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -484,13 +487,13 @@
        id="path10921-7-1-1-8" />
     <path
        sodipodi:type="arc"
-       style="fill:#000080;stroke:#000000;stroke-width:1.06666672;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       style="fill:#0000ff;stroke:#000000;stroke-width:1.06666671999999996;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="path4279"
        sodipodi:cx="214.5"
        sodipodi:cy="162.5"
        sodipodi:rx="6.5"
        sodipodi:ry="6.5"
-       d="m 221,162.5 a 6.5,6.5 0 1 1 -13,0 6.5,6.5 0 1 1 13,0 z"
+       d="m 221,162.5 c 0,3.58985 -2.91015,6.5 -6.5,6.5 -3.58985,0 -6.5,-2.91015 -6.5,-6.5 0,-3.58985 2.91015,-6.5 6.5,-6.5 3.58985,0 6.5,2.91015 6.5,6.5 z"
        transform="matrix(2.8436019,0,0,2.8436019,-369.95261,430.27687)" />
     <path
        sodipodi:type="arc"
@@ -500,7 +503,7 @@
        sodipodi:cy="160.37065"
        sodipodi:rx="37.123108"
        sodipodi:ry="37.123108"
-       d="m 277.53941,160.37065 a 37.123108,37.123108 0 0 1 -9.97298,25.3179"
+       d="m 277.53941,160.37065 c 0,9.39739 -3.56398,18.44508 -9.97298,25.3179"
        transform="matrix(1.1879448,0,0,1.1879448,-45.6013,701.8507)"
        sodipodi:start="0"
        sodipodi:end="0.75049158"

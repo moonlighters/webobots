@@ -15,7 +15,7 @@
    version="1.1"
    inkscape:version="0.47 r22583"
    sodipodi:docname="coordinates.svg"
-   inkscape:export-filename="/home/nia/coding/ruby/rails/webobots/images_src/coordinates.png"
+   inkscape:export-filename="/Users/cypok/code/rails/webobots/public/images/coordinates.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -202,17 +202,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.0000001"
-     inkscape:cx="225.98819"
-     inkscape:cy="193.02299"
+     inkscape:zoom="1.0000001"
+     inkscape:cx="186.19635"
+     inkscape:cy="133.02299"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1280"
-     inkscape:window-height="707"
-     inkscape:window-x="-4"
-     inkscape:window-y="47"
-     inkscape:window-maximized="1" />
+     inkscape:window-width="1440"
+     inkscape:window-height="782"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -261,52 +261,59 @@
          y="1031.8934"
          style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Times New Roman;-inkscape-font-specification:'Times New Roman, Italic'">y</tspan></text>
     <path
-       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:12, 12;stroke-dashoffset:12.6"
-       d="m 300.75,891.61218 0,-136.728"
-       id="path4281" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:12, 12;stroke-dashoffset:6.89999972"
-       d="m 20.75,891.61218 278.52106,0"
+       style="fill:none;stroke:#000000;stroke-width:1.5928607;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:1.59286074, 6.37144296;stroke-dashoffset:7.32715936"
+       d="m 20.845146,885.61218 314.073404,0"
        id="path4281-0" />
     <path
+       style="fill:none;stroke:#000000;stroke-width:1.66900003;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:1.66900003,6.67600012;stroke-dashoffset:14.01959971"
+       d="m 300.75,924.43313 0,-169.3699"
+       id="path4281" />
+    <path
        sodipodi:type="arc"
-       style="fill:#000080;stroke:#000000;stroke-width:1.06666672;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       style="fill:#0000ff;stroke:#000000;stroke-width:1.06666671999999996;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="path4279"
        sodipodi:cx="214.5"
        sodipodi:cy="162.5"
        sodipodi:rx="6.5"
        sodipodi:ry="6.5"
-       d="m 221,162.5 c 0,3.58985 -2.91015,6.5 -6.5,6.5 -3.58985,0 -6.5,-2.91015 -6.5,-6.5 0,-3.58985 2.91015,-6.5 6.5,-6.5 3.58985,0 6.5,2.91015 6.5,6.5 z"
-       transform="matrix(2.8436019,0,0,2.8436019,-309.95261,430.27687)" />
+       d="m 221,162.5 a 6.5,6.5 0 1 1 -13,0 6.5,6.5 0 1 1 13,0 z"
+       transform="matrix(2.8436019,0,0,2.8436019,-309.95261,424.27687)" />
+    <g
+       id="g3105"
+       transform="translate(0,148)">
+      <path
+         id="path4281-0-4"
+         d="m 24.797749,772.96072 273.784321,0"
+         style="fill:none;stroke:#000000;stroke-width:0.99196637;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:6.89999972;marker-start:url(#Arrow2Lstart);marker-end:url(#Arrow2Lend)" />
+      <g
+         id="g3101">
+        <text
+           xml:space="preserve"
+           style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Courier New;-inkscape-font-specification:Courier New"
+           x="131.70163"
+           y="787.61218"
+           id="text10829"><tspan
+             sodipodi:role="line"
+             id="tspan10831"
+             x="131.70163"
+             y="787.61218"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Andale Mono;-inkscape-font-specification:Andale Mono">posx()</tspan></text>
+      </g>
+    </g>
     <path
        style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:12.6;marker-start:url(#Arrow2Lstart);marker-end:url(#Arrow2Lend);filter:url(#filter4919)"
        d="m 40.75,888.77206 0,-131.00827"
        id="path4281-7"
-       transform="matrix(0.99980526,0,0,1.0031336,0.83776641,-2.3610539)" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.99196637;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:6.89999972;marker-start:url(#Arrow2Lstart);marker-end:url(#Arrow2Lend)"
-       d="m 24.797749,772.96072 273.784321,0"
-       id="path4281-0-4" />
+       transform="matrix(1.001247,0,0,0.96130218,292.1793,29.160608)" />
     <text
        xml:space="preserve"
        style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Courier New;-inkscape-font-specification:Courier New"
-       x="131.70163"
-       y="787.61218"
-       id="text10829"><tspan
-         sodipodi:role="line"
-         id="tspan10831"
-         x="131.70163"
-         y="787.61218"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Andale Mono;-inkscape-font-specification:Andale Mono">posx()</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Courier New;-inkscape-font-specification:Courier New"
-       x="43.805828"
+       x="335.20605"
        y="827.98663"
        id="text10829-6"><tspan
          sodipodi:role="line"
          id="tspan10831-6"
-         x="43.805828"
+         x="335.20605"
          y="827.98663"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Andale Mono;-inkscape-font-specification:Andale Mono">posy()</tspan></text>
   </g>
