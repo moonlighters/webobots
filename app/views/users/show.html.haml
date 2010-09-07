@@ -33,12 +33,4 @@
       %dt Заходил
       %dd= "последний раз #{time_ago_in_words @user.last_login_at} назад"
 
-- unless self_profile
-  - unless @fws.empty?
-    %h3 Список прошивок
-    %ul= render @fws
-  - else
-    %p
-      %i Пользователь ещё не создал ни одной прошивки
-
 = render :partial => 'comments/comments', :locals => {:commentable => @user, :comments => @comments}

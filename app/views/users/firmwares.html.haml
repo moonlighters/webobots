@@ -1,0 +1,9 @@
+- title %Q{Прошивки пользователя #{@user.login}}
+
+- actions_for_user(@user, @has_firmwares)
+
+- unless @fws.empty?
+  %ul= render @fws
+- else
+  %i Пользователь ещё не создал ни одной прошивки
+
