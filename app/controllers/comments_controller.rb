@@ -4,7 +4,7 @@ class CommentsController < ApplicationController
   before_filter :require_owner, :only => :destroy
 
   def index
-    @comments = current_user.relevant_comments.paginate :page => params[:page], :per_page => Comment.per_index_page
+    @comments = current_user.relevant_comments.sorted.paginate :page => params[:page], :per_page => Comment.per_index_page
   end
 
   def all
