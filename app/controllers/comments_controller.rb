@@ -1,7 +1,6 @@
 class CommentsController < ApplicationController
-  before_filter :find_comment, :only => :destroy
-
   before_filter :require_user
+  before_filter :find_comment, :only => :destroy
   before_filter :require_owner, :only => :destroy
 
   def index
@@ -13,11 +12,12 @@ class CommentsController < ApplicationController
   end
 
   def create
-    commentable_type = params[:comment][:commentable_type]
-    commentable_id = params[:comment][:commentable_id]
+    comment_params = params[:comment] or raise NotFound
+    commentable_type = comment_params[:commentable_type]
+    commentable_id = comment_params[:commentable_id]
     @commentable = Comment.find_commentable(commentable_type, commentable_id)
 
-    @comment = @commentable.comments.build params[:comment]
+    @comment = @commentable.comments.build comment_params
     @comment.user = current_user
 
     if @comment.save

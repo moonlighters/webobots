@@ -1,9 +1,9 @@
 class InvitesController < ApplicationController
-  before_filter :get_invites
-  before_filter :build_invite, :except => :destroy
   before_filter :require_admin
 
   def index
+    @invite = Invite.new
+    @invites = Invite.all
   end
 
   def create
@@ -22,14 +22,6 @@ class InvitesController < ApplicationController
   end
 
   private
-
-  def get_invites
-    @invites = Invite.all
-  end
-
-  def build_invite
-    @invite = Invite.new
-  end
 
   def comment_for(invite)
     " (#{invite.comment})" unless invite.comment.blank?

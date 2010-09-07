@@ -23,7 +23,7 @@ class Match < ActiveRecord::Base
     klass = obj.class
     {
       :select => 'DISTINCT matches.*',
-      :joins => "Match::JOINS_FOR_#{klass.class_name.upcase}".constantize,
+      :joins => "Match::JOINS_FOR_#{klass.to_s.upcase}".constantize,
       :conditions => {"#{klass.table_name}.id" => obj}
     }
   }

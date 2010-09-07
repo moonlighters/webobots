@@ -1,8 +1,9 @@
 class UsersController < ApplicationController
-  before_filter :find_user, :only => [:edit, :update]
-
   before_filter :require_no_user, :only => [:new, :create]
   before_filter :require_user, :only => [:index, :show, :edit, :update]
+
+  before_filter :find_user, :only => [:edit, :update]
+  before_filter :prepare_user_params, :only => [:create, :update]
 
   def index
     @users = User.paginate :page => params[:page], :order => 'lower(login)'
@@ -15,9 +16,8 @@ class UsersController < ApplicationController
 
   def create
     # достаем логин заранее, чтобы избежать warning'а "присваивание protected поля"
-    login = params[:user].delete :login
-    @user = User.new params[:user]
-    @user.login = login
+    @user = User.new @user_params
+    @user.login = @login
 
     # проверяем каптчу только в production'е
     if @user.valid? && ( !Rails.env.production? ||
@@ -44,8 +44,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    params[:user].delete :login
-    if @user.update_attributes params[:user]
+    if @user.update_attributes @user_params
       redirect_to account_url, :notice => "Аккаунт обновлен"
     else
       render :action => :edit
@@ -55,5 +54,10 @@ class UsersController < ApplicationController
   private
   def find_user
     @user = current_user
+  end
+
+  def prepare_user_params
+    @user_params = params[:user] || {}
+    @login = @user_params.delete :login
   end
 end

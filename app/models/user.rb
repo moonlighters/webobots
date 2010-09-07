@@ -85,7 +85,7 @@ class User < ActiveRecord::Base
     # хак для тестов
     return if Rails.env.test? and code == '1234'
 
-    Invite.find_by_code( code ).destroy
+    Invite.find_by_code!( code ).destroy
   end
 
 end
