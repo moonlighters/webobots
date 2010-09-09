@@ -37,7 +37,9 @@ ActionController::Routing::Routes.draw do |map|
 
   # doc
   map.with_options :controller => 'doc', :path_prefix => 'doc' do |doc|
-    doc.waffle_language_doc 'waffle_language', :action => 'waffle_language', :conditions => {:method => :get}
+    %w{ waffle_language runtime_library }.each do |action|
+      doc.send( "#{action}_doc", action, :action => action, :conditions => {:method => :get} )
+    end
   end
 
   # root

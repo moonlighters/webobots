@@ -3,4 +3,7 @@ class DocController < ApplicationController
 
   def waffle_language
   end
+
+  def runtime_library
+  end
 end
