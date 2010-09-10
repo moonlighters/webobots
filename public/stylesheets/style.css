@@ -30,6 +30,10 @@ header {
   border-bottom: solid #999999 1px;
 }
 
+.without_border_bottom {
+  border-bottom: none;
+}
+
 a, a:hover, a:visited { color: #EB1D1D; }
 
 a img {
@@ -71,6 +75,10 @@ header .logo {
   margin-top: 14px;
 }
 
+.header_wrapper nav .nav_spacer {
+  height: 21px;
+}
+
 .header_wrapper nav .nav_item {
   margin: 0 13px;
   font-size: 1.2em;
@@ -79,6 +87,11 @@ header .logo {
 .header_wrapper nav .nav_item a         { text-decoration: none; }
 .header_wrapper nav .nav_item:hover     { border-bottom: solid #EB1D1D 2px; }
 /*nav .nav_item:hover a   { color: #EB7676; }*/
+
+.fatal_error {
+  font-size: 1.5em;
+  text-align: center;
+}
 
 section {
   padding: 15px 0 30px 0;

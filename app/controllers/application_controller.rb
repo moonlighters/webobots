@@ -72,7 +72,8 @@ class ApplicationController < ActionController::Base
          ActionController::RoutingError
       render 'application/404', :status => 404
     else
-      render 'application/500', :status => 500
+      render :file => File.join(Rails.root, 'public', '500.html'),
+             :status => 500
     end
   end
 
