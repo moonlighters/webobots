@@ -12,7 +12,7 @@ describe User do
   end
 
   it "should not be valid with too long login" do
-    Factory.build(:user, :login => "a"*100).should_not be_valid
+    Factory.build(:user, :login => "a"*21).should_not be_valid
   end
 
   describe "creating with invite code" do

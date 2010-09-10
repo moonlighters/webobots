@@ -1,10 +1,6 @@
 - title "Проведение матча"
-
 - actions_for_matches
 
-%h3 Выбор прошивок
-
-%p
 - semantic_form_for @match, :url => matches_url( :enemy => @enemy_id ) do |f|
   = f.semantic_errors
   - f.inputs do

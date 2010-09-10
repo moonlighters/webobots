@@ -1,6 +1,9 @@
 class User < ActiveRecord::Base
   acts_as_authentic do |config|
     config.login_field = :login
+    config.validates_length_of_login_field_options = {
+      :within => 3..20
+    }
     config.validates_format_of_login_field_options = {
       :with => /^\w[-._\w\d]+$/,
       :message => "должен содержать только буквы, цифры и .-_"
