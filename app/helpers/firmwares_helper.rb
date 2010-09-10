@@ -26,14 +26,6 @@ module FirmwaresHelper
     end
   end
 
-  def can_see_code_of?(fw)
-    current_user.owns?(fw) || fw.shared?
-  end
-
-  def can_fight_with?(fw)
-    current_user.owns?(fw) || fw.available?
-  end
-
   def format_firmware_version_short_message(fwv)
     number_part = "##{fwv.number}"
     first_line = (fwv.message || "").lines.first

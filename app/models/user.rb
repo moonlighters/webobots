@@ -53,6 +53,14 @@ class User < ActiveRecord::Base
     obj.respond_to?(:user) && obj.user == self
   end
 
+  def can_see_code_of?(fw)
+    self.owns?(fw) || fw.shared?
+  end
+
+  def can_fight_with?(fw)
+    self.owns?(fw) || fw.available?
+  end
+
   def self.all_sorted_by_rating
     users = User.scoped :select => 'users.*,SUM(rating_points) as sum_rating_points',
                         :joins => 'LEFT OUTER JOIN firmwares ON firmwares.user_id = users.id',

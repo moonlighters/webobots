@@ -1,4 +1,4 @@
-- if can_see_code_of? fwv.firmware
+- if current_user.can_see_code_of? fwv.firmware
   %p
     %b= "Синтаксис: #{fwv.syntax_errors.empty? ? '✔' : '✘'}"
     - unless fwv.syntax_errors.empty?

@@ -14,7 +14,8 @@
 %p
   %b Исходный код:
   = @fw.shared? ? "открытый" : "закрытый"
-  = '(' + link_to( "просмотреть", code_firmware_path( @fw ), :id => "show-code", :class => 'nyroModal' ) + ')' if can_see_code_of? @fw
+  - if current_user.can_see_code_of? @fw
+    = '(' + link_to( "просмотреть", code_firmware_path( @fw ), :id => "show-code", :class => 'nyroModal' ) + ')'
 %p
   %b Доступность для сражения:
   = @fw.available? ? "доступна" : "не доступна"
@@ -24,7 +25,7 @@
 
 -# действия
 %p
-  - if can_fight_with? @fw
+  - if current_user.can_fight_with? @fw
     = link_to "Сразиться!", new_match_path(:enemy_fw => @fw)
     |
   - if current_user.owns? @fw
