@@ -51,21 +51,6 @@ module FirmwaresHelper
     link_to_firmware_version fwv, :text => format_firmware_version_short_message(fwv)
   end
 
-  def actions_for_firmware(fw)
-    action "Прошивка", firmware_path(fw)
-    action "Редактировать", edit_firmware_path(fw) if current_user.owns? fw
-    action "История версий", firmware_versions_path(fw)
-
-    link "Сразиться!", new_match_path(:enemy_fw => fw) if can_fight_with? fw
-    link "Список матчей", firmware_matches_path(fw)
-  end
-
-  def actions_for_firmwares
-    action "Ваши прошивки", firmwares_path
-    action "Все прошивки", all_firmwares_path
-    action "Новая прошивка", new_firmware_path
-  end
-
   private
   def cut_to_length(s, max)
     (s.length > max) ? s.mb_chars[0...(max-1)] + '...' : s
