@@ -1,14 +1,16 @@
 module FirmwaresHelper
   def link_to_firmware(fw, options = {})
-    text = options.delete(:text) || "#{h fw.name}"
+    max_length = options.delete(:max_length) || 20
+    text = options.delete(:text) || "#{cut_to_length h(fw.name), max_length}"
     link_to text, firmware_path(fw), options
   end
 
   def link_to_firmware_version(fwv, options = {})
+    max_length = options.delete(:max_length) || 20
     no_version = options.delete :no_version
     fw = fwv.firmware
-    version = no_version ? "" : " версии #{fwv.number}"
-    text = options.delete(:text) || %Q{"#{h fw.name}"#{version}}
+    version = no_version ? "" : " ##{fwv.number}"
+    text = options.delete(:text) || %Q{#{cut_to_length h(fw.name), max_length}#{version}}
     link_to text, firmware_version_path( :id => fw, :number => fwv.number ), options
   end
 
@@ -62,6 +64,11 @@ module FirmwaresHelper
     action "Ваши прошивки", firmwares_path
     action "Все прошивки", all_firmwares_path
     action "Новая прошивка", new_firmware_path
+  end
+
+  private
+  def cut_to_length(s, max)
+    (s.length > max) ? s.mb_chars[0...(max-1)] + '...' : s
   end
 end
 
