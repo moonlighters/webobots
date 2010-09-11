@@ -143,6 +143,20 @@ dt {
   float: left;
 }
 
+.flash_messages {
+  width: 70%;
+  text-align: center;
+  margin: 0 auto 15px auto;
+  border-style: solid;
+  border-width: 1px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+.flash_messages.notice { background-color: #E6E6FF; }
+.flash_messages.alert { background-color: #FFE6E6; }
+.flash_messages p { margin: 5px 0; }
+
 ul {
   margin: 0;
 }
