@@ -84,4 +84,9 @@ module ActionsHelper
     action "Интересные", comments_path
     action "Все", all_comments_path
   end
+
+  def actions_for_admin
+    action "Статистика", stats_admin_path
+    action "Управление инвайтами", admin_invites_path
+  end
 end

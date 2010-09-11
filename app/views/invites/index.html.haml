@@ -1,9 +1,13 @@
 - title "Управление инвайтам"
+- actions_for_admin
+:javascript
+
+  $(function() { invites(); });
 
 - form_for @invite, :url => admin_invites_path do |form|
   %p
-    = form.text_field :comment, :size => 60
-    = form.submit "Создать инвайт с комментарием"
+    = form.text_field :comment, :size => 30
+    = form.submit "Создать инвайт"
 
 %table.list
   %tr

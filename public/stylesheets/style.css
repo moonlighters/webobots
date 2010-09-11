@@ -157,6 +157,10 @@ dt {
 .flash_messages.alert { background-color: #FFE6E6; }
 .flash_messages p { margin: 5px 0; }
 
+.blur {
+  color: #888888;
+}
+
 ul {
   margin: 0;
 }
