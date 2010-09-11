@@ -1,4 +1,36 @@
 module ActionsHelper
+  # Принимает такие же параметры как и <tt>link_to</tt>
+  def action(*action)
+    @actions ||= []
+    @actions << action
+  end
+
+  # Принимает такие же параметры как и <tt>link_to</tt>
+  def link(*link)
+    @links ||= []
+    @links << link
+  end
+
+  def has_actions_or_links?
+    @actions.present? || @links.present?
+  end
+
+  def has_both_actions_and_links?
+    @actions.present? && @links.present?
+  end
+
+  def list_items(array) # :nodoc:
+    (array || []).compact.map { |item| content_tag :li, link_to( *item ) } * "\n"
+  end
+
+  def actions_list
+    list_items @actions
+  end
+
+  def links_list
+    list_items @links
+  end
+
   def actions_for_anonymous
     action "Вход", login_path
     action "Регистрация", signup_path
