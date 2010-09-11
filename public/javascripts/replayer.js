@@ -5,7 +5,7 @@ function replayer() {
   var frame_index = 0
   var delay = 1000/config.frame_rate;
 
-  var canvas = Raphael("replay-canvas", SIZE, SIZE)
+  var canvas = Raphael("canvas", SIZE, SIZE)
   canvas.rect(0, 0, SIZE-1, SIZE-1);
 
   var bot1 = canvas.circle(config.bot1.x*SIZE, config.bot1.y*SIZE, BOT_RADIUS).attr("fill", "#f00");
@@ -54,7 +54,7 @@ function replayer() {
         delete missiles[m];
       }
     });
-    
+
 
     // draw explosions
     _(explosions).each(function(e) {
@@ -67,22 +67,22 @@ function replayer() {
     });
 
     // log
-    _(frame.log).each(function(f) { 
+    _(frame.log).each(function(f) {
       var bot = f[0];
       var msg = f[1];
 
       if( bot == "bot1" ) {
         bot_name = red_name;
-        colored_class = "red-log-entry";
+        colored_class = "red";
       } else {
         bot_name = blue_name;
-        colored_class = "blue-log-entry";
+        colored_class = "blue";
       }
 
       log_entry = $("<div></div>")
                       .html( "[" + frame.time.toFixed(1) + " s] " + bot_name + ": " + msg)
                       .addClass(colored_class);
-      $("#replay-logger").append( log_entry ).scrollToBottom();
+      $("#logger").append( log_entry ).scrollToBottom();
     });
   }, delay);
 };

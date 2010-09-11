@@ -8,7 +8,7 @@ body {
   width: 100%;
 }
 
-.wrapper {
+body>.wrapper {
   position: relative;
   margin: 10px auto;
   width: 750px;
@@ -32,6 +32,10 @@ header {
 
 .without_border_bottom {
   border-bottom: none;
+}
+
+p {
+  margin: 5px 0;
 }
 
 a, a:hover, a:visited { color: #EB1D1D; }
@@ -204,27 +208,33 @@ td.line-numbers {
   display: none;
 }
 
-#replay-canvas {
+.replay .title {
+  width: 198px;
+  height: 22px;
+  display: inline-block;
+  font-size: 1.2em;
+}
+
+.replay .title.red  { text-align: left }
+.replay .title.blue { text-align: right; }
+.replay .title.red  a { color: #ff0000; }
+.replay .title.blue a { color: #0000ff; }
+
+.replay #canvas {
   float: left;
-  margin: 5px 20px;
+  margin: 5px 20px 5px 0;
   width: 400px;
   height: 400px;
 }
 
-#replay-logger {
+.replay #logger {
   height: 365px;
   overflow: auto;
 }
 
-.red-log-entry {
-  color: #f00;
-  font-family: monospace;
-}
-
-.blue-log-entry {
-  color: #00f;
-  font-family: monospace;
-}
+.replay #logger { font-family: monospace; }
+.replay #logger .red  { color: #cc0000; }
+.replay #logger .blue { color: #0000cc; }
 
 .welcome-text .epigraph {
   font-style: italic;
