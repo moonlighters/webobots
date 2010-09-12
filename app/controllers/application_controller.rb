@@ -72,6 +72,7 @@ class ApplicationController < ActionController::Base
          ActionController::RoutingError
       render 'application/404', :status => 404
     else
+      notify_hoptoad(e)
       render 'application/500', :status => 500
     end
   end

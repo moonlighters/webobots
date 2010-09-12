@@ -13,6 +13,7 @@ Rails::Initializer.run do |config|
   config.gem 'acts_as_commentable', :version => '<3.0.0'
   config.gem 'gravtastic'
   config.gem 'log_buddy'
+  config.gem 'hoptoad_notifier'
 
   config.time_zone = 'Novosibirsk'
 end
