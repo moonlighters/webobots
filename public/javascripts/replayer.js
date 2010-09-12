@@ -15,6 +15,10 @@ function replayer() {
   var missiles = {};
 
   var intervalId = setInterval(function () {
+    if( $('#replay-canvas').length == 0 ) {
+      clearInterval(intervalId);
+      return;
+    }
 
     var frame = frames[frame_index];
     if( _(frame).isUndefined() ) {
@@ -54,7 +58,7 @@ function replayer() {
         delete missiles[m];
       }
     });
-    
+
 
     // draw explosions
     _(explosions).each(function(e) {
@@ -67,7 +71,7 @@ function replayer() {
     });
 
     // log
-    _(frame.log).each(function(f) { 
+    _(frame.log).each(function(f) {
       var bot = f[0];
       var msg = f[1];
 
