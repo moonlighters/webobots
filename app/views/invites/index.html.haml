@@ -9,9 +9,4 @@
     = form.text_field :comment, :size => 30
     = form.submit "Создать инвайт"
 
-%table.list
-  %tr
-    %th Код
-    %th Комментарий
-    %th
-  = render :partial => 'invite', :collection => @invites
+%ul.without_dots= render :partial => 'invite', :collection => @invites

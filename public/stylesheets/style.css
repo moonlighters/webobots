@@ -169,6 +169,11 @@ ul {
   margin: 0;
 }
 
+ul.without_dots {
+  list-style: none;
+  padding-left: 0;
+}
+
 textarea.code {
   font-family: monospace !important;
 }
@@ -241,12 +246,13 @@ td.line-numbers {
   margin-left: 50%;
 }
 
-.invite-code {
+.invite .code, #new_user #user_code {
   font-family: monospace;
 }
-#new_user #user_code {
-  font-family: monospace;
-}
+
+.invite { margin-top: 10px; }
+.invite .code, .invite .remove { display: inline-block; }
+.invite .comment { margin-left: 20px; }
 
 #recaptcha_widget_div {
   margin-left: 25%;
@@ -385,6 +391,6 @@ a.avatar_link{
   background-color: transparent !important;
 }
 
-.comment_entity:hover .remove_link {
+.comment_entity:hover .remove_link, .invite:hover .remove_link {
   background: url(/images/delete.png) no-repeat left center;
 }

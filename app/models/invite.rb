@@ -1,6 +1,6 @@
 class Invite < ActiveRecord::Base
-  validates_presence_of :code
-  validates_length_of :comment, :maximum => 30, :allow_nil => true
+  validates_presence_of :code, :comment
+  validates_length_of :comment, :maximum => 30
 
   before_validation :generate_code
 
