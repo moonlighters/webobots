@@ -3,73 +3,43 @@ require 'spec_helper'
 include FirmwaresHelper
 
 describe FirmwaresHelper do
-  before do
-    @fw = Factory :firmware
-    @fwv = Factory :firmware_version, :firmware => @fw
-    @fw.reload
-  end
-
-  describe "#link_to_firmware" do
-    before do
-      mock(self).firmware_path(@fw) { "/some_path" }
+  describe "(links) " do
+    before :all do
+      @fw = Factory :firmware, :name => "Cool"
+      @fwv = Factory :firmware_version, :firmware => @fw
+      @fw.reload
     end
 
-    it "should generate link to firmware with default text" do
-      mock(self).h(@fw.name) { @fw.name }
-      mock(self).link_to "#{@fw.name}",
-                         "/some_path",
-                         {}
-      link_to_firmware(@fw)
+    describe "#link_to_firmware" do
+      it "should generate link to firmware with default text" do
+        link_to_firmware(@fw).should == link_to("Cool", firmware_path(@fw))
+      end
+
+      it "should generate link to firmware with given text" do
+        link_to_firmware(@fw, :text => "foobar").should == link_to("foobar", firmware_path(@fw))
+      end
+
+      it "should pass html params to link_to" do
+        link_to_firmware(@fw, :class => "klass").should == link_to("Cool", firmware_path(@fw), :class => "klass")
+      end
     end
 
-    it "should generate link to firmware with given text" do
-      mock(self).link_to "abccba",
-                         "/some_path",
-                         {}
-      link_to_firmware(@fw, :text => "abccba")
-    end
+    describe "#link_to_firmware_version" do
+      it "should generate link to firmware version with default text" do
+        link_to_firmware_version(@fwv).should == link_to(%Q{"Cool" версии 2}, firmware_version_path(:id => @fw, :number => @fwv.number))
+      end
 
-    it "should pass html params to link_to" do
-      mock(self).link_to "abccba",
-                         "/some_path",
-                         {:class => "class"}
-      link_to_firmware(@fw, :text => "abccba", :class => "class")
-    end
-  end
+      it "should generate link to firmware version without version info" do
+        link_to_firmware_version(@fwv, :no_version => true).should == link_to(%Q{"Cool"}, firmware_version_path(:id => @fw, :number => @fwv.number))
+      end
 
-  describe "#link_to_firmware_version" do
-    before do
-      mock(self).firmware_version_path( :number => @fwv.number, :id => @fw ) { '/path_yeah' }
-    end
+      it "should generate link to firmware version with given text" do
+        link_to_firmware_version(@fwv, :text => "foobar").should == link_to(%Q{foobar}, firmware_version_path(:id => @fw, :number => @fwv.number))
+      end
 
-    it "should generate link to firmware version with default text" do
-      mock(self).h(@fw.name) { @fw.name }
-      mock(self).link_to %Q{"#{@fw.name}" версии #{@fwv.number}},
-                         "/path_yeah",
-                         {}
-      link_to_firmware_version(@fwv)
-    end
-
-    it "should generate link to firmware version without version info" do
-      mock(self).h(@fw.name) { @fw.name }
-      mock(self).link_to %Q{"#{@fw.name}"},
-                         "/path_yeah",
-                         {}
-      link_to_firmware_version(@fwv, :no_version => true)
-    end
-
-    it "should generate link to firmware version with given text" do
-      mock(self).link_to "abcabc",
-                         "/path_yeah",
-                         {}
-      link_to_firmware_version(@fwv, :text => "abcabc")
-    end
-
-    it "should pass options to link_to" do
-      mock(self).link_to "abcabc",
-                         "/path_yeah",
-                         {:class => "class"}
-      link_to_firmware_version(@fwv, :text => "abcabc", :class => "class")
+      it "should pass options to link_to" do
+        link_to_firmware_version(@fwv, :class => "klass").should == link_to(%Q{"Cool" версии 2}, firmware_version_path(:id => @fw, :number => @fwv.number), :class => "klass")
+      end
     end
   end
 
@@ -86,4 +56,5 @@ describe FirmwaresHelper do
                   "bla-bla <i>#comment</i>\n<i># another comment </i>\nbla-bla"
     end
   end
+
 end
