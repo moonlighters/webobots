@@ -49,8 +49,16 @@ module EmulationSystem
 
         # Возвращает значение +val+, ограниченное
         # до пределов +min+..+max+
-        def correct_value(val, min, max)
-          val < min ? min : (val > max ? max : val)
+        #def correct_value(val, min, max)
+          #val < min ? min : (val > max ? max : val)
+        #end
+
+        inline do |builder|
+          builder.c <<-C
+            double correct_value(double val, double min, double max) {
+              return (val < min) ? min : (val > max ? max : val);
+            }
+          C
         end
       end
     end

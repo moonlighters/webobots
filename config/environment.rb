@@ -14,6 +14,7 @@ Rails::Initializer.run do |config|
   config.gem 'gravtastic'
   config.gem 'log_buddy'
   config.gem 'hoptoad_notifier'
+  config.gem 'RubyInline', :lib => 'inline'
   config.gem 'v2d'
 
   config.time_zone = 'Novosibirsk'
