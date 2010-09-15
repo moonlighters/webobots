@@ -43,7 +43,7 @@ module EmulationSystem
 
       # Возвращает врезалась ли ракета в бота
       def hit?(bot)
-        self.pos.near_to? bot.pos, World::BOT_RADIUS
+        (self.pos - bot.pos).abs <= World::BOT_RADIUS
       end
 
       # Наносит ущерб боту в зависимости от расстояния до него

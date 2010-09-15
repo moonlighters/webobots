@@ -77,23 +77,4 @@ describe EmulationSystem::Emulation::Vector do
       Vector.new(3,4).abs.should == 5
     end
   end
-
-  describe "#near?" do
-    it "should return true if vectors are equal" do
-      @v.should be_near_to @v, 0
-      @v.should be_near_to @v, 1
-    end
-
-    it "should return true if distance between points represented by vectors is less than or equals to radius" do
-      u = @v + Vector[3,4]
-      @v.should be_near_to u, 5
-      u.should be_near_to @v, 5
-    end
-
-    it "should return true if distance between points represented by vectors is less than or equals to radius" do
-      u = @v + Vector[3,4]
-      @v.should_not be_near_to u, 3
-      u.should_not be_near_to @v, 3
-    end
-  end
 end

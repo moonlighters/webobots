@@ -10,8 +10,6 @@ describe EmulationSystem::Emulation::Missile do
     @m.velocity.abs.should be_approximately_equal_to World::MISSILE_SPEED
     @m.should_not be_exploded
     @m.distance.should == 0
-    @m.pos.should_not be_near_to @bot.state.pos, World::BOT_RADIUS
-    @m.pos.should be_near_to @bot.state.pos, 2*World::BOT_RADIUS
   end
 
   describe "#explode!, #exploded?" do
