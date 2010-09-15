@@ -93,7 +93,7 @@ describe EmulationSystem::Emulation::Bot::Engine do
         @one.state.angle = 0
         @two.state.angle = 180
 
-        100.times { @one.calc_physics_for @dt, [@two] }
+        100.times { @one.calc_physics_for @dt, @two }
 
         # Они не должны пересекаться, а должны стоять друг к другу в упор
         (@one.state.pos - @two.state.pos).abs.should be_approximately_equal_to 2*World::BOT_RADIUS
@@ -102,7 +102,7 @@ describe EmulationSystem::Emulation::Bot::Engine do
       it "should detect collisions between bots even if their states are equal" do
         @two.state.pos = @one.state.pos
 
-        100.times { @one.calc_physics_for @dt, [@two] }
+        100.times { @one.calc_physics_for @dt, @two }
 
         (@one.state.pos - @two.state.pos).abs.should be_approximately_equal_to 2*World::BOT_RADIUS
       end

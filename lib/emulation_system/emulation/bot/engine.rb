@@ -26,7 +26,7 @@ module EmulationSystem
         end
 
         # Просчитывает шаг физики за время dt
-        def calc_physics_for(dt, other_bots=[])
+        def calc_physics_for(dt, other_bot=nil)
           if @state.speed_mode == :accelerated
             @state.speed += World::ACCELERATION*dt
             @state.speed = @state.desired_speed if @state.speed_mode == :decelerated
@@ -37,7 +37,7 @@ module EmulationSystem
 
           @state.pos += Vector[@state.cosa, @state.sina]*@state.speed*dt
 
-          collide_with other_bots
+          collide_with other_bot unless other_bot.nil?
           @state.correct
         end
 
@@ -49,20 +49,18 @@ module EmulationSystem
 
         # Проверяет бота на столкновение с другими ботами и
         # при необходимости корректирует его положение
-        def collide_with(other_bots)
-          other_bots.each do |bot|
-            dist = @state.pos - bot.state.pos
-            if dist.abs < 2*World::BOT_RADIUS
-              # вытолкнуть наружу: двойной радиус на нормированное направление
-              # (если боты в одной точке - выбираем случайное направление)
-              direction = if dist.abs == 0
-                            a = Kernel::rand()*Math::PI
-                            Vector[Math::cos(a), Math::sin(a)]
-                          else
-                            dist/dist.abs
-                          end
-              @state.pos = bot.state.pos + direction * 2*World::BOT_RADIUS
-            end
+        def collide_with(bot)
+          dist = @state.pos - bot.state.pos
+          if dist.abs < 2*World::BOT_RADIUS
+            # вытолкнуть наружу: двойной радиус на нормированное направление
+            # (если боты в одной точке - выбираем случайное направление)
+            direction = if dist.abs == 0
+                          a = Kernel::rand()*Math::PI
+                          Vector[Math::cos(a), Math::sin(a)]
+                        else
+                          dist/dist.abs
+                        end
+            @state.pos = bot.state.pos + direction * 2*World::BOT_RADIUS
           end
         end
       end

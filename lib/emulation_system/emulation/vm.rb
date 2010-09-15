@@ -33,6 +33,7 @@ module EmulationSystem
             params[:second][:x], params[:second][:y], params[:second][:angle],
             lambda {|str| @logger.add_log_record(:second, str) })
         ]
+
         @bots.each do |bot|
           bot.rtlib = RTLib.new :for => bot, :against => (@bots-[bot])[0], :vm => self
         end
@@ -66,7 +67,8 @@ module EmulationSystem
             explosions = []
           end
 
-          @bots.each { |bot| bot.calc_physics_for SYNC_PERIOD, @bots - [bot] }
+          @bots[0].calc_physics_for SYNC_PERIOD, @bots[1]
+          @bots[1].calc_physics_for SYNC_PERIOD, @bots[0]
 
           @missiles.each do |missile|
             missile.calc_physics_for SYNC_PERIOD
@@ -81,7 +83,8 @@ module EmulationSystem
             @missiles.delete missile
           end
 
-          @bots.each { |bot| bot.step while bot.time < @time and not bot.halted? }
+          @bots[0].step while @bots[0].time < @time and not @bots[0].halted?
+          @bots[1].step while @bots[1].time < @time and not @bots[1].halted?
 
           @time += SYNC_PERIOD
           syncs += 1
