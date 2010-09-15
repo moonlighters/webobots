@@ -7,9 +7,7 @@ describe EmulationSystem::Emulation::Missile do
   end
 
   it "should be creatable correctly" do
-    @m.velocity.abs.should be_approximately_equal_to World::MISSILE_SPEED
     @m.should_not be_exploded
-    @m.distance.should == 0
   end
 
   describe "#explode!, #exploded?" do
@@ -40,7 +38,7 @@ describe EmulationSystem::Emulation::Missile do
           @m.calc_physics_for @dt
         end
       end.should_not change { @m.pos.x }
-      @m.pos.y.should be_approximately_equal_to( y + @m.desired_distance, 0.1 )
+      @m.pos.y.should be_approximately_equal_to( y + 60, 0.1 )
     end
 
     it "should hit the border of battlefield" do
@@ -58,7 +56,7 @@ describe EmulationSystem::Emulation::Missile do
 
   describe ".injure" do
     before do
-      @m.pos = Vector[500, 500]
+      @m.instance_variable_set '@pos', Vector[500, 500]
     end
 
     it "should not change bot's health if it is too far" do

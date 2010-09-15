@@ -48,14 +48,6 @@ describe EmulationSystem::Emulation::Vector do
     end
   end
 
-  describe "unary minus" do
-    it "should negate vector" do
-      u = -@v
-      u.x.should == -@v.x
-      u.y.should == -@v.y
-    end
-  end
-
   describe "#*" do
     it "should multiply vector by a scalar" do
       u = @v*1.5
