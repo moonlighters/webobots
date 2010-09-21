@@ -4,7 +4,7 @@ module UsersHelper
     :tiny => 16,
     :small => 48,
     :medium => 64,
-    :big => 120
+    :big => 128
   }
 
   # Ссылка на профиль пользователя

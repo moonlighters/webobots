@@ -394,3 +394,35 @@ a.avatar_link{
 .comment_entity:hover .remove_link, .invite:hover .remove_link {
   background: url(/images/delete.png) no-repeat left center;
 }
+
+ul.users {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.user_entity {
+  background-color: cyan;
+}
+
+.user_entity .avatar {
+  background-color: green;
+  float: left;
+}
+
+.user_entity .body {
+  margin-left: 64px;
+  padding-left: 5px;
+}
+
+.user_entity .top {
+  background-color: yellow;
+  line-height: 35px;
+  font-size: 24px;
+}
+
+.user_entity .bottom {
+  background-color: blue;
+  line-height: 29px;
+}
+

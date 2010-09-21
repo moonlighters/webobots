@@ -1,4 +1,4 @@
-- title "Список пользователей"
+- title "Все пользователи"
 
 - paginated_section do
-  %ul= render :partial => 'user', :collection => @users
+  %ul.users= render :partial => 'user', :collection => @users

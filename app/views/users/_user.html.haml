@@ -1,2 +1,10 @@
-%li
-  = link_to_user user, :avatar => :small
+%li.user_entity
+  .avatar
+    = link_to_user user, :login => false, :avatar => :small
+  .body
+    .top
+      = link_to_user user, :avatar => :none
+    .bottom
+      = pl "%? прошив%{ка,ки,ок},", user.firmwares.count
+      = pl "участвовал в %? матч%{е,ах,ах}", user.matches.count
+  .clear
