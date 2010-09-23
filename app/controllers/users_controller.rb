@@ -4,11 +4,7 @@ class UsersController < ApplicationController
   before_filter :count_firmwares, :only => [:edit, :update, :show, :firmwares]
 
   before_filter :require_no_user, :only => [:new, :create]
-  before_filter :require_user, :only => [:index, :show, :edit, :update, :firmwares]
-
-  def index
-    @users = User.paginate :page => params[:page], :order => 'lower(login)'
-  end
+  before_filter :require_user, :only => [:show, :edit, :update, :firmwares]
 
   def new
     @user = User.new

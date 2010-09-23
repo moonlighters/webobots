@@ -1,4 +1,19 @@
-%tr
-  %td= user.rating_position
-  %td= link_to_user user
-  %td= format_points user.rating_points
+%li.user_entity
+  .avatar
+    = link_to_user user, :login => false, :avatar => :small
+  .rating{:title => "Рейтинг"}= format_points user.rating_points
+  .digit{:title => "Кол-во прошивок"}
+    - fwv_count = user.firmwares.count
+    = fwv_count.to_s + image_tag( 'firmware.png', :alt => pl("прошив%{ка,ки,ок}", fwv_count), :class => 'icon' )
+  .digit{:title => "Кол-во проигрышей"}
+    - matches_count = Match.lost_by(user).count
+    = matches_count.to_s + image_tag( 'loss.png', :alt => pl("матч%{,а,ей} проигран", matches_count), :class => 'icon' )
+  .digit{:title => "Кол-во ничьих"}
+    - matches_count = Match.tied_by(user).count
+    = matches_count.to_s + image_tag( 'draw.png', :alt => pl("матч%{,а,ей} вничью", matches_count), :class => 'icon' )
+  .digit{:title => "Кол-во побед"}
+    - matches_count = Match.won_by(user).count
+    = matches_count.to_s + image_tag( 'win.png', :alt => pl("матч%{,а,ей} выигран", matches_count), :class => 'icon' )
+  .body
+    %span.login= link_to_user user, :avatar => :none
+  .clear

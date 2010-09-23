@@ -14,6 +14,10 @@ class Match < ActiveRecord::Base
 
   acts_as_commentable
 
+  RESULTS = { :first => -1, :second => 1, :draw => 0 }
+  def result=(r); super( RESULTS[r] )    end
+  def result;     RESULTS.index( super ) end
+
   JOINS_FOR_FIRMWARE = 'JOIN firmware_versions ON firmware_versions.id IN (matches.fwv1_id, matches.fwv2_id)
                         JOIN firmwares ON firmwares.id = firmware_versions.firmware_id'
   JOINS_FOR_USER = JOINS_FOR_FIRMWARE + ' JOIN users ON users.id = firmwares.user_id'
@@ -36,6 +40,32 @@ class Match < ActiveRecord::Base
 
   def self.paginate_including_stuff(opts)
     self.including_stuff.paginate opts.reverse_merge(:total_entries => self.count)
+  end
+
+  def self.won_by(user)
+    all_for(user).scoped :conditions => [
+      "(matches.fwv1_id = firmware_versions.id AND result = :first_won) OR
+       (matches.fwv2_id = firmware_versions.id AND result = :second_won)",
+      {
+        :first_won => RESULTS[:first],
+        :second_won => RESULTS[:second]
+      }
+    ]
+  end
+
+  def self.lost_by(user)
+    all_for(user).scoped :conditions => [
+      "(matches.fwv1_id = firmware_versions.id AND result = :first_lost) OR
+       (matches.fwv2_id = firmware_versions.id AND result = :second_lost)",
+      {
+        :first_lost => RESULTS[:second],
+        :second_lost => RESULTS[:first]
+      }
+    ]
+  end
+
+  def self.tied_by(user)
+    all_for(user).scoped :conditions => { :result => RESULTS[:draw] }
   end
 
   cattr_reader :per_page
@@ -91,14 +121,6 @@ class Match < ActiveRecord::Base
     end
   end
 
-  RESULTS = { :first => -1, :second => 1, :draw => 0 }
-  def result=(symbol)
-    super( RESULTS[symbol] )
-  end
-  def result
-    RESULTS.index( super )
-  end
-
   def draw?
     result == :draw
   end
@@ -138,6 +160,27 @@ class Match < ActiveRecord::Base
     else
       nil
     end
+  end
+
+  def loser_version
+    case result
+    when :first
+      second_version
+    when :second
+      first_version
+    else
+      nil
+    end
+  end
+
+  def winner
+    fwv = winner_version
+    fwv.nil? ? nil : fwv.user
+  end
+
+  def loser
+    fwv = loser_version
+    fwv.nil? ? nil : fwv.user
   end
 
   def winner_points

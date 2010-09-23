@@ -3,9 +3,4 @@
 - actions_for_rating
 
 - paginated_section @users do
-  %table.list
-    %tr
-      %th Место
-      %th Пользователь
-      %th Очки
-    = render :partial => 'user', :collection => @users
+  %ul.users= render :partial => 'user', :collection => @users

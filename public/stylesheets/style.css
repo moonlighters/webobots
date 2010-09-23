@@ -402,27 +402,52 @@ ul.users {
 }
 
 .user_entity {
-  background-color: cyan;
+  padding: 5px 20px 5px 5px;
+}
+
+.user_entity:hover {
+  background: #f0f0f5;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  border: none;
 }
 
 .user_entity .avatar {
-  background-color: green;
   float: left;
 }
 
 .user_entity .body {
   margin-left: 64px;
   padding-left: 5px;
+  line-height: 60px;
 }
 
-.user_entity .top {
-  background-color: yellow;
-  line-height: 35px;
+.user_entity .login {
   font-size: 24px;
 }
 
-.user_entity .bottom {
-  background-color: blue;
-  line-height: 29px;
+.user_entity .digit, .user_entity .rating {
+  float: right;
+  line-height: 60px;
 }
 
+.user_entity .digit {
+  color: #333333;
+  font-size: 20px;
+  width: 50px;
+  text-align: right;
+}
+
+.user_entity .rating {
+  letter-spacing: 2px;
+  color: #337733;
+  text-align: right;
+  width: 95px;
+  font-size: 24px;
+}
+
+.user_entity .icon {
+  border: none;
+  margin-left: 2px;
+}
