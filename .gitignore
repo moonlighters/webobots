@@ -19,3 +19,6 @@ config/deploy.rb
 *Lexer.py
 *Parser.py
 dump/*
+ext/Makefile
+ext/*.o
+ext/*.so
