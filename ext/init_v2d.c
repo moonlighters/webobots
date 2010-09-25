@@ -1,11 +1,13 @@
 #include <ruby.h>
 #include "v2d.h"
+#include "helpers.h"
 
 VALUE cV2D;
 
-ID ix, iy;
-
 // DEFINITIONS
+
+DEFINE_UNWRAPPER(V2D, v2d);
+DEFINE_WRAPPER(cV2D, V2D, v2d);
 
 /* Allocate memory */
 VALUE rb_v2d_alloc(VALUE klass);
@@ -16,17 +18,11 @@ VALUE rb_v2d_initialize_with_x_and_y(VALUE self, VALUE x, VALUE y);
 /* Return <tt>V2D.new(x, y)</tt> */
 VALUE rb_v2d_square_brackets(VALUE klass, VALUE x, VALUE y);
 
-/* Return x */
-VALUE rb_v2d_get_x(VALUE self);
+/* Set or return x */
+ATTR_ACCESSOR_FLOAT(v2d, x);
 
-/* Return y */
-VALUE rb_v2d_get_y(VALUE self);
-
-/* Set x */
-VALUE rb_v2d_set_x(VALUE self, VALUE x);
-
-/* Set y */
-VALUE rb_v2d_set_y(VALUE self, VALUE y);
+/* Set or return y */
+ATTR_ACCESSOR_FLOAT(v2d, y);
 
 /* Return sum with +other+ */
 VALUE rb_v2d_add(VALUE self, VALUE other);
@@ -54,19 +50,14 @@ void Init_v2d() {
     rb_define_alloc_func(cV2D, rb_v2d_alloc);
     rb_define_method(cV2D, "initialize", rb_v2d_initialize_with_x_and_y, 2);
     rb_define_singleton_method(cV2D, "[]", rb_v2d_square_brackets, 2);
-    rb_define_method(cV2D, "x", rb_v2d_get_x, 0);
-    rb_define_method(cV2D, "y", rb_v2d_get_y, 0);
-    rb_define_method(cV2D, "x=", rb_v2d_set_x, 1);
-    rb_define_method(cV2D, "y=", rb_v2d_set_y, 1);
+    DEFINE_ATTR_ACCESSOR(cV2D, v2d, x);
+    DEFINE_ATTR_ACCESSOR(cV2D, v2d, y);
     rb_define_method(cV2D, "+", rb_v2d_add, 1);
     rb_define_method(cV2D, "-", rb_v2d_sub, 1);
     rb_define_method(cV2D, "*", rb_v2d_mul, 1);
     rb_define_method(cV2D, "/", rb_v2d_div, 1);
     rb_define_method(cV2D, "abs", rb_v2d_abs, 0);
     rb_define_method(cV2D, "==", rb_v2d_equals, 1);
-
-    ix = rb_intern("@x");
-    iy = rb_intern("@y");
 }
 
 // IMPLEMENTATIONS
@@ -77,8 +68,7 @@ VALUE rb_v2d_alloc(VALUE klass) {
 }
 
 VALUE rb_v2d_initialize_with_x_and_y(VALUE self, VALUE x, VALUE y) {
-    V2D *v;
-    Data_Get_Struct(self, V2D, v);
+    V2D *v = _v2d_unwrap(self);
     v->x = NUM2DBL(x);
     v->y = NUM2DBL(y);
     return self;
@@ -89,75 +79,37 @@ VALUE rb_v2d_square_brackets(VALUE klass, VALUE x, VALUE y) {
     return rb_class_new_instance(2, args, cV2D);
 }
 
-VALUE rb_v2d_get_x(VALUE self) {
-    V2D *v;
-    Data_Get_Struct(self, V2D, v);
-    return rb_float_new(v->x);
-}
-
-VALUE rb_v2d_get_y(VALUE self) {
-    V2D *v;
-    Data_Get_Struct(self, V2D, v);
-    return rb_float_new(v->y);
-}
-
-VALUE rb_v2d_set_x(VALUE self, VALUE x) {
-    V2D *v;
-    Data_Get_Struct(self, V2D, v);
-    v->x = NUM2DBL(x);
-    return x;
-}
-
-VALUE rb_v2d_set_y(VALUE self, VALUE y) {
-    V2D *v;
-    Data_Get_Struct(self, V2D, v);
-    v->y = NUM2DBL(y);
-    return y;
-}
-
 VALUE rb_v2d_add(VALUE self, VALUE other) {
-    V2D *v1, *v2;
-    Data_Get_Struct(self, V2D, v1);
-    Data_Get_Struct(other, V2D, v2);
-    V2D *res = v2d_add(v1, v2);
-    return Data_Wrap_Struct(cV2D, NULL, xfree, res);
+    V2D *v1 = _v2d_unwrap(self);
+    V2D *v2 = _v2d_unwrap(other);
+    return _v2d_wrap( v2d_add(v1, v2) );
 }
 
 VALUE rb_v2d_sub(VALUE self, VALUE other) {
-    V2D *v1, *v2;
-    Data_Get_Struct(self, V2D, v1);
-    Data_Get_Struct(other, V2D, v2);
-    V2D *res = v2d_sub(v1, v2);
-    return Data_Wrap_Struct(cV2D, NULL, xfree, res);
+    V2D *v1 = _v2d_unwrap(self);
+    V2D *v2 = _v2d_unwrap(other);
+    return _v2d_wrap( v2d_sub(v1, v2) );
 }
 
 VALUE rb_v2d_mul(VALUE self, VALUE multiplier) {
-    V2D *v;
-    Data_Get_Struct(self, V2D, v);
+    V2D *v = _v2d_unwrap(self);
     double m = NUM2DBL(multiplier);
-    V2D *res = v2d_mul(v, m);
-    return Data_Wrap_Struct(cV2D, NULL, xfree, res);
+    return _v2d_wrap( v2d_mul(v, m) );
 }
 
 VALUE rb_v2d_div(VALUE self, VALUE divisor) {
-    V2D *v;
-    Data_Get_Struct(self, V2D, v);
+    V2D *v = _v2d_unwrap(self);
     double d = NUM2DBL(divisor);
-    V2D *res = v2d_div(v, d);
-    return Data_Wrap_Struct(cV2D, NULL, xfree, res);
+    return _v2d_wrap( v2d_div(v, d) );
 }
 
 VALUE rb_v2d_abs(VALUE self) {
-    V2D *v;
-    Data_Get_Struct(self, V2D, v);
-    double res = v2d_abs(v);
-    return rb_float_new(res);
+    return rb_float_new( v2d_abs( _v2d_unwrap(self) ) );
 }
 
 VALUE rb_v2d_equals(VALUE self, VALUE other) {
-    V2D *v1, *v2;
-    Data_Get_Struct(self, V2D, v1);
-    Data_Get_Struct(other, V2D, v2);
+    V2D *v1 = _v2d_unwrap(self);
+    V2D *v2 = _v2d_unwrap(other);
     return v2d_equals(v1, v2) ? Qtrue : Qfalse;
 }
 
