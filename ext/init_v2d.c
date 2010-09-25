@@ -1,13 +1,12 @@
 #include <ruby.h>
-#include "v2d.h"
-#include "helpers.h"
+#include "init_v2d.h"
 
 VALUE cV2D;
 
 // DEFINITIONS
 
 DEFINE_UNWRAPPER(V2D, v2d);
-DEFINE_WRAPPER(cV2D, V2D, v2d);
+DEFINE_WRAPPER(V2D, v2d);
 
 /* Allocate memory */
 VALUE rb_v2d_alloc(VALUE klass);

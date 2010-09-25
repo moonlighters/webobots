@@ -44,7 +44,7 @@ module EmulationSystem
         protected
 
         def initialize_engine(x, y, angle)
-          @state = State.new Point[x,y], angle, 0.0, 0.0, World::MAX_HEALTH
+          @state = State.new Point[x,y], angle
         end
 
         # Проверяет бота на столкновение с другими ботами и
