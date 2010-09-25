@@ -22,3 +22,4 @@ dump/*
 ext/Makefile
 ext/*.o
 ext/*.so
+ext/depend
