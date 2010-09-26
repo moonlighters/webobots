@@ -18,11 +18,13 @@ State * state_new()
     State * s = (State *)xmalloc(sizeof(State));
     s->health = WORLD_MAX_HEALTH;
     s->speed = s->desired_speed = 0;
+    s->pos = v2d_new();
     return s;
 }
 
 void state_delete(State * s)
 {
+    v2d_delete(s->pos);
     xfree(s);
 }
 

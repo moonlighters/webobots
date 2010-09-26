@@ -6,7 +6,6 @@
 
 typedef struct _State
 {
-    
     V2D * pos;
     double radians;
     double speed;

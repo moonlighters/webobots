@@ -67,7 +67,7 @@ VALUE rb_state_initialize(VALUE self, VALUE pos, VALUE angle)
 {
     State *state = _state_unwrap(self);
     state->radians = _degrees2radians( NUM2DBL(angle) );
-    state->pos = _v2d_unwrap(pos);
+    v2d_assign(state->pos, _v2d_unwrap(pos));
     return self;
 }
 

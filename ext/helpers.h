@@ -88,6 +88,7 @@
  * NOTE: requires an unwrapper to be defined (see DEFINE_UNWRAPPER)
  * NOTE: assumes that a struct, returned by an unwrapper, has a field named `attribute` of pointer to some struct type
  * NOTE: requires both wrapper and unwrapper defined for the type of that field (see DEFINE_WRAPPER and DEFINE_UNWRAPPER)
+ * NOTE: requires a method `prefix`_assign declared
  * EXAMPLE: having
  *            typedef struct _Point { ... } Point;
  *            DEFINE_WRAPPER(Point, point);
@@ -110,7 +111,7 @@
     }\
     VALUE self_prefix##_set_##attribute(VALUE self, VALUE value)\
     {\
-        _##self_prefix##_unwrap(self)->attribute = _##attr_prefix##_unwrap(value);\
+        attr_prefix##_assign( _##self_prefix##_unwrap(self)->attribute, _##attr_prefix##_unwrap(value) );\
         return value;\
     }
 
