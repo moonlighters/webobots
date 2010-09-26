@@ -19,8 +19,10 @@
     type * _##prefix##_unwrap(VALUE self);
 
 /* Defines a method _`prefix`_wrap: pointer to struct -> VALUE 
- * NOTE: requires a method `prefix`_delete declared
  * NOTE: assumes that ruby class variable is c`type`
+ * NOTE: this version of wrapper doesn't copy the struct, so if it is
+ *       allocated in temporary location (e.g. on stack), do NOT use
+ *       the unwrapper defined by this macro, see DEFINE_CLONE_WRAPPER
  * EXAMPLE: having
  *            VALUE cApple;
  *            void apple_delete(Apple *);
@@ -29,15 +31,31 @@
  *          defines
  *            VALUE _apple_wrap(Apple *p) { ... }
  */
-// TODO: we need two wrappers: copying and not-copying (present), but first we need normal V2D methods that doesn't clone it on every sneeze
 #define DEFINE_WRAPPER(type, prefix)\
     VALUE _##prefix##_wrap(type *p)\
     {\
-        return Data_Wrap_Struct(c##type, NULL, 0, p);\
+        return Data_Wrap_Struct(c##type, NULL, NULL, p);\
     }
 
 /* A pair for DEFINE_WRAPPER */
 #define DECLARE_WRAPPER(type, prefix)\
+    VALUE _##prefix##_wrap(type *p);
+
+/* Same as DEFINE_WRAPPER, but defines method named _`prefix`_wrap_clone,
+ * which allocates a copy of the struct on heap before wrapping.
+ * NOTE: it creates absolutely new object, so if you want to wrap some struct
+ *       so that to have write access (e.g. a field of another struct),
+ *       do NOT use the unwrapper defined by this macro, see DEFINE_WRAPPER
+ * NOTE: requires methods `prefix`_clone and `prefix`_delete declared
+ */
+#define DEFINE_CLONE_WRAPPER(type, prefix)\
+    VALUE _##prefix##_wrap_clone(type *p)\
+    {\
+        return Data_Wrap_Struct(c##type, NULL, prefix##_delete, prefix##_clone(p));\
+    }
+
+/* A pair for DEFINE_CLONE_WRAPPER */
+#define DECLARE_CLONE_WRAPPER(type, prefix)\
     VALUE _##prefix##_wrap(type *p);
 
 /* Defines acessor methods `prefix`_get_`attribute` and `prefix`_set_`attribute`

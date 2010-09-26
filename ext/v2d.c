@@ -31,8 +31,10 @@ V2D * v2d_add_to(V2D * v1, V2D * v2) {
     return v1;
 }
 
-V2D * v2d_add(V2D * v1, V2D * v2) {
-    return v2d_add_to(v2d_clone(v1), v2);
+V2D v2d_add(V2D * v1, V2D * v2) {
+    V2D temp;
+    v2d_add_to(v2d_assign(&temp, v1), v2);
+    return temp;
 }
 
 V2D * v2d_sub_from(V2D * v1, V2D * v2) {
@@ -41,8 +43,10 @@ V2D * v2d_sub_from(V2D * v1, V2D * v2) {
     return v1;
 }
 
-V2D * v2d_sub(V2D * v1, V2D * v2) {
-    return v2d_sub_from(v2d_clone(v1), v2);
+V2D v2d_sub(V2D * v1, V2D * v2) {
+    V2D temp;
+    v2d_sub_from(v2d_assign(&temp, v1), v2);
+    return temp;
 }
 
 V2D * v2d_mul_by(V2D * v, double multiplier) {
@@ -51,8 +55,10 @@ V2D * v2d_mul_by(V2D * v, double multiplier) {
     return v;
 }
 
-V2D * v2d_mul(V2D * v, double multiplier) {
-    return v2d_mul_by(v2d_clone(v), multiplier);
+V2D v2d_mul(V2D * v, double multiplier) {
+    V2D temp;
+    v2d_mul_by(v2d_assign(&temp, v), multiplier);
+    return temp;
 }
 
 V2D * v2d_div_by(V2D * v, double divisor) {
@@ -61,8 +67,10 @@ V2D * v2d_div_by(V2D * v, double divisor) {
     return v;
 }
 
-V2D * v2d_div(V2D * v, double divisor) {
-    return v2d_div_by(v2d_clone(v), divisor);
+V2D v2d_div(V2D * v, double divisor) {
+    V2D temp;
+    v2d_div_by(v2d_assign(&temp, v), divisor);
+    return temp;
 }
 
 double v2d_abs(V2D * v) {

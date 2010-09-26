@@ -7,6 +7,7 @@ VALUE cV2D;
 
 DEFINE_UNWRAPPER(V2D, v2d);
 DEFINE_WRAPPER(V2D, v2d);
+DEFINE_CLONE_WRAPPER(V2D, v2d);
 
 /* Allocate memory */
 VALUE rb_v2d_alloc(VALUE klass);
@@ -79,27 +80,23 @@ VALUE rb_v2d_square_brackets(VALUE klass, VALUE x, VALUE y) {
 }
 
 VALUE rb_v2d_add(VALUE self, VALUE other) {
-    V2D *v1 = _v2d_unwrap(self);
-    V2D *v2 = _v2d_unwrap(other);
-    return _v2d_wrap( v2d_add(v1, v2) );
+    V2D res = v2d_add( _v2d_unwrap(self), _v2d_unwrap(other) );
+    return _v2d_wrap_clone(&res);
 }
 
 VALUE rb_v2d_sub(VALUE self, VALUE other) {
-    V2D *v1 = _v2d_unwrap(self);
-    V2D *v2 = _v2d_unwrap(other);
-    return _v2d_wrap( v2d_sub(v1, v2) );
+    V2D res = v2d_sub( _v2d_unwrap(self), _v2d_unwrap(other) );
+    return _v2d_wrap_clone(&res);
 }
 
 VALUE rb_v2d_mul(VALUE self, VALUE multiplier) {
-    V2D *v = _v2d_unwrap(self);
-    double m = NUM2DBL(multiplier);
-    return _v2d_wrap( v2d_mul(v, m) );
+    V2D res = v2d_mul( _v2d_unwrap(self), NUM2DBL(multiplier) );
+    return _v2d_wrap_clone(&res);
 }
 
 VALUE rb_v2d_div(VALUE self, VALUE divisor) {
-    V2D *v = _v2d_unwrap(self);
-    double d = NUM2DBL(divisor);
-    return _v2d_wrap( v2d_div(v, d) );
+    V2D res = v2d_div( _v2d_unwrap(self), NUM2DBL(divisor) );
+    return _v2d_wrap_clone(&res);
 }
 
 VALUE rb_v2d_abs(VALUE self) {
