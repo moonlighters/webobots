@@ -71,7 +71,6 @@ module ActionsHelper
 
   def actions_for_firmwares
     action "Ваши прошивки", firmwares_path
-    action "Все прошивки", all_firmwares_path
     action "Новая прошивка", new_firmware_path
   end
 

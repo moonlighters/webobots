@@ -3,7 +3,8 @@
 - actions_for_user(@user, @has_firmwares)
 
 - unless @fws.empty?
-  %ul= render @fws
+  - paginated_section @fws do
+    %ul.firmwares= render @fws
 - else
   %i Пользователь ещё не создал ни одной прошивки
 

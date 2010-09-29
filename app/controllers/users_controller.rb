@@ -37,7 +37,7 @@ class UsersController < ApplicationController
   end
 
   def firmwares
-    @fws = @user.firmwares
+    @fws = @user.firmwares.paginate :page => params[:page], :order => 'rating_points DESC'
   end
 
   def update

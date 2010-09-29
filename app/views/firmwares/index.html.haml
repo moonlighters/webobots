@@ -4,6 +4,6 @@
 
 - unless @fws.empty?
   - paginated_section @fws do
-    %ul= render @fws
+    %ul.firmwares= render @fws
 - else
   %i Вы ещё не создали ни одной прошивки

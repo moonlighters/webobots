@@ -3,10 +3,4 @@
 - actions_for_rating
 
 - paginated_section @firmwares do
-  %table.list
-    %tr
-      %th Место
-      %th Прошивка
-      %th Автор
-      %th Очки
-    = render :partial => 'firmware', :collection => @firmwares
+  %ul.firmwares= render :partial => 'firmwares/firmware', :collection => @firmwares

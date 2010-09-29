@@ -6,11 +6,7 @@ class FirmwaresController < ApplicationController
   before_filter :require_owner, :only => [:edit, :update]
 
   def index
-    @fws = current_user.firmwares.paginate :page => params[:page], :order => 'id DESC'
-  end
-
-  def all
-    @fws = Firmware.paginate :page => params[:page], :order => 'id DESC', :include => :user
+    @fws = current_user.firmwares.paginate :page => params[:page], :order => 'rating_points DESC'
   end
 
   def new
