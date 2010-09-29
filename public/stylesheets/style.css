@@ -427,7 +427,9 @@ ul.users, ul.firmwares {
   line-height: 60px;
 }
 
-.firmware_entity .body {
+.firmware_entity .single_line {
+  line-height: 47px;
+  padding-left: 6px;
 }
 
 .user_entity .login {

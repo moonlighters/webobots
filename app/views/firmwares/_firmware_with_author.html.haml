@@ -1,6 +1,20 @@
-%li
-  = link_to_firmware firmware_with_author
-  %br
-  %small
-    от игрока
-    = link_to_user firmware_with_author.user
+%li.firmware_entity
+  .rating{:title => "Рейтинг"}= format_points firmware_with_author.rating_points
+  .digit{:title => "Кол-во проигрышей"}
+    - matches_count = Match.lost_by(firmware_with_author).count
+    = matches_count.to_s + image_tag( 'loss.png', :alt => pl("матч%{,а,ей} проигран", matches_count), :class => 'icon' )
+  .digit{:title => "Кол-во ничьих"}
+    - matches_count = Match.tied_by(firmware_with_author).count
+    = matches_count.to_s + image_tag( 'draw.png', :alt => pl("матч%{,а,ей} вничью", matches_count), :class => 'icon' )
+  .digit{:title => "Кол-во побед"}
+    - matches_count = Match.won_by(firmware_with_author).count
+    = matches_count.to_s + image_tag( 'win.png', :alt => pl("матч%{,а,ей} выигран", matches_count), :class => 'icon' )
+  .body
+    %span.name
+      = image_tag 'firmware_with_author.png', :alt => "", :class => 'firmware_icon'
+      = link_to_firmware firmware_with_author
+    %br
+    %span.user
+      от
+      = link_to_user firmware_with_author.user
+

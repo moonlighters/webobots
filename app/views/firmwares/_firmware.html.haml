@@ -10,10 +10,8 @@
     - matches_count = Match.won_by(firmware).count
     = matches_count.to_s + image_tag( 'win.png', :alt => pl("матч%{,а,ей} выигран", matches_count), :class => 'icon' )
   .body
-    %span.name
-      = image_tag 'firmware.png', :alt => "", :class => 'firmware_icon'
-      = link_to_firmware firmware
-    %br
-    %span.user
-      от
-      = link_to_user firmware.user
+    .single_line
+      %span.name
+        = image_tag 'firmware.png', :alt => "", :class => 'firmware_icon'
+        = link_to_firmware firmware
+
