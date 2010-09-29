@@ -42,8 +42,9 @@ class Match < ActiveRecord::Base
     self.including_stuff.paginate opts.reverse_merge(:total_entries => self.count)
   end
 
-  def self.won_by(user)
-    all_for(user).scoped :conditions => [
+  # obj is a User or Firmware
+  def self.won_by(obj)
+    all_for(obj).scoped :conditions => [
       "(matches.fwv1_id = firmware_versions.id AND result = :first_won) OR
        (matches.fwv2_id = firmware_versions.id AND result = :second_won)",
       {
@@ -53,8 +54,9 @@ class Match < ActiveRecord::Base
     ]
   end
 
-  def self.lost_by(user)
-    all_for(user).scoped :conditions => [
+  # obj is a User or Firmware
+  def self.lost_by(obj)
+    all_for(obj).scoped :conditions => [
       "(matches.fwv1_id = firmware_versions.id AND result = :first_lost) OR
        (matches.fwv2_id = firmware_versions.id AND result = :second_lost)",
       {
@@ -64,8 +66,9 @@ class Match < ActiveRecord::Base
     ]
   end
 
-  def self.tied_by(user)
-    all_for(user).scoped :conditions => { :result => RESULTS[:draw] }
+  # obj is a User or Firmware
+  def self.tied_by(obj)
+    all_for(obj).scoped :conditions => { :result => RESULTS[:draw] }
   end
 
   cattr_reader :per_page

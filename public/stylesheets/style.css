@@ -441,6 +441,7 @@ ul.users, ul.firmwares {
 }
 
 .firmware_entity .user {
+  margin-left: 22px;
   font-size: 16px;
 }
 

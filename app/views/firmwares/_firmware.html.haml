@@ -1,17 +1,21 @@
-%li.firmware_entity
-  .rating{:title => "Рейтинг"}= format_points firmware.rating_points
-  .digit{:title => "Кол-во проигрышей"}
-    - matches_count = Match.lost_by(firmware).count
-    = matches_count.to_s + image_tag( 'loss.png', :alt => pl("матч%{,а,ей} проигран", matches_count), :class => 'icon' )
-  .digit{:title => "Кол-во ничьих"}
-    - matches_count = Match.tied_by(firmware).count
-    = matches_count.to_s + image_tag( 'draw.png', :alt => pl("матч%{,а,ей} вничью", matches_count), :class => 'icon' )
-  .digit{:title => "Кол-во побед"}
-    - matches_count = Match.won_by(firmware).count
-    = matches_count.to_s + image_tag( 'win.png', :alt => pl("матч%{,а,ей} выигран", matches_count), :class => 'icon' )
-  .body
-    .single_line
-      %span.name
-        = image_tag 'firmware.png', :alt => "", :class => 'firmware_icon'
-        = link_to_firmware firmware
+- fw = firmware
 
+%li.firmware_entity
+  .rating{:title => "Рейтинг"}= format_points fw.rating_points
+  .digit{:title => "Кол-во проигрышей"}
+    - matches_count = Match.lost_by(fw).count
+    = matches_count.to_s + image_tag( 'loss.png', :alt => "", :class => 'icon' )
+  .digit{:title => "Кол-во ничьих"}
+    - matches_count = Match.tied_by(fw).count
+    = matches_count.to_s + image_tag( 'draw.png', :alt => "", :class => 'icon' )
+  .digit{:title => "Кол-во побед"}
+    - matches_count = Match.won_by(fw).count
+    = matches_count.to_s + image_tag( 'win.png', :alt => "", :class => 'icon' )
+  .body
+    %span.name
+      = image_tag 'firmware.png', :alt => "", :class => 'firmware_icon'
+      = link_to_firmware fw
+    %br
+    %span.user
+      от
+      = link_to_user fw.user
