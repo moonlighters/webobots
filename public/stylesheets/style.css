@@ -39,6 +39,8 @@ p {
 }
 
 a, a:hover, a:visited { color: #EB1D1D; }
+a { text-decoration: none; }
+a:hover { text-decoration: underline; }
 
 a img {
   border: none;
@@ -203,7 +205,16 @@ td.line-numbers {
 
 .pagination {
   margin: 10px 0px;
+  text-align: center;
 }
+
+.pagination .next_page, .pagination .prev_page {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.pagination a { text-decoration: none; }
+.pagination a:hover { text-decoration: underline; }
 
 .clear {
   clear: both;
@@ -479,3 +490,4 @@ ul.users, ul.firmwares {
   border: none;
   margin-bottom: -1px;
 }
+
