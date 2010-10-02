@@ -122,6 +122,7 @@ section {
 .right_column {
   width: 500px;
   margin: 0 50px 0 195px;
+  overflow: hidden;
 }
 
 .single_column {
