@@ -5,14 +5,6 @@
   .digit{:title => "Кол-во прошивок"}
     - fwv_count = user.firmwares.count
     = fwv_count.to_s + image_tag( 'firmware.png', :alt => pl("прошив%{ка,ки,ок}", fwv_count), :class => 'icon' )
-  .digit{:title => "Кол-во проигрышей"}
-    - matches_count = Match.lost_by(user).count
-    = matches_count.to_s + image_tag( 'loss.png', :alt => pl("матч%{,а,ей} проигран", matches_count), :class => 'icon' )
-  .digit{:title => "Кол-во ничьих"}
-    - matches_count = Match.tied_by(user).count
-    = matches_count.to_s + image_tag( 'draw.png', :alt => pl("матч%{,а,ей} вничью", matches_count), :class => 'icon' )
-  .digit{:title => "Кол-во побед"}
-    - matches_count = Match.won_by(user).count
-    = matches_count.to_s + image_tag( 'win.png', :alt => pl("матч%{,а,ей} выигран", matches_count), :class => 'icon' )
+  = render :partial => 'match_digits_reverse', :locals => {:obj => user}
   .body
     %span.login= link_to_user user, :avatar => :none
