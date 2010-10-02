@@ -22,23 +22,24 @@
     = link_to_user fwv.user, :avatar => :none
 .clear
 
-- unless @match.user.nil?
-  %dl
-    %dt Инициатор
-    %dd= link_to_user @match.user
+.info
+  - unless @match.user.nil?
+    %dl
+      %dt Инициатор
+      %dd= link_to_user @match.user
 
-- unless @match.draw?
-  %dl
-    %dt Победитель
-    %dd= link_to_firmware_version @match.winner_version
-  %dl
-    %dt Получает
-    %dd
-      = format_points(@match.winner_points)
-      очков рейтинга
-- else
-  %dl
-    %dt Результат
-    %dd Ничья!
+  - unless @match.draw?
+    %dl
+      %dt Победитель
+      %dd= link_to_firmware_version @match.winner_version
+    %dl
+      %dt Получает
+      %dd
+        = format_points(@match.winner_points)
+        очков рейтинга
+  - else
+    %dl
+      %dt Результат
+      %dd Ничья!
 
 = render :partial => 'comments/comments', :locals => {:commentable => @match, :comments => @comments}

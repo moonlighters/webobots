@@ -7,30 +7,36 @@
   - if self_profile
     = link_to avatar_for(@user, :size => :big), "http://gravatar.com", :class => "avatar_link"
     %p
-      Сменить аватар можно на <a href="http://gravatar.com/">gravatar.com</a>
+      Сменить можно на <a href="http://gravatar.com/">gravatar.com</a>
   - else
     = avatar_for @user, :size => :big
 
-%dl
-  %dt Логин
-  %dd=h @user.login
-%dl
-  %dt Очки рейтинга
-  %dd= format_points(@user.rating_points)
-%dl
-  %dt Позиция в рейтинге
-  %dd= @user.rating_position.to_s + "-й из " + @users_count.to_s
-
-- if self_profile
+.info
   %dl
-    %dt E-mail
+    %dt Логин
+    %dd=h @user.login
+  %dl
+    %dt Очки рейтинга
     %dd
-      =h @user.email
-      %i (Виден только тебе)
+      .rating= format_points(@user.rating_points)
+  %dl
+    %dt Позиция в рейтинге
+    %dd= @user.rating_position.to_s + "-й из " + @users_count.to_s
 
-  - if @user.last_login_at
+  %dl
+    %dt Успехи в матчах
+    %dd= render :partial => 'rating/match_digits', :locals => {:obj => @user}
+
+  - if self_profile
     %dl
-      %dt Заходил
-      %dd= "последний раз #{time_ago_in_words @user.last_login_at} назад"
+      %dt E-mail
+      %dd{:title => "Виден только тебе"}=h @user.email
 
+    - if @user.last_login_at
+      %dl
+        %dt Заходил
+        %dd
+          = time_ago_in_words(@user.last_request_at)
+          назад
+.clear
 = render :partial => 'comments/comments', :locals => {:commentable => @user, :comments => @comments}

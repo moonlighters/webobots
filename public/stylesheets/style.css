@@ -137,12 +137,18 @@ h2 {
   border-bottom: solid #999999 1px;
 }
 
+h3 {
+  margin-top: 0;
+}
+
 h2, h3, h2 a:link, h2 a:hover, h2 a:visited { color: #000066; }
 
 h2 a { text-decoration: none; }
 h2 a:hover { text-decoration: underline; }
 
-dl { margin: 3px 0; }
+.info { margin-bottom: 10px; }
+
+dl { margin: 0 0 3px 0; }
 
 dt {
   color: #666688;
@@ -356,6 +362,12 @@ td.line-numbers {
 
 .profile_avatar p {
   font-size: 80%;
+  width: 100px;
+}
+
+.profile_avatar {
+  text-align: right;
+  float: right;
 }
 
 .avatar_tiny, .avatar_small, .avatar_medium, .avatar_big {
@@ -458,23 +470,31 @@ ul.users, ul.firmwares {
 }
 
 .user_entity .digit, .user_entity .rating {
-  float: right;
   line-height: 60px;
 }
 
 .firmware_entity .digit, .firmware_entity .rating {
-  float: right;
   line-height: 47px;
 }
 
 .user_entity .digit, .firmware_entity .digit {
+  float: right;
+  text-align: right;
   color: #333333;
   font-size: 20px;
   width: 50px;
-  text-align: right;
+}
+
+dd .digit {
+  display: inline;
+}
+
+dd .digit img {
+  margin-bottom: -3px;
 }
 
 .user_entity .rating, .firmware_entity .rating {
+  float: right;
   letter-spacing: 2px;
   color: #337733;
   text-align: right;
