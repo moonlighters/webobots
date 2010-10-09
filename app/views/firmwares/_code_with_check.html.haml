@@ -1,0 +1,4 @@
+- if can_see_code_of? fwv.firmware
+  = render :partial => 'code', :locals => {:code => fwv.code}
+- else
+  %i Пользователь предпочел скрыть код этой прошивки
