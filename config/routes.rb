@@ -42,6 +42,12 @@ ActionController::Routing::Routes.draw do |map|
     end
   end
 
+  # quick tour
+  map.tour 'tour', :controller => 'welcome', :action => 'tour'
+
+  # tutorial
+  map.resource :tutorial, :controller => 'tutorial', :only => :show
+
   # root
   map.root :controller => 'welcome', :action => 'root'
 end

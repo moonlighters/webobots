@@ -48,7 +48,7 @@ table.list {
   border-collapse: collapse;
 }
 
-.list td {
+table.list td {
   border-width: 1px;
   border-style: inset;
   padding: 5px;
@@ -60,8 +60,36 @@ table.list {
   padding: 5px;
 }
 
-td.line-numbers {
-  color: #aaaaaa;
+table.code_entity {
+  border-color: #dddddd;
+  border-width: 1px;
+  border-spacing: 0px;
+  border-style: outset;
+  border-collapse: collapse;
+  margin: 15px;
+}
+
+table.code_entity pre {
+  margin: 0;
+  padding: 0;
+}
+
+table.code_entity td {
+  border-width: 1px;
+  border-style: inset;
+  border-color: #dddddd;
+  padding: 5px;
+}
+
+table.code_entity td.line-numbers {
+  background-color: #dddddd;
+  color: #777777;
+  text-align: right;
+}
+
+table.code_entity td.code {
+  padding-left: 10px;
+  min-width: 300px;
 }
 
 .pagination {
@@ -241,3 +269,19 @@ td.line-numbers {
 .comment_entity:hover .remove_link {
   background: url(/images/delete.png) no-repeat left center;
 }
+
+.tour, .tutorial {
+  width: 700px;
+  text-align: justify;
+}
+
+.tour h3, .tutorial h3 {
+  color: #444466;
+  margin-bottom: 8px;
+  margin-top: 15px;
+}
+
+.illustration {
+  text-align: center;
+}
+
