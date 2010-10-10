@@ -5,9 +5,9 @@ class DocController < ApplicationController
   end
 
   def tutorial
-    @samples = []
-    @samples[0] = "set_speed(100)"
-    @samples[1] = <<-SAMPLE1
+    @samples = {}
+    @samples[:simple] = "set_speed(100)"
+    @samples[:sample_program] = <<-SAMPLE1
 set_speed(50)
 while 1
   x = posx()
@@ -30,21 +30,21 @@ while 1
   end
 end
     SAMPLE1
-    @samples[2] = "set_speed(50)"
-    @samples[3] = <<-SAMPLE3
+    @samples[:first_line] = "set_speed(50)"
+    @samples[:while] = <<-SAMPLE3
 while 1
   ...
 end
     SAMPLE3
-    @samples[4] = "x = posx()"
-    @samples[5] = <<-SAMPLE5
+    @samples[:posx] = "x = posx()"
+    @samples[:if] = <<-SAMPLE5
 if x < 100
   ...
 end
     SAMPLE5
-    @samples[6] = "rotate(45)"
-    @samples[7] = %q{@log "Бум!"}
-    @samples[8] = %q{@log "x =", x, ", 2 + 2 =", 2 + 2}
+    @samples[:rotate] = "rotate(45)"
+    @samples[:log] = %q{@log "Бум!"}
+    @samples[:logging_example] = %q{@log "x =", x, ", 2 + 2 =", 2 + 2}
   end
 
   def waffle_language
