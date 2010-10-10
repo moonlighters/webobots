@@ -40,13 +40,11 @@ ActionController::Routing::Routes.draw do |map|
     %w{ waffle_language runtime_library }.each do |action|
       doc.send( "#{action}_doc", action, :action => action, :conditions => {:method => :get} )
     end
+
+    %w{ tour tutorial }.each do |action|
+      doc.send( action, action, :action => action, :conditions => {:method => :get} )
+    end
   end
-
-  # quick tour
-  map.tour 'tour', :controller => 'welcome', :action => 'tour'
-
-  # tutorial
-  map.resource :tutorial, :controller => 'tutorial', :only => :show
 
   # root
   map.root :controller => 'welcome', :action => 'root'
