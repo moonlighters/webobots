@@ -270,12 +270,12 @@ table.code_entity td.code {
   background: url(/images/delete.png) no-repeat left center;
 }
 
-.tour, .tutorial {
+.docs {
   width: 700px;
   text-align: justify;
 }
 
-.tour h3, .tutorial h3 {
+.docs h3 {
   color: #444466;
   margin-bottom: 8px;
   margin-top: 15px;
