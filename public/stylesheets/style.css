@@ -92,6 +92,11 @@ table.code_entity td.code {
   min-width: 300px;
 }
 
+.inline_code {
+  display: inline;
+  font-family: monospace;
+}
+
 .pagination {
   margin: 10px 0px;
 }
