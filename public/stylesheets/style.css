@@ -347,8 +347,8 @@ td.line-numbers {
 
 .comment_button {
   float: right;
-  /*margin-left: 5px;*/
-  margin-right: -19px;
+  margin-left: 5px;
+  /*margin-right: -19px;*/
 }
 
 .comment_header {
@@ -413,6 +413,7 @@ a.avatar_link{
 }
 .ico_but:hover {
   background-color: transparent !important;
+  text-decoration: none;
 }
 
 .comment_entity:hover .remove_link, .invite:hover .remove_link {
