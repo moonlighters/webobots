@@ -408,7 +408,7 @@ a.avatar_link{
   margin: 2px 2px -3px;
   height:16px;
   width:16px;
-  display:block;
+  display:inline-block;
   text-decoration:none;
 }
 .ico_but:hover {
@@ -420,7 +420,10 @@ a.avatar_link{
   background: url(/images/delete.png) no-repeat left center;
 }
 
-ul.users, ul.firmwares {
+.match_entity:hover .play_link { background: url(/images/play.png) no-repeat left center; }
+.match_entity:hover .more_link { background: url(/images/more.png) no-repeat left center; }
+
+ul.users, ul.firmwares, ul.matches {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -434,7 +437,7 @@ ul.users, ul.firmwares {
   padding: 10px 18px 10px 15px;
 }
 
-.user_entity:hover, .firmware_entity:hover {
+.user_entity:hover, .firmware_entity:hover, .match_entity:hover {
   background: #f0f0f5;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -513,3 +516,40 @@ dd .digit img {
   margin-bottom: -1px;
 }
 
+.match_entity {
+  width: 490px;
+  padding: 5px;
+}
+
+.match_entity .first, .match_entity .second { width: 220px; }
+
+.match_entity .center {
+  width: 50px;
+  text-align: center;
+}
+
+.match_entity .vs {
+  margin-top: 12px;
+  font-size: 24px;
+}
+
+.match_entity .first, .match_entity .center, .match_entity .second { float: left; }
+
+.match_entity .first .avatar { float: left; }
+.match_entity .second .avatar { float: right; }
+
+.match_entity .second { text-align: right; }
+
+.match_entity .firmware {
+  font-size: 20px;
+  margin-top: 8px;
+}
+
+.match_entity .user {
+  font-size: 16px;
+}
+
+.match_entity .buttons .play_link { float: left; }
+.match_entity .buttons .more_link { float: right; }
+
+.match_entity .more { text-align: center; display: none; }

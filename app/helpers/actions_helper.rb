@@ -47,7 +47,7 @@ module ActionsHelper
 
   def actions_for_match(match)
     action "Матч", match_path(match)
-    action "Повтор матча", play_match_path(match), :id => 'show-replay', :class => 'nyroModal' unless @match.failed?
+    action "Повтор матча", play_match_path(match), :class => 'nyroModal show-replay' unless @match.failed?
 
     link "Ваши матчи", matches_path
     link "Все матчи", all_matches_path

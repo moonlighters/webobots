@@ -5,7 +5,7 @@ $.fn.scrollToBottom = function() {
 };
 
 $(function() {
-  $('.nyroModal#show-replay').nyroModal({
+  $('.nyroModal.show-replay').nyroModal({
     autoSizable: false,
     minWidth: 800,
     minHeight: 440
