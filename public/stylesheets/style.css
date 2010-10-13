@@ -494,7 +494,7 @@ dd .digit {
 }
 
 dd .digit img {
-  margin-bottom: -3px;
+  margin: 0 5px -3px 2px;
 }
 
 .user_entity .rating, .firmware_entity .rating {
