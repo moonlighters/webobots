@@ -23,7 +23,26 @@
       = link_to_user user, :avatar => :none
   .clear
   .more
-    А тут пока пусто
+    - if match.draw?
+      .draw
+        .spaced Ничья
+    - else
+      - raise match.id.to_s if match.result.blank?
+      - r = match.result == :first ? [:winner, :loser] : [:loser, :winner]
+      - pics = {:winner => 'win.png', :loser => 'loss.png'}
+      - words = {:winner => 'Победитель', :loser => ' Проигравший'}
+      .left
+        = image_tag( pics[r.first], :alt => '', :class => 'icon' )
+        .spaced= words[r.first]
+      .center
+        .points= "+" + format_points( match.send "#{match.result}_points" )
+      .right
+        .spaced= words[r.second]
+        = image_tag( pics[r.second], :alt => '', :class => 'icon' )
+    .links.clear
+      = link_to_match match, :text => "Подробнее"
+      |
+      = link_to_match match, :text => "Комментарии (#{match.comments.count})", :path => { :anchor => 'comments' }
 
 
   -#%td= link_to_match(match)

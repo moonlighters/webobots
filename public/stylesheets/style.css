@@ -437,12 +437,15 @@ ul.users, ul.firmwares, ul.matches {
   padding: 10px 18px 10px 15px;
 }
 
-.user_entity:hover, .firmware_entity:hover, .match_entity:hover {
-  background: #f0f0f5;
+.user_entity, .firmware_entity, .match_entity {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
   border: none;
+}
+
+.user_entity:hover, .firmware_entity:hover, .match_entity:hover {
+  background: #f0f0f5;
 }
 
 .user_entity .avatar {
@@ -519,12 +522,18 @@ dd .digit img {
 .match_entity {
   width: 490px;
   padding: 5px;
+  margin-bottom: 3px;
 }
 
-.match_entity .first, .match_entity .second { width: 220px; }
+.match_entity.expanded {
+  padding: 4px;
+  border: 1px solid #c8c8cc;
+}
+
+.match_entity .first, .match_entity .second { width: 223px; }
 
 .match_entity .center {
-  width: 50px;
+  width: 44px;
   text-align: center;
 }
 
@@ -552,4 +561,51 @@ dd .digit img {
 .match_entity .buttons .play_link { float: left; }
 .match_entity .buttons .more_link { float: right; }
 
-.match_entity .more { text-align: center; display: none; }
+.match_entity .more {
+  margin: 3px 5px;
+  padding-top: 6px;
+  border-top: 1px solid #c8c8cc;
+  display: none;
+}
+.match_entity .more .links {
+  text-align: left;
+  font-size: 0.8em;
+  margin-top: 5px;
+}
+.match_entity .more .draw {
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+}
+
+.match_entity .more .spaced {
+  letter-spacing: 4px;
+  margin-right: -4px;
+  display: inline;
+}
+
+.match_entity .more .left, .match_entity .more .right {
+  font-size: 18px;
+  display: inline-block;
+}
+
+.match_entity .more .left, .match_entity .more .center { float: left; }
+
+.match_entity .more .left, .match_entity .more .right { width: 200px; }
+.match_entity .more .center {
+  width: 80px;
+  text-align: center;
+}
+.match_entity .more .right {
+  text-align: right;
+}
+
+.match_entity .more .left, .match_entity .more .right, .match_entity .more .points {
+  line-height: 24px;
+}
+
+.match_entity .more .points {
+  color: #337733;
+  font-size: 20px;
+  letter-spacing: 2px;
+}
