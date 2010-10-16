@@ -1,45 +1,54 @@
 - title "Матч"
 - actions_for_match @match
 
-.vs_block
-  .vs_left
+.match
+  .first
     - fwv = @match.first_version
-    = link_to_user fwv.user, :login => false, :avatar => :medium
-    = link_to_firmware_version fwv
-    <br/>
-    от
-    = link_to_user fwv.user, :avatar => :none
-
-  .vs_middle
-    VS
-
-  .vs_right
+    - user = fwv.user
+    .avatar= link_to_user user, :login => false, :avatar => :small
+    .firmware= link_to_firmware_version fwv, :no_version => true
+    .user
+      от
+      = link_to_user user, :avatar => :none
+  .center
+    .vs
+      VS
+  .second
     - fwv = @match.second_version
-    = link_to_user fwv.user, :login => false, :avatar => :medium
-    = link_to_firmware_version fwv
-    <br/>
-    от
-    = link_to_user fwv.user, :avatar => :none
-.clear
+    - user = fwv.user
+    .avatar= link_to_user user, :login => false, :avatar => :small
+    .firmware= link_to_firmware_version fwv, :no_version => true
+    .user
+      от
+      = link_to_user user, :avatar => :none
+  .clear
+  .result
+    - if @match.failed?
+      .fail
+        -# TODO вывести сообщение об ошибке
+        %span.text Ошибка во время исполнения
+    - else
+      - if @match.draw?
+        .draw
+          %span.text Ничья
+      - else
+        - r = @match.result == :first ? [:winner, :loser] : [:loser, :winner]
+        - pics = {:winner => 'win.png', :loser => 'loss.png'}
+        - words = {:winner => 'Победитель', :loser => ' Проигравший'}
+        .left
+          = image_tag( pics[r.first], :alt => '', :class => 'icon' )
+          %span.text= words[r.first]
+        .center
+          .points{:title => "Очки рейтинга победителя"}
+            = "+" + format_points( @match.send "#{@match.result}_points" )
+        .right
+          %span.text= words[r.second]
+          = image_tag( pics[r.second], :alt => '', :class => 'icon' )
+  .info
+    .date= format_datetime @match.created_at
+    - if @match.user
+      .initiator инициатор #{link_to_user @match.user}
 
-.info
-  - unless @match.user.nil?
-    %dl
-      %dt Инициатор
-      %dd= link_to_user @match.user
 
-  - unless @match.draw?
-    %dl
-      %dt Победитель
-      %dd= link_to_firmware_version @match.winner_version
-    %dl
-      %dt Получает
-      %dd
-        = format_points(@match.winner_points)
-        очков рейтинга
-  - else
-    %dl
-      %dt Результат
-      %dd Ничья!
 
 = render :partial => 'comments/comments', :locals => {:commentable => @match, :comments => @comments}

@@ -384,26 +384,6 @@ a.avatar_link{
   border: 1px solid #aaa;
 }
 
-.vs_block .vs_left, .vs_block .vs_right {
-  float: left;
-  line-height: 35px;
-  font-size: 1.1em;
-  margin-bottom: 15px;
-}
-
-.vs_block .vs_middle {
-  float: left;
-  margin: 0 20px;
-  height: 70px;
-  line-height: 70px;
-  font-weight: bold;
-}
-
-.vs_block .avatar_medium {
-  margin: 0 5px 0 0;
-  float:left;
-}
-
 .ico_but {
   margin: 2px 2px -3px;
   height:16px;
@@ -421,6 +401,7 @@ a.avatar_link{
 }
 
 .match_entity:hover .play_link { background: url(/images/play.png) no-repeat left center; }
+.match_entity:hover .play_link_disabled { background: url(/images/play_disabled.png) no-repeat left center; }
 .match_entity:hover .more_link { background: url(/images/more.png) no-repeat left center; }
 
 ul.users, ul.firmwares, ul.matches {
@@ -519,6 +500,10 @@ dd .digit img {
   margin-bottom: -1px;
 }
 
+/****************************************/
+/*             MATCH ENTITY             */
+/****************************************/
+
 .match_entity {
   width: 490px;
   padding: 5px;
@@ -565,40 +550,31 @@ dd .digit img {
   margin: 3px 5px;
   padding-top: 6px;
   border-top: 1px solid #c8c8cc;
-  display: none;
 }
 .match_entity .more .links {
   text-align: left;
   font-size: 0.8em;
   margin-top: 5px;
 }
-.match_entity .more .draw {
+.match_entity .more .draw, .match_entity .more .fail {
   width: 100%;
   text-align: center;
-  font-size: 18px;
 }
 
-.match_entity .more .spaced {
+.match_entity .more .text {
+  font-size: 18px;
   letter-spacing: 4px;
   margin-right: -4px;
-  display: inline;
-}
-
-.match_entity .more .left, .match_entity .more .right {
-  font-size: 18px;
-  display: inline-block;
 }
 
 .match_entity .more .left, .match_entity .more .center { float: left; }
 
-.match_entity .more .left, .match_entity .more .right { width: 200px; }
-.match_entity .more .center {
-  width: 80px;
-  text-align: center;
+.match_entity .more .left, .match_entity .more .right, .match_entity .more .center {
+  display: inline-block;
 }
-.match_entity .more .right {
-  text-align: right;
-}
+.match_entity .more .left   { width: 200px; text-align: left; }
+.match_entity .more .center { width: 80px;  text-align: center; }
+.match_entity .more .right  { width: 200px; text-align: right; }
 
 .match_entity .more .left, .match_entity .more .right, .match_entity .more .points {
   line-height: 24px;
@@ -608,4 +584,85 @@ dd .digit img {
   color: #337733;
   font-size: 20px;
   letter-spacing: 2px;
+}
+
+/****************************************/
+/*             SINGLE MATCH             */
+/****************************************/
+
+.match .first, .match .second { width: 223px; }
+
+.match .center {
+  width: 44px;
+  text-align: center;
+}
+
+.match .vs {
+  margin-top: 12px;
+  font-size: 24px;
+}
+
+.match .first, .match .center, .match .second { float: left; }
+
+.match .first .avatar { float: left; }
+.match .second .avatar { float: right; }
+
+.match .second { text-align: right; }
+
+.match .firmware {
+  font-size: 20px;
+  margin-top: 8px;
+}
+
+.match .user {
+  font-size: 16px;
+}
+
+.match .result {
+  margin: 8px 5px 20px 5px;
+  padding-top: 6px;
+  /*border-top: 1px solid #c8c8cc;*/
+}
+.match .result .draw, .match .result .fail {
+  width: 100%;
+  text-align: center;
+}
+
+.match .result .text {
+  letter-spacing: 2px;
+  margin-right: -2px;
+  font-size: 21px;
+}
+
+.match .result .left, .match .result .center { float: left; }
+
+.match .result .left, .match .result .right, .match .result .center {
+  display: inline-block;
+}
+.match .result .left   { width: 200px; text-align: left; }
+.match .result .center { width: 80px;  text-align: center; }
+.match .result .right  { width: 200px; text-align: right; }
+
+.match .result .fail, .math .result .draw, .match .result .left, .match .result .right, .match .result .points {
+  line-height: 24px;
+}
+
+.match .result .points {
+  color: #337733;
+  font-size: 28px;
+  letter-spacing: 2px;
+}
+
+.match .date {
+  font-size: 16px;
+  letter-spacing: 1px;
+  width: 100%;
+  text-align: center;
+}
+
+.match .initiator {
+  font-size: 14px;
+  letter-spacing: 1px;
+  width: 100%;
+  text-align: center;
 }
