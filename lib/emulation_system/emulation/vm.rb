@@ -81,7 +81,14 @@ module EmulationSystem
             @missiles.delete missile
           end
 
-          @bots.each { |bot| bot.step while bot.time < @time and not bot.halted? }
+          @bots.each_with_index do |bot, i|
+            begin
+              bot.step while bot.time < @time and not bot.halted?
+            rescue Errors::WFLRuntimeError => e
+              e.index = i
+              raise e
+            end
+          end
 
           @time += SYNC_PERIOD
           syncs += 1

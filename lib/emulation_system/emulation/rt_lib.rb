@@ -169,7 +169,7 @@ module EmulationSystem
       #
       # Может кидать +WFLRuntimeError+, если аргумент отрицателен
       def sqrt(x) # :doc:
-        raise Errors::WFLRuntimeError, "извлечение квадратного корня из отричательного числа" if x < 0
+        raise Errors::WFLRuntimeError, "извлечение квадратного корня из отрицательного числа" if x < 0
         Math.sqrt(x)
       end
 

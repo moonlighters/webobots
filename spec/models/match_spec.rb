@@ -90,10 +90,25 @@ describe Match do
       mock(EmulationSystem).emulate(m.first_version.code,
                                     m.second_version.code,
                                     m.parameters,
-                                    logger) { :second }
-      m.emulate(logger).should == :second
+                                    logger) { { :result => :second } }
+      m.emulate(logger)
+      m.result.should == :second
       m.first_points.should_not be_nil
       m.second_points.should_not be_nil
+    end
+
+    it "should set result and point values" do
+      m = create_match
+      logger = Object.new
+      stub(logger).add_log_record
+      mock(EmulationSystem).emulate(m.first_version.code,
+                                    m.second_version.code,
+                                    m.parameters,
+                                    logger) { { :error => {:message => "failure", :bot => :second}} }
+      m.emulate(logger)
+      m.should be_failed
+      m.rt_error_msg.should == "failure"
+      m.rt_error_bot.should == :second
     end
   end
 

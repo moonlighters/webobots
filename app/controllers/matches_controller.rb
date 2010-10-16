@@ -38,7 +38,7 @@ class MatchesController < ApplicationController
     @match.user = current_user
 
     if @match.save
-      @match.emulate EmulationSystem::Loggers::ReplayLogger.new
+      @match.emulate_with_replay
 
       redirect_to match_path( @match )
     else
@@ -53,7 +53,7 @@ class MatchesController < ApplicationController
 
   def play
     if request.xhr?
-      @match.emulate( EmulationSystem::Loggers::ReplayLogger.new ) if @match.replay.nil?
+      @match.emulate_with_replay if @match.replay.nil?
       @replay = @match.replay
       render :layout => false
     else

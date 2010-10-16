@@ -99,26 +99,40 @@ class Match < ActiveRecord::Base
     RESULTS.index( super )
   end
 
+  def rt_error_bot=(symbol)
+    super( symbol == :first ? 0 : 1 )
+  end
+  def rt_error_bot
+    super == 0 ? :first : :second
+  end
+
   def draw?
     result == :draw
   end
 
   def emulate(logger)
-    begin
-      res = EmulationSystem.emulate first_version.code,
-                                    second_version.code,
-                                    parameters,
-                                    logger
-    rescue EmulationSystem::Errors::WFLRuntimeError => e
-      self.rt_error_msg = e.message
+    emulation = EmulationSystem.emulate first_version.code,
+                                        second_version.code,
+                                        parameters,
+                                        logger
+    if emulation[:result]
+      res = emulation[:result]
+      set_result!(res) unless result
+    elsif emulation[:error]
+      err = emulation[:error]
+      self.rt_error_bot = err[:bot]
+      self.rt_error_msg = err[:message]
     end
+    save!
+  end
 
-    set_result!(res) unless result
+  def emulate_with_replay(overwrite = false)
+    logger = EmulationSystem::Loggers::ReplayLogger.new
+    emulate(logger)
 
-    if logger.is_a? EmulationSystem::Loggers::ReplayLogger and replay.nil?
+    if !failed? && (replay.nil? || overwrite)
       create_replay :config => logger.config, :frames => logger.frames
     end
-    result
   end
 
   def emulated?

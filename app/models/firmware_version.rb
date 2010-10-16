@@ -17,8 +17,11 @@ class FirmwareVersion < ActiveRecord::Base
   # NB! Номера могут быть не уникальны в течении времени
   before_validation :generate_number
 
+  # Возвращает массив синтаксических ошибок
+  #
+  # Массив пустой, если ошибок нет
   def syntax_errors
-    @syntax_errors ||= check_syntax_errors
+    @syntax_errors ||= EmulationSystem.syntax_errors(code)
   end
 
   private
@@ -33,12 +36,5 @@ class FirmwareVersion < ActiveRecord::Base
     unless number
       self.number = firmware ? (firmware.versions.last_number || 0) + 1 : 1
     end
-  end
-
-  # Возвращает массив синтаксических ошибок
-  #
-  # Массив пустой, если ошибок нет
-  def check_syntax_errors
-    EmulationSystem.check_syntax_errors(code)
   end
 end

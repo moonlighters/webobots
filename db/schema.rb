@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100807185209) do
+ActiveRecord::Schema.define(:version => 20101016175313) do
 
   create_table "comments", :force => true do |t|
     t.string   "title",            :limit => 50, :default => ""
@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(:version => 20100807185209) do
     t.float    "second_points", :default => 0.0
     t.string   "rt_error_msg"
     t.string   "vm_version",    :default => "0.1.0"
+    t.integer  "rt_error_bot"
   end
 
   create_table "users", :force => true do |t|

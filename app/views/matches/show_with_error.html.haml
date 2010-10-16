@@ -11,6 +11,8 @@
       Матч инициирован игроком
       = link_to_user @match.user
 
-%p Во время проведения матча в одной из прошивок произошла ошибка, окончание матча невозможно
-%ul
-  %li=h @match.rt_error_msg
+- fwv = @match.send("#{@match.rt_error_bot}_version")
+%p
+  Во время проведения матча в прошивке #{link_to_firmware_version fwv, :version => false}
+  произошла ошибка:
+  =h @match.rt_error_msg

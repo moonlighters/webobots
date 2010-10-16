@@ -2,23 +2,40 @@
 # Предоставляет функционал проверки синтаксиса исходного кода прошивок и
 # эмуляции матчей
 module EmulationSystem
-  # Функция парсит исходный код и проверяет его на наличие
-  # синтаксических ошибок
-  def check_syntax_errors(code)
+  # Функция парсит исходный код и возвращает массив синтаксических ошибок,
+  # если их нет, то массив пустой
+  def syntax_errors(code)
     Parsing::Parser.new(code).parse
     []
   rescue Errors::WFLSyntaxError => e
     e.errors
   end
-  module_function :check_syntax_errors
+  module_function :syntax_errors
 
-  # Выполняет эмуляцию матча двух прошивок
+  # Выполняет эмуляцию матча двух прошивок, синтаксически корректных
+  #
+  # Возвращает хэш в зависимости от успеха эмуляции:
+  # * <tt>{:result => :first/:second/:draw}</tt>
+  # * <tt>{:error => {:bot => :first/:second, :message => "..."}}</tt>
   def emulate(code1, code2, params, logger)
-    ir1 = Parsing::Parser.new(code1).parse
-    ir2 = Parsing::Parser.new(code2).parse
-    res = Emulation::VM.new(ir1, ir2, params, logger).emulate
-    srand
-    res
+    begin
+      ir1 = Parsing::Parser.new(code1).parse
+      ir2 = Parsing::Parser.new(code2).parse
+    rescue Errors::WFLSyntaxError => e
+      raise "Внутренняя ошибка эмуляции: прошивки содержат синтаксические ошибки"
+    end
+
+    begin
+      res = Emulation::VM.new(ir1, ir2, params, logger).emulate
+      srand
+      {:result => res}
+    rescue Errors::WFLRuntimeError => e
+      bot = case e.index
+            when 0 then :first
+            when 1 then :second
+            end
+      {:error => {:bot => bot, :message => e.message}}
+    end
   end
   module_function :emulate
 
