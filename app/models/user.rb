@@ -12,6 +12,8 @@ class User < ActiveRecord::Base
 
   is_gravtastic :default => :mm
 
+  has_friendly_id :login
+
   attr_protected :login
 
   cattr_reader :per_page

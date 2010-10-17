@@ -70,6 +70,7 @@ class FirmwaresController < ApplicationController
   def find_firmware
     @fw = Firmware.find params[:id]
     @fwv = @fw.version
+    raise NotFound unless @fw.found_using_friendly_id?
   end
 
   def require_owner

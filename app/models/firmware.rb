@@ -8,6 +8,8 @@ class Firmware < ActiveRecord::Base
   end
   has_one :version, :class_name => 'FirmwareVersion', :order => 'number DESC'
 
+  has_friendly_id :name, :use_slug => true
+
   # has_many :matches
   def matches; Match.all_for self end
 

@@ -55,11 +55,12 @@ class UsersController < ApplicationController
   end
 
   def find_user
-    @user = if params[:id]
-              User.find params[:id]
-            else
-              current_user
-            end
+    if params[:id]
+      @user = User.find params[:id]
+      raise NotFound unless @user.found_using_friendly_id?
+    else
+      @user = current_user
+    end
   end
 
   def count_firmwares
