@@ -1,6 +1,6 @@
 - title "Новая прошивка"
 
-- actions_for_firmwares
+- actions_for_firmwares_of current_user
 
-- semantic_form_for @fw do |f|
+- semantic_form_for [@user, @fw] do |f|
   = render :partial => 'form', :object => f, :locals => {:fwv => @fwv}

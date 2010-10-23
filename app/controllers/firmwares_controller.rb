@@ -1,4 +1,5 @@
 class FirmwaresController < ApplicationController
+  before_filter :find_user
   before_filter :find_firmware, :only => [:show, :code, :edit, :update, :show_version, :index_versions]
   before_filter :prepare_fwv_params, :only => [:create, :update]
 
@@ -6,7 +7,7 @@ class FirmwaresController < ApplicationController
   before_filter :require_owner, :only => [:edit, :update]
 
   def index
-    @fws = current_user.firmwares.paginate :page => params[:page], :order => 'rating_points DESC'
+    @fws = @user.firmwares.paginate :page => params[:page], :order => 'rating_points DESC'
   end
 
   def new
@@ -18,7 +19,7 @@ class FirmwaresController < ApplicationController
     @fw = current_user.firmwares.build params[:firmware]
     @fwv = @fw.versions.build @fwv_params
     if @fw.save
-      redirect_to firmware_path(@fw), :notice => "Прошивка успешно создана"
+      redirect_to user_firmware_path(current_user, @fw), :notice => "Прошивка успешно создана"
     else
       render :action => :new
     end
@@ -36,7 +37,7 @@ class FirmwaresController < ApplicationController
     end
 
     if @fw.update_attributes params[:firmware]
-      redirect_to firmware_path(@fw), :notice => "Прошивка успешно обновлена"
+      redirect_to user_firmware_path(current_user, @fw), :notice => "Прошивка успешно обновлена"
     else
       # В форму в любом случае надо вставить message
       @fwv.message = @fwv_params[:message]
@@ -53,7 +54,7 @@ class FirmwaresController < ApplicationController
     if request.xhr?
       render :layout => false
     else
-      redirect_to firmware_path(@fw)
+      redirect_to user_firmware_path(@user, @fw)
     end
   end
 
@@ -67,10 +68,14 @@ class FirmwaresController < ApplicationController
   end
 
   private
+
+  def find_user
+    @user = User.find_friendly params[:user_id]
+  end
+
   def find_firmware
-    @fw = Firmware.find params[:id]
+    @fw = @user.firmwares.find_friendly params[:id], :scope => params[:user_id]
     @fwv = @fw.version
-    raise NotFound unless @fw.found_using_friendly_id?
   end
 
   def require_owner

@@ -56,8 +56,7 @@ class UsersController < ApplicationController
 
   def find_user
     if params[:id]
-      @user = User.find params[:id]
-      raise NotFound unless @user.found_using_friendly_id?
+      @user = User.find_friendly params[:id]
     else
       @user = current_user
     end

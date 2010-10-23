@@ -1,6 +1,8 @@
 class MatchesController < ApplicationController
   before_filter :require_user
   before_filter :find_match, :only => [:show, :play]
+  before_filter :find_user, :only => [:all_for_user]
+  before_filter :find_firmware, :only => [:all_for_firmware]
 
   def index
     @matches = current_user.matches.paginate_including_stuff :page => params[:page]
@@ -11,25 +13,24 @@ class MatchesController < ApplicationController
   end
 
   def all_for_user
-    @user = User.find params[:user_id]
+    @user = User.find_friendly params[:user_id]
     @matches = @user.matches.paginate_including_stuff :page => params[:page]
 
     @has_firmwares = @user.firmwares.count > 0
   end
 
   def all_for_firmware
-    @fw = Firmware.find params[:firmware_id]
+    @user = User.find_friendly params[:user_id]
+    @fw = @user.firmwares.find params[:firmware_id], :scope => @user.to_param
     @matches = @fw.matches.paginate_including_stuff :page => params[:page]
   end
 
   def new
     prepare_select
 
-    @match = Match.new :first_version => (
-      Firmware.find(params[:enemy_fw]).version if params[:enemy_fw]
-    )
+    @match = Match.new :first_version => ( @fw.version if @fw )
     if current_user.firmwares.count == 0
-      redirect_to firmwares_path, :notice => "Сначала создайте прошивку для участия в матчах"
+      redirect_to new_user_firmware_path(current_user), :notice => "Сначала создайте прошивку для участия в матчах"
     end
   end
 
@@ -67,23 +68,31 @@ class MatchesController < ApplicationController
     @match = Match.find params[:id]
   end
 
+  def find_user
+    @user = User.find_friendly params[:user_id]
+  end
+
+  def find_firmware
+    find_user
+    @fw = @user.firmwares.find_friendly params[:firmware_id], :scope => @user.to_param
+  end
+
   def prepare_select
     if params[:enemy]
-      user = User.find params[:enemy]
-    end
+      @user = User.find_friendly params[:enemy]
 
-    if params[:enemy_fw]
-      fw = Firmware.find params[:enemy_fw]
-      user = fw.user
+      if params[:enemy_fw]
+        @fw = @user.firmwares.find_friendly params[:enemy_fw], :scope => @user.to_param
+      end
     end
-    @enemy_id = user.id if user
+    @enemy_id = @user.to_param if @user
 
-    if user
-      @enemy_fws = user.firmwares.scoped(:include => :version).available_for current_user
+    if @user
+      @enemy_fws = @user.firmwares.scoped(:include => :version).available_for current_user
       @enemy_collection = @enemy_fws.map do |x|
         [ x.name, x.version.id ]
       end
-      @enemy_selection_hint = "одна из прошивок игрока #{render_to_string :inline => "<%= link_to_user u %>", :locals => { :u => user }}"
+      @enemy_selection_hint = "одна из прошивок игрока #{render_to_string :inline => "<%= link_to_user u %>", :locals => { :u => @user }}"
     else
       @enemy_fws = Firmware.scoped(
         :order => :user_id, :include => [:user, :version]

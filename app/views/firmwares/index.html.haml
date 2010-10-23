@@ -1,9 +1,11 @@
-- title "Ваши прошивки"
+- title current_user? ? "Ваши прошивки" : %Q{Прошивки пользователя #{@user.login}}
 
-- actions_for_firmwares
+- actions_for_firmwares_of @user
 
 - unless @fws.empty?
   - paginated_section @fws do
     %ul.firmwares= render @fws
 - else
-  %i Вы ещё не создали ни одной прошивки
+  %i
+    = current_user? ? "Вы ещё не создали" : "Пользователь ещё не создал"
+    ни одной прошивки

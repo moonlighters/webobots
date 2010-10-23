@@ -2,5 +2,5 @@
 
 - actions_for_firmware(@fw)
 
-- semantic_form_for @fw do |f|
+- semantic_form_for [@user, @fw] do |f|
   = render :partial => 'form', :object => f, :locals => {:fwv => @fwv}

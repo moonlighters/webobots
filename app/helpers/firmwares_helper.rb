@@ -2,7 +2,7 @@ module FirmwaresHelper
   def link_to_firmware(fw, options = {})
     max_length = options.delete(:max_length) || 20
     text = options.delete(:text) || "#{cut_to_length h(fw.name), max_length}"
-    link_to text, firmware_path(fw), options
+    link_to text, user_firmware_path(fw.user, fw), options
   end
 
   def link_to_firmware_version(fwv, options = {})
@@ -11,7 +11,7 @@ module FirmwaresHelper
     fw = fwv.firmware
     version = no_version ? "" : " ##{fwv.number}"
     text = options.delete(:text) || %Q{#{cut_to_length h(fw.name), max_length}#{version}}
-    link_to text, firmware_version_path( :id => fw, :number => fwv.number ), options
+    link_to text, user_firmware_version_path( :user_id => fw.user, :id => fw, :number => fwv.number ), options
   end
 
   def format_code(code)

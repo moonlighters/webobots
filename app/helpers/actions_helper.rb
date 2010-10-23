@@ -61,17 +61,18 @@ module ActionsHelper
   end
 
   def actions_for_firmware(fw)
-    action "Прошивка", firmware_path(fw)
-    action "Редактировать", edit_firmware_path(fw) if current_user.owns? fw
-    action "История версий", firmware_versions_path(fw)
+    u = fw.user
+    action "Прошивка", user_firmware_path(u, fw)
+    action "Редактировать", edit_user_firmware_path(u, fw) if current_user.owns? fw
+    action "История версий", user_firmware_versions_path(u, fw)
 
-    link "Сразиться!", new_match_path(:enemy_fw => fw) if can_fight_with? fw
-    link "Список матчей", firmware_matches_path(fw)
+    link "Сразиться!", new_match_path(:enemy => u, :enemy_fw => fw) if can_fight_with? fw
+    link "Список матчей", user_firmware_matches_path(u, fw)
   end
 
-  def actions_for_firmwares
-    action "Ваши прошивки", firmwares_path
-    action "Новая прошивка", new_firmware_path
+  def actions_for_firmwares_of(user)
+    action "Прошивки", user_firmwares_path(user)
+    action "Новая прошивка", new_user_firmware_path
   end
 
   def actions_for_rating
