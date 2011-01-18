@@ -15,4 +15,13 @@ module ApplicationHelper
       end
     end
   end
+
+  def format_life_years(start_year)
+    this_year = Time.now.year
+    if this_year == start_year
+      start_year.to_s
+    else
+      "#{start_year}‒#{this_year}"
+    end
+  end
 end

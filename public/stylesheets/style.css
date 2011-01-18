@@ -30,6 +30,26 @@ header {
   border-bottom: solid #999999 1px;
 }
 
+footer {
+  -webkit-border-bottom-left-radius: 20px;
+  -webkit-border-bottom-right-radius: 20px;
+  -moz-border-radius-bottomleft: 20px;
+  -moz-border-radius-bottomright: 20px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  padding: 5px 0;
+  border-top: solid #999999 1px;
+}
+
+footer p {
+  text-align: center;
+  font-size: 0.8em;
+  color: #888;
+}
+
+footer p a, footer p a:visited { color: #888; }
+footer p a:hover { color: #EB1D1D; }
+
 .without_border_bottom {
   border-bottom: none;
 }
@@ -100,7 +120,7 @@ header .logo {
 }
 
 section {
-  padding: 15px 0 30px 0;
+  padding: 15px 0 10px 0;
 }
 
 .left_column {
