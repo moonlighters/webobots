@@ -73,6 +73,8 @@ module ActionsHelper
   def actions_for_firmwares_of(user)
     action "Прошивки", user_firmwares_path(user)
     action "Новая прошивка", new_user_firmware_path
+
+    link "Все прошивки", firmwares_rating_path
   end
 
   def actions_for_rating

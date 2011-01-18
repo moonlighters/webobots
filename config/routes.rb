@@ -8,7 +8,7 @@ ActionController::Routing::Routes.draw do |map|
 
   # users
   map.resource :account, :controller => 'users', :only => [:show, :edit, :update]
-  map.resources :users, :only => [:show], :member => {:firmwares => :get} do |user|
+  map.resources :users, :only => [:index, :show], :member => {:firmwares => :get} do |user|
 
     user.matches 'matches', :controller => 'matches', :action => 'all_for_user', :conditions => {:method => :get}
 

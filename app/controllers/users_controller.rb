@@ -4,7 +4,11 @@ class UsersController < ApplicationController
   before_filter :count_firmwares, :only => [:edit, :update, :show, :firmwares]
 
   before_filter :require_no_user, :only => [:new, :create]
-  before_filter :require_user, :only => [:show, :edit, :update, :firmwares]
+  before_filter :require_user, :only => [:index, :show, :edit, :update, :firmwares]
+
+  def index
+    redirect_to users_rating_path
+  end
 
   def new
     @user = User.new
