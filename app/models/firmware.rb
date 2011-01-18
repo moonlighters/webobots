@@ -65,4 +65,8 @@ class Firmware < ActiveRecord::Base
       errors.add(:name, "у Вас уже есть прошивка с похожим именем")
     end
   end
+
+  def new_slug_needed?
+    name_changed?
+  end
 end
