@@ -13,15 +13,11 @@ class MatchesController < ApplicationController
   end
 
   def all_for_user
-    @user = User.find_friendly params[:user_id]
     @matches = @user.matches.paginate_including_stuff :page => params[:page]
-
     @has_firmwares = @user.firmwares.count > 0
   end
 
   def all_for_firmware
-    @user = User.find_friendly params[:user_id]
-    @fw = @user.firmwares.find params[:firmware_id], :scope => @user.to_param
     @matches = @fw.matches.paginate_including_stuff :page => params[:page]
   end
 
@@ -74,7 +70,7 @@ class MatchesController < ApplicationController
 
   def find_firmware
     find_user
-    @fw = @user.firmwares.find_friendly params[:firmware_id], :scope => @user.to_param
+    @fw = @user.firmwares.find_friendly params[:firmware_id]
   end
 
   def prepare_select
@@ -82,7 +78,7 @@ class MatchesController < ApplicationController
       @user = User.find_friendly params[:enemy]
 
       if params[:enemy_fw]
-        @fw = @user.firmwares.find_friendly params[:enemy_fw], :scope => @user.to_param
+        @fw = @user.firmwares.find_friendly params[:enemy_fw]
       end
     end
     @enemy_id = @user.to_param if @user

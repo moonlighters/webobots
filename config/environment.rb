@@ -13,7 +13,7 @@ Rails::Initializer.run do |config|
   config.gem 'acts_as_commentable', :version => '<3.0.0'
   config.gem 'gravtastic'
   config.gem 'log_buddy'
-  config.gem 'friendly_id'
+  config.gem 'friendly_id', :version => '>=3.2.0'
 
   config.time_zone = 'Novosibirsk'
 end

@@ -74,7 +74,7 @@ class FirmwaresController < ApplicationController
   end
 
   def find_firmware
-    @fw = @user.firmwares.find_friendly params[:id], :scope => params[:user_id]
+    @fw = @user.firmwares.find_friendly params[:id]
     @fwv = @fw.version
   end
 
