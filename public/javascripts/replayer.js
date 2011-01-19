@@ -15,7 +15,7 @@ function replayer() {
   var missiles = {};
 
   var intervalId = setInterval(function () {
-    if( $('#replay-canvas').length == 0 ) {
+    if( $('#canvas').length == 0 ) {
       clearInterval(intervalId);
       return;
     }
