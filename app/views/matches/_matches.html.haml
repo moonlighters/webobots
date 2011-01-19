@@ -1,0 +1,4 @@
+- unless matches.empty?
+  %ul.matches= render :partial => 'match', :collection => matches
+- else
+  %i Матчи не найдены

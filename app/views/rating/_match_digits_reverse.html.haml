@@ -1,0 +1,9 @@
+.digit{:title => "Кол-во проигрышей"}
+  - matches_count = Match.lost_by(obj).count
+  = matches_count.to_s + image_tag( 'loss.png', :alt => pl("матч%{,а,ей} проигран", matches_count), :class => 'icon' )
+.digit{:title => "Кол-во ничьих"}
+  - matches_count = Match.tied_by(obj).count
+  = matches_count.to_s + image_tag( 'draw.png', :alt => pl("матч%{,а,ей} вничью", matches_count), :class => 'icon' )
+.digit{:title => "Кол-во побед"}
+  - matches_count = Match.won_by(obj).count
+  = matches_count.to_s + image_tag( 'win.png', :alt => pl("матч%{,а,ей} выигран", matches_count), :class => 'icon' )

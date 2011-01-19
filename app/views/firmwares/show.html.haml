@@ -1,40 +1,40 @@
-%h2= %Q{Прошивка "#{h @fw.name}"}
+- title %Q{Прошивка "#{@fw.name}"}
 
+- actions_for_firmware(@fw)
 
 -# общая информация
-%p
-  %b Автор:
-  = link_to_user @fw.user
-%p
-  %b Очки рейтинга:
-  = format_points(@fw.rating_points)
-%p
-  %b Позиция в рейтинге:
-  = @fw.rating_position.to_s + "-я из " + @fws_count.to_s
-%p
-  %b Исходный код:
-  = @fw.shared? ? "открытый" : "закрытый"
-  - if current_user.can_see_code_of? @fw
-    = '(' + link_to( "просмотреть", code_firmware_path( @fw ), :id => "show-code", :class => 'nyroModal' ) + ')'
-%p
-  %b Доступность для сражения:
-  = @fw.available? ? "доступна" : "не доступна"
-%p
-  %b Последняя версия прошивки:
-  = link_to_firmware_version_with_message @fwv
+.info
+  %dl
+    %dt Автор
+    %dd= link_to_user @fw.user
 
--# действия
-%p
-  - if current_user.can_fight_with? @fw
-    = link_to "Сразиться!", new_match_path(:enemy_fw => @fw)
-    |
-  - if current_user.owns? @fw
-    = link_to( "Редактировать", edit_firmware_path(@fw) )
-    |
-  = link_to "История версий", firmware_versions_path(@fw)
-  |
-  = link_to "Список матчей", firmware_matches_path(@fw)
+  %dl
+    %dt Очки рейтинга
+    %dd= format_points(@fw.rating_points)
+
+  %dl
+    %dt Позиция в рейтинге
+    %dd= @fw.rating_position.to_s + "-я из " + @fws_count.to_s
+
+  %dl
+    %dt Успехи в матчах
+    %dd= render :partial => 'rating/match_digits', :locals => {:obj => @fw}
+
+  %dl
+    %dt Исходный код
+    %dd
+      = @fw.shared? ? "открытый" : "закрытый"
+      = '(' + link_to( "просмотреть", code_user_firmware_path(@user, @fw), :id => "show-code", :class => 'nyroModal' ) + ')' if can_see_code_of? @fw
+
+  %dl
+    %dt Сражения
+    %dd= @fw.available? ? "разрешены" : "запрещены"
+
+  %dl
+    %dt Последняя версия
+    %dd= link_to_firmware_version_with_message @fwv
 
 -# комментарии
 = render :partial => 'comments/comments', :locals => {:commentable => @fw, :comments => @comments}
+.clear
 

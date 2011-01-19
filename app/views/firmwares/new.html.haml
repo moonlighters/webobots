@@ -1,4 +1,6 @@
-%h2 Создание прошивки
+- title "Новая прошивка"
 
-- semantic_form_for @fw do |f|
+- actions_for_firmwares_of current_user
+
+- semantic_form_for [@user, @fw] do |f|
   = render :partial => 'form', :object => f, :locals => {:fwv => @fwv}

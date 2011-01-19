@@ -1,24 +1,16 @@
-%h2=%Q{Версия ##{@fwv.number} прошивки "#{h @fw.name}"}
+- title %Q{Версия ##{@fwv.number} прошивки "#{@fw.name}"}
 
-%p
-  %b
-    Создана:
-  = format_datetime @fwv.created_at
-%p
-  %b
-    Комментарий к версии:
-= format_firmware_version_message @fwv
+- actions_for_firmware(@fw)
+
+%dl
+  %dt Создана
+  %dd= format_datetime @fwv.created_at
+
+%dl
+  %dt Комментарий
+  %dd= format_firmware_version_message @fwv
 
 = render :partial => 'syntax', :locals => {:fwv => @fwv}
 
-%p
-  - if @fwv.number == @last_fwv.number
-    Это последняя версия прошивки
-    = link_to_firmware @fw
-  - else
-    Перейти к последней версии:
-    = link_to_firmware_version_with_message @last_fwv
-  |
-  = link_to "История версий", firmware_versions_path(@fw)
-
 = render :partial => 'code', :locals => {:fwv => @fwv}
+

@@ -8,6 +8,8 @@ class Firmware < ActiveRecord::Base
   end
   has_one :version, :class_name => 'FirmwareVersion', :order => 'number DESC'
 
+  has_friendly_id :name, :use_slug => true, :scope => :user
+
   # has_many :matches
   def matches; Match.all_for self end
 
@@ -17,13 +19,13 @@ class Firmware < ActiveRecord::Base
 
   cattr_reader :per_page
   @@per_page = 10
-  cattr_reader :per_page_of_rating
-  @@per_page_of_rating = 10
 
   validates_presence_of :name, :user
   validates_length_of :name, :maximum => 40
+
   validates_uniqueness_of :name, :scope => :user_id,
     :message => "у Вас уже есть прошивка с таким именем"
+  validate :uniqueness_of_slug
 
   validate :presence_of_at_least_one_version
 
@@ -54,5 +56,17 @@ class Firmware < ActiveRecord::Base
 
   def presence_of_at_least_one_version
     errors.add(:versions, :blank) if versions.blank?
+  end
+
+  def uniqueness_of_slug
+    not_self_condition = 'AND sluggable_id != :id' unless new_record?
+    if Slug.exists? ["sluggable_type = :type AND scope = :scope AND name = :name #{not_self_condition}",
+                     {:type => 'Firmware', :scope => user.to_param, :name => slug_text.to_s, :id => id}]
+      errors.add(:name, "у Вас уже есть прошивка с похожим именем")
+    end
+  end
+
+  def new_slug_needed?
+    name_changed?
   end
 end

@@ -1,20 +1,12 @@
-%h2 Статистика
+- title "Статистика"
+- actions_for_admin
 
-%p На этом сайте
 %ul
   %li
-    = "зарегистрирован#{Russian.p @users_count, '', *%w[о о]}"
-    = @users_count
-    = "пользовател#{Russian.p @users_count, *%w[ь я ей]}"
+    = pl "Зарегистрирован%{,о,о} %? пользовател%{ь,я,ей}", @users_count
   %li
-    = "создан#{Russian.p @fws_count, *%w[а о о]}"
-    = @fws_count
-    = "прошив#{Russian.p @fws_count, *%w[ка ки ок]}"
+    = pl "Создан%{а,о,о} %? прошив%{ка,ки,ок}", @fws_count
   %li
-    = "проведен#{Russian.p @matches_count, '', *%w[о о]}"
-    = @matches_count
-    = "матч#{Russian.p @matches_count, '', *%w[а ей]}"
+    = pl "Проведен%{,о,о} %? матч%{,а,ей}", @matches_count
   %li
-    = "оставлен#{Russian.p @comments_count, '', *%w[о о]}"
-    = @comments_count
-    = "комментар#{Russian.p @comments_count, *%w[ий ия иев]}"
+    = pl "Оставлен%{,о,о} %? комментар%{ий,ия,иев}", @comments_count

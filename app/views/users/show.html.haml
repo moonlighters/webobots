@@ -1,47 +1,32 @@
 - self_profile = @user == current_user
-%h2 Просмотр профиля
+- title %Q{Пользователь #{@user.login}}
+
+- actions_for_user(@user, @has_firmwares)
 
 .profile_avatar
   - if self_profile
     = link_to avatar_for(@user, :size => :big), "http://gravatar.com", :class => "avatar_link"
-    %p
-      Сменить аватар можно на <a href="http://gravatar.com/">gravatar.com</a>
+    %p Сменить можно на <a href="http://gravatar.com/">gravatar.com</a>
   - else
     = avatar_for @user, :size => :big
 
-%p
-  %b Логин:
-  =h @user.login
-%p
-  %b Очки рейтинга:
-  = format_points(@user.rating_points)
-%p
-  %b Позиция в рейтинге:
-  = @user.rating_position.to_s + "-й из " + @users_count.to_s
+.info
+  %dl
+    %dt Очки рейтинга
+    %dd
+      .rating= format_points(@user.rating_points)
+  %dl
+    %dt Позиция в рейтинге
+    %dd= @user.rating_position.to_s + "-й из " + @users_count.to_s
 
-- if self_profile
-  %p
-    %b Email:
-    =h @user.email
+  %dl
+    %dt Успехи в матчах
+    %dd= render :partial => 'rating/match_digits', :locals => {:obj => @user}
 
-  - if @user.last_login_at
-    %p= "Последний раз заходил #{time_ago_in_words @user.last_login_at} назад"
-
-%p
   - if self_profile
-    = link_to 'Редактировать', edit_account_path
-    |
-  - unless @fws.empty?
-    = link_to( 'Сразиться!', new_match_path(:enemy => @user) )
-    |
-  = link_to "Список матчей", user_matches_path(@user)
+    %dl
+      %dt E-mail
+      %dd{:title => "Виден только тебе"}=h @user.email
 
-- unless self_profile
-  - unless @fws.empty?
-    %h3 Список прошивок
-    %ul= render @fws
-  - else
-    %p
-      %i Пользователь ещё не создал ни одной прошивки
-
+.clear
 = render :partial => 'comments/comments', :locals => {:commentable => @user, :comments => @comments}

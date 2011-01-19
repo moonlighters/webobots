@@ -1,8 +1,6 @@
-%h2 Список ваших матчей
+- title "Ваши матчи"
 
-%p= link_to "Перейти к списку всех матчей", all_matches_path
-
-%p= link_to "Провести матч", new_match_path
+- actions_for_matches
 
 - paginated_section do
-  = render :partial => 'table', :locals => {:matches => @matches}
+  = render :partial => 'matches', :object => @matches

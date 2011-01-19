@@ -1,6 +1,9 @@
 class User < ActiveRecord::Base
   acts_as_authentic do |config|
     config.login_field = :login
+    config.validates_length_of_login_field_options = {
+      :within => 3..20
+    }
     config.validates_format_of_login_field_options = {
       :with => /^\w[-._\w\d]+$/,
       :message => "должен содержать только буквы, цифры и .-_"
@@ -9,12 +12,12 @@ class User < ActiveRecord::Base
 
   is_gravtastic :default => :mm
 
+  has_friendly_id :login
+
   attr_protected :login
 
   cattr_reader :per_page
   @@per_page = 10
-  cattr_reader :per_page_of_rating
-  @@per_page_of_rating = 10
 
   has_many :firmwares
 

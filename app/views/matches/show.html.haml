@@ -1,46 +1,54 @@
-%h2 Просмотр информации о матче
+- title "Матч"
+- actions_for_match @match
 
-%h3
-  .vs_block
-    .vs_left
-      - fwv = @match.first_version
-      = link_to_user fwv.user, :login => false, :avatar => :medium
-      = link_to_firmware_version fwv
-      <br/>
-      автор
-      = link_to_user fwv.user, :avatar => :none
-
-    .vs_middle
+.match
+  .first
+    - fwv = @match.first_version
+    - user = fwv.user
+    .avatar= link_to_user user, :login => false, :avatar => :small
+    .firmware= link_to_firmware_version fwv, :no_version => true
+    .user
+      от
+      = link_to_user user, :avatar => :none
+  .center
+    .vs
       VS
-
-    .vs_right
-      - fwv = @match.second_version
-      = link_to_user fwv.user, :login => false, :avatar => :medium
-      = link_to_firmware_version fwv
-      <br/>
-      автор
-      = link_to_user fwv.user, :avatar => :none
+  .second
+    - fwv = @match.second_version
+    - user = fwv.user
+    .avatar= link_to_user user, :login => false, :avatar => :small
+    .firmware= link_to_firmware_version fwv, :no_version => true
+    .user
+      от
+      = link_to_user user, :avatar => :none
   .clear
+  .result
+    - if @match.failed?
+      .fail
+        -# TODO вывести сообщение об ошибке
+        %span.text Ошибка во время исполнения
+    - else
+      - if @match.draw?
+        .draw
+          %span.text Ничья
+      - else
+        - r = @match.result == :first ? [:winner, :loser] : [:loser, :winner]
+        - pics = {:winner => 'win.png', :loser => 'loss.png'}
+        - words = {:winner => 'Победитель', :loser => ' Проигравший'}
+        .left
+          = image_tag( pics[r.first], :alt => '', :class => 'icon' )
+          %span.text= words[r.first]
+        .center
+          .points{:title => "Очки рейтинга победителя"}
+            = "+" + format_points( @match.send "#{@match.result}_points" )
+        .right
+          %span.text= words[r.second]
+          = image_tag( pics[r.second], :alt => '', :class => 'icon' )
+  .info
+    .date= format_datetime @match.created_at
+    - if @match.user
+      .initiator инициатор #{link_to_user @match.user}
 
-- unless @match.user.nil?
-  %p
-    %b
-      Матч инициирован игроком
-      = link_to_user @match.user
 
-- unless @match.draw?
-  %p
-    %b Победитель:
-    = link_to_firmware_version @match.winner_version
-  %p
-    %b Получает:
-    = format_points(@match.winner_points)
-    очков рейтинга
-- else
-  %p
-    %b Ничья!
-
-%p
-  = link_to "Повтор матча", play_match_path( @match ), :id => 'show-replay', :class => 'nyroModal'
 
 = render :partial => 'comments/comments', :locals => {:commentable => @match, :comments => @comments}

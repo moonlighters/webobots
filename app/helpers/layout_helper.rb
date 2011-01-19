@@ -1,4 +1,8 @@
 module LayoutHelper
+  def title(title = nil)
+    @title = title
+  end
+
   def flash_sections
     %w(alert notice).map { |sec| flash_section(sec) } * "\n"
   end
@@ -6,8 +10,8 @@ module LayoutHelper
   def flash_section(sec)
     text = flash[sec.to_sym]
     div_options = {
-      :class => "flash-messages #{sec}",
-      :id => "flash-#{sec}"
+      :class => "flash_messages #{sec}",
+      :id => "flash_#{sec}"
     }
 
     if text

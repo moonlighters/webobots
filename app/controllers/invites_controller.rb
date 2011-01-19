@@ -1,5 +1,7 @@
 class InvitesController < ApplicationController
   before_filter :require_admin
+  before_filter :get_invites
+  before_filter :build_invite, :except => :destroy
 
   def index
     @invite = Invite.new
@@ -9,7 +11,7 @@ class InvitesController < ApplicationController
   def create
     @invite = Invite.new params[:invite]
     if @invite.save
-      redirect_to admin_invites_path, :notice => "Инвайт#{comment_for @invite} успешно создан"
+      redirect_to admin_invites_path, :notice => "Инвайт (#{@invite.comment}) успешно создан"
     else
       redirect_to admin_invites_path, :alert => "Инвайт не создан"
     end
@@ -18,10 +20,18 @@ class InvitesController < ApplicationController
   def destroy
     invite = Invite.find(params[:id])
     invite.destroy
-    redirect_to admin_invites_path, :notice => "Инвайт#{comment_for invite} удален"
+    redirect_to admin_invites_path, :notice => "Инвайт (#{invite.comment}) удален"
   end
 
   private
+  
+  def get_invites
+    @invites = Invite.all
+  end
+
+  def build_invite
+    @invite = Invite.new
+  end
 
   def comment_for(invite)
     " (#{invite.comment})" unless invite.comment.blank?

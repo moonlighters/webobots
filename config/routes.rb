@@ -8,20 +8,22 @@ ActionController::Routing::Routes.draw do |map|
 
   # users
   map.resource :account, :controller => 'users', :only => [:show, :edit, :update]
-  map.resources :users, :only => [:show, :index] do |user|
+  map.resources :users, :only => [:index, :show], :member => {:firmwares => :get} do |user|
+
     user.matches 'matches', :controller => 'matches', :action => 'all_for_user', :conditions => {:method => :get}
+
+    # firmwares
+    user.resources :firmwares, :except => :destroy, :member => {:code => :get} do |fw|
+      fw.matches 'matches', :controller => 'matches', :action => 'all_for_firmware', :conditions => {:method => :get}
+    end
+    user.firmware_version 'firmwares/:id/versions/:number', :controller => 'firmwares', :action => 'show_version', :conditions => {:method => :get}
+    user.firmware_versions 'firmwares/:id/versions', :controller => 'firmwares', :action => 'index_versions', :conditions => {:method => :get}
+
   end
   map.with_options :controller => 'users' do |users|
     users.signup  'signup', :action => 'new', :conditions => {:method => :get}
     users.connect 'signup', :action => 'create', :conditions => {:method => :post}
   end
-
-  # firmwares
-  map.resources :firmwares, :except => :destroy, :collection => { :all => :get }, :member => {:code => :get} do |fw|
-    fw.matches 'matches', :controller => 'matches', :action => 'all_for_firmware', :conditions => {:method => :get}
-  end
-  map.firmware_version 'firmwares/:id/versions/:number', :controller => 'firmwares', :action => 'show_version', :conditions => {:method => :get}
-  map.firmware_versions 'firmwares/:id/versions', :controller => 'firmwares', :action => 'index_versions', :conditions => {:method => :get}
 
   # matches
   map.resources :matches, :only => [:new, :create, :show, :index],

@@ -1,4 +1,6 @@
-%h2 Редактирование прошивки
+- title "Редактирование прошивки"
 
-- semantic_form_for @fw do |f|
+- actions_for_firmware(@fw)
+
+- semantic_form_for [@user, @fw] do |f|
   = render :partial => 'form', :object => f, :locals => {:fwv => @fwv}

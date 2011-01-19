@@ -6,14 +6,15 @@
 
   $(function() { replayer(); });
 
-%p
-  %i
+.replay
+  %span.title.red
+    = avatar_for @match.first_version.user, :size => :tiny
     = link_to_firmware @match.first_version.firmware
-    в красном,
+  %span.title.blue
+    = avatar_for @match.second_version.user, :size => :tiny
     = link_to_firmware @match.second_version.firmware
-    в синем
 
-#replay-canvas
+  #canvas
 
-%p Лог матча:
-#replay-logger
+  %p Лог матча:
+  #logger

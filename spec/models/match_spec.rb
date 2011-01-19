@@ -113,22 +113,46 @@ describe Match do
   end
 
   describe "named scope" do
-    before do
-      @fwv = Factory :firmware_version
-      Factory :match
-      @m1 = Factory :match, :first_version => @fwv
-      Factory :match
-      @m2 = Factory :match, :first_version => @fwv, :second_version => @fwv
-      Factory :match
-    end
-
     describe "Match.all_for" do
+      before do
+        @fwv = Factory :firmware_version
+        Factory :match
+        @m1 = Factory :match, :first_version => @fwv
+        Factory :match
+        @m2 = Factory :match, :first_version => @fwv, :second_version => @fwv
+        Factory :match
+      end
+
       it "should return all matches for given user" do
-        Match.all_for(@fwv.firmware.user).sort_by(&:id).should == [@m1, @m2].sort_by(&:id)
+        Match.all_for(@fwv.user).sort_by(&:id).should == [@m1, @m2].sort_by(&:id)
       end
 
       it "shoulc return all matches with given firmware" do
         Match.all_for(@fwv.firmware).sort_by(&:id).should == [@m1, @m2].sort_by(&:id)
+      end
+    end
+
+    describe "(won, lost, tied)" do
+      before do
+        @fwv = Factory :firmware_version
+        @m1 = Factory :match, :first_version => @fwv, :result => :first
+        @m2 = Factory :match, :first_version => @fwv, :result => :draw
+        @m3 = Factory :match, :first_version => @fwv, :result => :second
+        @m4 = Factory :match, :second_version => @fwv, :result => :first
+        @m5 = Factory :match, :second_version => @fwv, :result => :draw
+        @m6 = Factory :match, :second_version => @fwv, :result => :second
+      end
+
+      it "Match.won_by should return all won matches for given user" do
+        Match.won_by(@fwv.user).sort_by(&:id).should == [@m1, @m6].sort_by(&:id)
+      end
+
+      it "Match.lost_by should return all won matches for given user" do
+        Match.lost_by(@fwv.user).sort_by(&:id).should == [@m3, @m4].sort_by(&:id)
+      end
+
+      it "Match.tied_by should return all won matches for given user" do
+        Match.tied_by(@fwv.user).sort_by(&:id).should == [@m2, @m5].sort_by(&:id)
       end
     end
   end

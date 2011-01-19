@@ -12,20 +12,20 @@ describe User do
   end
 
   it "should not be valid with too long login" do
-    Factory.build(:user, :login => "a"*100).should_not be_valid
+    Factory.build(:user, :login => "a"*21).should_not be_valid
   end
 
   describe "creating with invite code" do
     before do
-      i = Invite.find_or_create_by_code 'DEADBEAF'
+      @invite = Factory :invite
     end
 
     it "should not be valid given invalid code" do
-      Factory.build(:user, :code => 'not a DEADBEAF').should_not be_valid
+      Factory.build(:user, :code => 'not a valid code').should_not be_valid
     end
 
     it "should be valid given valid code" do
-      u = Factory.build(:user, :code => 'DEADBEAF')
+      u = Factory.build(:user, :code => @invite.code)
       u.should be_valid
       u.save.should be_true
     end

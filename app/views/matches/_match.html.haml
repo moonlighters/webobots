@@ -1,10 +1,63 @@
-%tr
-  %td= link_to_match(match)
-  %td= link_to_firmware_version match.first_version, :no_version => true
-  %td= link_to_user( match.first_version.firmware.user )
-  %td
-    %b VS
-  %td= link_to_firmware_version match.second_version, :no_version => true
-  %td= link_to_user( match.second_version.firmware.user )
-  %td= format_points(match.first_points) + ' : ' + format_points(match.second_points)
+%li.match_entity
+  .first
+    - fwv = match.first_version
+    - user = fwv.user
+    .avatar= link_to_user user, :login => false, :avatar => :small
+    .firmware= link_to_firmware_version fwv, :no_version => true
+    .user
+      от
+      = link_to_user user, :avatar => :none
+  .center
+    .vs
+      VS
+    .buttons
+      - if match.failed?
+        %span.play_link_disabled.ico_but
+      - else
+        = link_to "&nbsp;", play_match_path(match), :class => "play_link ico_but nyroModal show-replay"
+      = link_to "&nbsp;", match_path(match), :class => "more_link ico_but"
+  .second
+    - fwv = match.second_version
+    - user = fwv.user
+    .avatar= link_to_user user, :login => false, :avatar => :small
+    .firmware= link_to_firmware_version fwv, :no_version => true
+    .user
+      от
+      = link_to_user user, :avatar => :none
+  .clear
+  .more.hide
+    - if match.failed?
+      .draw
+        %span.text Ошибка
+    - else
+      - if match.draw?
+        .draw
+          %span.text Ничья
+      - else
+        - r = match.result == :first ? [:winner, :loser] : [:loser, :winner]
+        - pics = {:winner => 'win.png', :loser => 'loss.png'}
+        - words = {:winner => 'Победитель', :loser => ' Проигравший'}
+        .left
+          = image_tag( pics[r.first], :alt => '', :class => 'icon' )
+          %span.text= words[r.first]
+        .center
+          .points{:title => "Очки рейтинга победителя"}
+            = "+" + format_points( match.send "#{match.result}_points" )
+        .right
+          %span.text= words[r.second]
+          = image_tag( pics[r.second], :alt => '', :class => 'icon' )
+    .links
+      = link_to_match match, :text => "Подробнее"
+      |
+      = link_to_match match, :text => "Комментарии (#{match.comments.count})", :path => { :anchor => 'comments' }
+
+
+  -#%td= link_to_match(match)
+  -#%td= link_to_firmware_version match.first_version, :no_version => true
+  -#%td= link_to_user( match.first_version.firmware.user )
+  -#%td
+    -#%b VS
+  -#%td= link_to_firmware_version match.second_version, :no_version => true
+  -#%td= link_to_user( match.second_version.firmware.user )
+  -#%td= format_points(match.first_points) + ' : ' + format_points(match.second_points)
 

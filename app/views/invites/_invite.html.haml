@@ -1,5 +1,4 @@
-%tr
-  %td
-    = link_to %Q{<span class="invite-code">#{h invite.code}</span>}, signup_path(:code => h(invite.code))
-  %td= invite.comment.blank? ? "-" : h(invite.comment)
-  %td= button_to 'Отменить', admin_invite_path(invite), :method => :delete
+%li.invite
+  .code= link_to h(invite.code), signup_path(:code => h(invite.code))
+  .remove= link_to "&nbsp;", admin_invite_path(invite), :class => "remove_link ico_but"
+  .comment= h(invite.comment) if invite.present?

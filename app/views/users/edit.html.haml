@@ -1,6 +1,6 @@
-%h2 Редактировать аккаунт
+- title "Аккаунт"
+
+- actions_for_user(@user, @has_firmwares)
 
 - semantic_form_for @user, :url => account_path do |f|
   = render :partial => "form", :object => f
-
-= link_to "Мой аккаунт", account_path

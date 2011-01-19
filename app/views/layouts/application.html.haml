@@ -2,49 +2,68 @@
 %html
   %head
     %meta{'http-equiv' => 'content-type', :content => 'text/html; charset=utf-8'}
-    %title= "Webobots"
+    %title
+      - unless @title.blank?
+        =h(@title) + " — Webobots"
+      - else
+        = "Webobots"
     = stylesheet_link_tag *%w{style nyroModal.full}
     = formtastic_stylesheet_link_tag
     = javascript_include_tag *%w{libraries/jquery-1.4.2.min libraries/underscore-min libraries/raphael}
     = javascript_include_tag *%w{libraries/jquery.form}
     = javascript_include_tag *%w{libraries/nyroModal/jquery.nyroModal-1.6.1.min libraries/nyroModal/init}
-    = javascript_include_tag *%w{replayer comments application}
+    = javascript_include_tag *%w{libraries/jquery.coolinput}
+    = javascript_include_tag *%w{replayer comments invites matches application}
     %link{:rel => 'icon', :href => '/favicon.ico', :type => 'image/x-icon'}
     %link{:rel => 'shortcut icon', :href => '/favicon.ico', :type => 'image/x-icon'}
 
   %body
-    %header
-      .account-panel
-        - if current_user
-          Вы вошли как
-          = link_to_user(current_user) + "."
-          = link_to "Выйти", logout_path
+    .wrapper
+      %header
+        .logo= link_to image_tag('webobots_logo.png', :alt => '', :width => 70, :height => 70), root_path
+        .header_wrapper
+          %h1= link_to "Webobots", root_path
+
+          .account-panel
+            - if current_user
+              Вы вошли как
+              = link_to_user(current_user) + "."
+              = link_to "Выйти", logout_path
+            - else
+              = link_to "Зарегистрироваться", signup_path
+              или
+              = link_to "войти", login_path
+
+
+          %nav
+            - if current_user
+              %span.nav_item= link_to "Прошивки", user_firmwares_path(current_user)
+              %span.nav_item= link_to "Матчи", matches_path
+              %span.nav_item= link_to "Комментарии", comments_path
+              %span.nav_item= link_to "Рейтинг", users_rating_path
+            - else
+              %span.nav_item
+
+      - unless @title.blank?
+        %h2=h @title
+      %section
+        = flash_sections
+        - if has_actions_or_links?
+          .left_column
+            %nav
+              %ul
+                = actions_list
+                - if has_both_actions_and_links?
+                  %hr
+                = links_list
+          .right_column
+            = yield
+          .clear
         - else
-          = link_to "Регистрация", signup_path
-          |
-          = link_to "Войти", login_path
-
-      %h1.logo
-        = link_to image_tag('webobots_logo.png', :alt => ''), root_path
-        = link_to "Webobots", root_path
-
-      - if current_user
-        %nav
-          = link_to "Пользователи", users_path
-          |
-          = link_to "Прошивки", firmwares_path
-          |
-          = link_to "Матчи", matches_path
-          |
-          = link_to "Комментарии", comments_path
-          |
-          = link_to "Рейтинг", users_rating_path
-          - if current_user.admin?
-            |
-            = link_to "Админка", admin_path
-
-      .clear
-
-    %section
-      = flash_sections
-      = yield
+          .single_column
+            = yield
+      %footer
+        %p
+          © #{format_life_years 2010}
+          #{link_to "cypok", 'http://github.com/cypok'} &
+          #{link_to "NIA", 'http://github.com/NIA'}

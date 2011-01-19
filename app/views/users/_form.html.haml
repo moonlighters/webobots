@@ -2,12 +2,12 @@
 
 = form.semantic_errors
 - form.inputs do
-  = form.input :login if new
+  = form.input :login, :input_html => {:size => 20} if new
   = form.input :email
   = form.input :password, :label => new ? "Пароль" : "Новый пароль", :hint => ("Введите, только если хотите сменить пароль" unless new)
   = form.input :password_confirmation
   - if new
-    = form.input :code, :as => :string, :label => "Код инвайта", :value => '',
+    = form.input :code, :as => :string, :label => "Код инвайта", :value => '', :input_html => { :size => 40, :maxlength => 40 },
       :hint => "Извините, но пока что регистрация доступна только по инвайтам"
     - if Rails.env.production?
       %li= recaptcha_tags :display => { :theme => :clean }

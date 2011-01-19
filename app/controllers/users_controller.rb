@@ -1,12 +1,15 @@
 class UsersController < ApplicationController
   before_filter :require_no_user, :only => [:new, :create]
-  before_filter :require_user, :only => [:index, :show, :edit, :update]
+  before_filter :require_user, :only => [:index, :show, :edit, :update, :firmwares]
 
-  before_filter :find_user, :only => [:edit, :update]
+  before_filter :set_user, :only => [:edit, :update]
+  before_filter :find_user, :only => [:show, :firmwares]
+  before_filter :count_firmwares, :only => [:edit, :update, :show, :firmwares]
+
   before_filter :prepare_user_params, :only => [:create, :update]
 
   def index
-    @users = User.paginate :page => params[:page], :order => 'lower(login)'
+    redirect_to users_rating_path
   end
 
   def new
@@ -30,17 +33,16 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = if params[:id]
-              User.find params[:id]
-            else
-              current_user
-            end
     @fws = @user.firmwares
     @users_count = User.count
     @comments = @user.comments.sorted.paginate :page => comments_page
   end
 
   def edit
+  end
+
+  def firmwares
+    @fws = @user.firmwares.paginate :page => params[:page], :order => 'rating_points DESC'
   end
 
   def update
@@ -52,12 +54,24 @@ class UsersController < ApplicationController
   end
 
   private
-  def find_user
+  def set_user
     @user = current_user
+  end
+
+  def find_user
+    if params[:id]
+      @user = User.find_friendly params[:id]
+    else
+      @user = current_user
+    end
   end
 
   def prepare_user_params
     @user_params = params[:user] || {}
     @login = @user_params.delete :login
+  end
+
+  def count_firmwares
+    @has_firmwares = @user.firmwares.count > 0
   end
 end
