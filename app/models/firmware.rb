@@ -8,7 +8,7 @@ class Firmware < ActiveRecord::Base
   end
   has_one :version, :class_name => 'FirmwareVersion', :order => 'number DESC'
 
-  has_friendly_id :name, :use_slug => true, :scope => :user
+  has_friendly_id :name, :use_slug => true, :scope => :user, :allow_nil => true
 
   # has_many :matches
   def matches; Match.all_for self end
@@ -25,7 +25,7 @@ class Firmware < ActiveRecord::Base
 
   validates_uniqueness_of :name, :scope => :user_id,
     :message => "у Вас уже есть прошивка с таким именем"
-  validate :uniqueness_of_slug
+  validate :correctness_of_slug
 
   validate :presence_of_at_least_one_version
 
@@ -58,11 +58,16 @@ class Firmware < ActiveRecord::Base
     errors.add(:versions, :blank) if versions.blank?
   end
 
-  def uniqueness_of_slug
-    not_self_condition = 'AND sluggable_id != :id' unless new_record?
-    if Slug.exists? ["sluggable_type = :type AND scope = :scope AND name = :name #{not_self_condition}",
-                     {:type => 'Firmware', :scope => user.to_param, :name => slug_text.to_s, :id => id}]
-      errors.add(:name, "у Вас уже есть прошивка с похожим именем")
+  def correctness_of_slug
+    return if name.blank?
+    begin
+      not_self_condition = 'AND sluggable_id != :id' unless new_record?
+      if Slug.exists? ["sluggable_type = :type AND scope = :scope AND name = :name #{not_self_condition}",
+                       {:type => 'Firmware', :scope => user.to_param, :name => slug_text.to_s, :id => id}]
+        errors.add(:name, "у Вас уже есть прошивка с похожим именем")
+      end
+    rescue FriendlyId::BlankError
+      errors.add(:name, "недопустимое имя прошивки: должно содержать хотя бы одну букву или цифру")
     end
   end
 
