@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
     }
   end
 
-  is_gravtastic :default => :mm
+  has_gravatar :default => :mm
 
   has_friendly_id :login
 
