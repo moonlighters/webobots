@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
       :within => 3..20
     }
     config.validates_format_of_login_field_options = {
-      :with => /^\w[-._\w\d]+$/,
+      :with => /^\w[-._\w\d]*$/,
       :message => "должен содержать только буквы, цифры и .-_"
     }
   end
