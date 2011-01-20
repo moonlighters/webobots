@@ -10,6 +10,6 @@
     = form.input :code, :as => :string, :label => "Код инвайта", :value => '', :input_html => { :size => 40, :maxlength => 40 },
       :hint => "Извините, но пока что регистрация доступна только по инвайтам"
     - if Rails.env.production?
-      %li= recaptcha_tags :display => { :theme => :clean }
+      %li= recaptcha_tags :display => { :theme => :white }
 - form.buttons do
   = form.commit_button new ? :register : :update
