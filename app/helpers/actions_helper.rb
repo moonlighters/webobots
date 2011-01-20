@@ -39,10 +39,10 @@ module ActionsHelper
   def actions_for_user(user, has_firmwares)
     action "Пользователь", user_path(user)
     action "Аккаунт", edit_account_path if current_user == user
-    action "Прошивки", firmwares_user_path(user)
+    action "Список матчей", user_matches_path(user)
 
+    link "Прошивки", firmwares_user_path(user)
     link "Сразиться!", new_match_path(:enemy => user) if has_firmwares
-    link "Список матчей", user_matches_path(user)
   end
 
   def actions_for_match(match)

@@ -686,3 +686,8 @@ dd .digit img {
   width: 100%;
   text-align: center;
 }
+
+.actions_links_separator {
+  /*border-bottom: 1px solid #999999;*/
+  margin-bottom: 15px;
+}
