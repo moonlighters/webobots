@@ -8,7 +8,7 @@ class Firmware < ActiveRecord::Base
   end
   has_one :version, :class_name => 'FirmwareVersion', :order => 'number DESC'
 
-  has_friendly_id :name, :use_slug => true, :scope => :user, :allow_nil => true
+  has_friendly_id :name, :use_slug => true, :scope => :user
 
   # has_many :matches
   def matches; Match.all_for self end
@@ -67,7 +67,7 @@ class Firmware < ActiveRecord::Base
         errors.add(:name, "у Вас уже есть прошивка с похожим именем")
       end
     rescue FriendlyId::BlankError
-      errors.add(:name, "недопустимое имя прошивки: должно содержать хотя бы одну букву или цифру")
+      errors.add(:name, "имя прошивки должно содержать хотя бы одну букву или цифру")
     end
   end
 
