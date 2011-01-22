@@ -74,6 +74,10 @@ class ApplicationController < ActionController::Base
          ActionController::UnknownController,
          ActionController::UnknownAction,
          ActionController::RoutingError
+
+      # needed to correctly render page with call of current_user
+      activate_authlogic
+
       render 'application/404', :status => 404
     else
       notify_hoptoad(e)
