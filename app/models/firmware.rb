@@ -67,7 +67,7 @@ class Firmware < ActiveRecord::Base
         errors.add(:name, "у Вас уже есть прошивка с похожим именем")
       end
     rescue FriendlyId::BlankError
-      errors.add(:name, "имя прошивки должно содержать хотя бы одну букву или цифру")
+      errors.add(:name, "должно содержать хотя бы одну букву или цифру")
     end
   end
 
