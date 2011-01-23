@@ -38,8 +38,19 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :invites, :only => [:index, :create, :destroy]
   end
 
-  #comments
+  # comments
   map.resources :comments, :only => [:index, :create, :destroy], :collection => { :all => :get }
+
+  # doc
+  map.with_options :controller => 'doc', :path_prefix => 'doc' do |doc|
+    %w{ waffle_language runtime_library }.each do |action|
+      doc.send( "#{action}_doc", action, :action => action, :conditions => {:method => :get} )
+    end
+
+    %w{ tour tutorial }.each do |action|
+      doc.send( action, action, :action => action, :conditions => {:method => :get} )
+    end
+  end
 
   # root
   map.root :controller => 'welcome', :action => 'root'

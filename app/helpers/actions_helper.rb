@@ -91,4 +91,11 @@ module ActionsHelper
     action "Статистика", stats_admin_path
     action "Инвайты", admin_invites_path
   end
+
+  def actions_for_doc
+    action "Тур по сайту", tour_path
+    action "Обучение", tutorial_path
+    action "Язык WaFfLe", waffle_language_doc_path
+    action "Станд. функции", runtime_library_doc_path
+  end
 end

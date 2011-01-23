@@ -1,10 +1,6 @@
-- if current_user.can_see_code_of? fwv.firmware
-  %hr
-  %table
-    %tr
-      %td.line-numbers
-        %pre= (1..fwv.code.lines.count).to_a * "\n"
-      %td
-        %pre= format_code( fwv.code )
-- else
-  %i Пользователь предпочел скрыть код этой прошивки
+%table.code_entity
+  %tr
+    %td.line-numbers
+      %pre= (1..code.lines.count).to_a * "\n"
+    %td.code
+      %pre= format_code( code )
