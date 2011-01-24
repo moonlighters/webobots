@@ -1,6 +1,12 @@
 - title "Матч"
 - actions_for_match @match
 
+- if @replay_immediately
+  :javascript
+    $(function() {
+      $('.show-replay').click();
+    });
+
 .match
   .first
     - fwv = @match.first_version

@@ -45,7 +45,6 @@ class MatchesController < ApplicationController
   end
 
   def show
-    @comments = @match.comments.sorted.paginate :page => comments_page
   end
 
   def play
@@ -54,7 +53,8 @@ class MatchesController < ApplicationController
       @replay = @match.replay
       render :layout => false
     else
-      redirect_to match_path(@match)
+      @replay_immediately = true
+      render :action => :show
     end
   end
 
@@ -62,6 +62,7 @@ class MatchesController < ApplicationController
 
   def find_match
     @match = Match.find params[:id]
+    @comments = @match.comments.sorted.paginate :page => comments_page
   end
 
   def find_user
