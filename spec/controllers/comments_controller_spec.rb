@@ -17,7 +17,7 @@ describe CommentsController do
 
   describe "#create" do
     before do
-      @commentable = Factory.build :firmware
+      @commentable = Factory.create :firmware
       mock(Firmware).find(37) { @commentable }
     end
 
@@ -61,7 +61,7 @@ describe CommentsController do
       mock(Comment).find('37') { c }
       mock(current_user).owns?(c) { true }
       mock(c).destroy
-      mock(c).commentable { Factory.build :firmware }
+      mock(c).commentable { Factory.create :firmware }
 
       delete 'destroy', :id => 37
       response.should be_redirect

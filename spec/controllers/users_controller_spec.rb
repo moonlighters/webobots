@@ -9,7 +9,7 @@ describe UsersController do
   describe "#index" do
     it "should work" do
       get 'index'
-      response.should be_success
+      response.should be_redirect
     end
   end
 
@@ -48,9 +48,9 @@ describe UsersController do
   %w{show edit}.each do |action|
     describe "##{action}" do
       it "should work" do
-        mock(User).find('37') { Factory.build :user }
+        mock(User).find_friendly('John') { Factory.build :user }
 
-        get 'show', :id => 37
+        get 'show', :id => 'John'
         response.should be_success
       end
     end

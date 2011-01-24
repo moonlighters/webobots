@@ -17,18 +17,21 @@ describe MatchesController do
 
   describe "#all_for_user" do
     it "should list items" do
-      mock(User).find('37') { Factory.build :user, :id => 37 }
+      mock(User).find_friendly('John') { Factory.build :user, :id => 37 }
 
-      get 'all_for_user', :user_id => 37
+      get 'all_for_user', :user_id => 'John'
       response.should be_success
     end
   end
 
   describe "#all_for_firmware" do
     it "should list items" do
-      mock(Firmware).find('37') { Factory.build :firmware, :id => 37 }
+      firmware = Factory.build :firmware, :id => 37
+      user = Factory.build :user
+      mock(user).firmwares { mock!.find_friendly('The Firmware') { firmware } }
+      mock(User).find_friendly('John') { user }
 
-      get 'all_for_firmware', :firmware_id => 37
+      get 'all_for_firmware', :user_id => 'John', :firmware_id => 'The Firmware'
       response.should be_success
     end
   end
@@ -60,7 +63,7 @@ describe MatchesController do
 
   describe "#create" do
     it "should create good match" do
-      any_instance_of Match, :save => true, :id => 37, :emulate => :draw
+      any_instance_of Match, :save => true, :id => 37, :emulate_with_replay => :draw
 
       post 'create'
       response.should be_redirect

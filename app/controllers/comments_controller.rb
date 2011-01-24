@@ -49,6 +49,11 @@ class CommentsController < ApplicationController
     generalized_require_owner @comment
   end
 
+  # Хак для того чтобы polymorphic_url работал на прошивках
+  def firmware_url(fw, *args)
+    user_firmware_url(fw.user, fw, *args)
+  end
+
   def comments_url(commentable)
     polymorphic_url(commentable, :anchor => 'comments')
   end
