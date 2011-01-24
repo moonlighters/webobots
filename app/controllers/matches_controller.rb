@@ -1,5 +1,5 @@
 class MatchesController < ApplicationController
-  before_filter :require_user
+  before_filter :require_user, :except => [:all, :show, :play]
   before_filter :find_match, :only => [:show, :play]
   before_filter :find_user, :only => [:all_for_user]
   before_filter :find_firmware, :only => [:all_for_firmware]

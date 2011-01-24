@@ -49,12 +49,14 @@ module ActionsHelper
     action "Матч", match_path(match)
     action "Повтор матча", play_match_path(match), :class => 'nyroModal show-replay' unless @match.failed?
 
-    link "Ваши матчи", matches_path
+    link "Ваши матчи", matches_path unless current_user.nil?
     link "Все матчи", all_matches_path
-    link "Провести матч", new_match_path
+    link "Провести матч", new_match_path unless current_user.nil?
   end
 
   def actions_for_matches
+    return if current_user.nil?
+
     action "Ваши матчи", matches_path
     action "Все матчи", all_matches_path
     action "Провести матч", new_match_path
@@ -78,6 +80,8 @@ module ActionsHelper
   end
 
   def actions_for_rating
+    return if current_user.nil?
+
     action "Пользователи", users_rating_path
     action "Прошивки", firmwares_rating_path
   end

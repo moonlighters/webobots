@@ -1,5 +1,5 @@
 class RatingController < ApplicationController
-  before_filter :require_user
+  before_filter :require_user, :except => :users
 
   def firmwares
     @firmwares = Firmware.all_sorted_by_rating.paginate :page => params[:page], :per_page => Firmware.per_page

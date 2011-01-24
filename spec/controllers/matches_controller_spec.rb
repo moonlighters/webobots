@@ -78,11 +78,19 @@ describe MatchesController do
   end
 
   describe "#show" do
-    it "should work" do
+    before do
       m = Factory :match
       stub(m).result { :draw }
       mock(Match).find('37') { m }
+    end
 
+    it "should work" do
+      get 'show', :id => 37
+      response.should be_success
+    end
+
+    it "should work when not logged in" do
+      logout
       get 'show', :id => 37
       response.should be_success
     end

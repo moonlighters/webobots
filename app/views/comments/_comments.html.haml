@@ -3,7 +3,7 @@
 -# * +comments+ - массив комментариев для отображения
 .comments
   %h3#comments Комментарии
-  = link_to "Написать", '#', :id => 'add_comment'
+  = link_to "Написать", '#', :id => 'add_comment' unless current_user.nil?
   = render :partial => 'comments/form', :locals => {:commentable => commentable}
   - paginated_section comments, :param_name => :comments_page, :params => {:anchor => 'comments'} do
     = render comments
