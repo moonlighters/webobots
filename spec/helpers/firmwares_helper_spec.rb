@@ -6,42 +6,42 @@ describe FirmwaresHelper do
   describe "(links) " do
     before :all do
       @fw = Factory :firmware, :name => "Cool"
-    @fwv = Factory :firmware_version, :firmware => @fw
-    @fw.reload
-  end
-
-  describe "#link_to_firmware" do
-    before { @path = user_firmware_path(@fw.user, @fw) }
-
-    it "should generate link to firmware with default text" do
-        link_to_firmware(@fw).should == link_to("Cool", @path)
+      @fwv = Factory :firmware_version, :firmware => @fw
+      @fw.reload
     end
 
-    it "should generate link to firmware with given text" do
-        link_to_firmware(@fw, :text => "foobar").should == link_to("foobar", @path)
+    describe "#link_to_firmware" do
+      before { @path = user_firmware_path(@fw.user, @fw) }
+
+      it "should generate link to firmware with default text" do
+          link_to_firmware(@fw).should == link_to("Cool", @path)
+      end
+
+      it "should generate link to firmware with given text" do
+          link_to_firmware(@fw, :text => "foobar").should == link_to("foobar", @path)
+      end
+
+      it "should pass html params to link_to" do
+          link_to_firmware(@fw, :class => "klass").should == link_to("Cool", @path, :class => "klass")
+      end
     end
 
-    it "should pass html params to link_to" do
-        link_to_firmware(@fw, :class => "klass").should == link_to("Cool", @path, :class => "klass")
-    end
-  end
+    describe "#link_to_firmware_version" do
+      before { @path = user_firmware_version_path(:user_id => @fw.user, :id => @fw, :number => @fwv.number) }
 
-  describe "#link_to_firmware_version" do
-    before { @path = user_firmware_version_path(:user_id => @fw.user, :id => @fw, :number => @fwv.number) }
+      it "should generate link to firmware version with default text" do
+          link_to_firmware_version(@fwv).should == link_to("Cool #2", @path)
+      end
 
-    it "should generate link to firmware version with default text" do
-        link_to_firmware_version(@fwv).should == link_to("Cool #2", @path)
-    end
+      it "should generate link to firmware version without version info" do
+          link_to_firmware_version(@fwv, :no_version => true).should == link_to("Cool", @path)
+      end
 
-    it "should generate link to firmware version without version info" do
-        link_to_firmware_version(@fwv, :no_version => true).should == link_to("Cool", @path)
-    end
+      it "should generate link to firmware version with given text" do
+          link_to_firmware_version(@fwv, :text => "foobar").should == link_to("foobar", @path)
+      end
 
-    it "should generate link to firmware version with given text" do
-        link_to_firmware_version(@fwv, :text => "foobar").should == link_to("foobar", @path)
-    end
-
-    it "should pass options to link_to" do
+      it "should pass options to link_to" do
         link_to_firmware_version(@fwv, :class => "klass").should == link_to("Cool #2", @path, :class => "klass")
       end
     end
