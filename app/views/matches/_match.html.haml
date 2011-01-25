@@ -3,7 +3,7 @@
     - fwv = match.first_version
     - user = fwv.user
     .avatar= link_to_user user, :login => false, :avatar => :small
-    .firmware= link_to_firmware_version fwv, :no_version => true
+    .firmware= link_to_firmware_version fwv, :no_version => true, :max_length => 14
     .user
       от
       = link_to_user user, :avatar => :none
@@ -20,7 +20,7 @@
     - fwv = match.second_version
     - user = fwv.user
     .avatar= link_to_user user, :login => false, :avatar => :small
-    .firmware= link_to_firmware_version fwv, :no_version => true
+    .firmware= link_to_firmware_version fwv, :no_version => true, :max_length => 14
     .user
       от
       = link_to_user user, :avatar => :none
